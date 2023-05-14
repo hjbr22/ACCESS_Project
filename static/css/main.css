@@ -1,0 +1,10 @@
+.tag {
+    display: inline-block;
+    margin: 2px;
+  }
+  
+.remove-tag {
+cursor: pointer;
+margin-left: 5px;
+}
+  
