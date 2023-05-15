@@ -32,7 +32,8 @@
 </nav>
 <form>
 <div class="container">
-
+    <div class="row">
+    <div class="col-6">
     <!-- Question 1 -->
         <!-- HPC USE -->
     <div class="form-group">
@@ -70,15 +71,15 @@
         <label for="">How much experience do you have with HPCs?</label>
         <br>
         <div class="form-check">
-            <input class="form-check-input" type="radio" name="hpc-experience" id="one-year" value="1">
+            <input class="form-check-input" type="radio" name="hpc-experience" id="one-year" value="0">
             <label class="form-check-label" for="one-year">I have a small amount of experience using certain HPCs (0-1 year)</label>
         </div>
         <div class="form-check">
-            <input class="form-check-input" type="radio" name="hpc-experience" id="three-years" value="0">
+            <input class="form-check-input" type="radio" name="hpc-experience" id="three-years" value="1">
             <label class="form-check-label" for="three-years">I comfortable using any HPC (1-3 years)</label>
         </div>
         <div class="form-check">
-            <input class="form-check-input" type="radio" name="hpc-experience" id="four-years" value="0">
+            <input class="form-check-input" type="radio" name="hpc-experience" id="four-years" value="2">
             <label class="form-check-label" for="four-years">I am an expert when it comes to using HPCs (4 or more years)</label>
         </div>
     </div>
@@ -132,15 +133,15 @@
         <lable for="">Approximately how much long-term storage do you think you will need?</lable>
         <br>
         <div class="form-check form-check">
-            <input class="form-check-input" type="radio" name="long-term-storage" id="one-tb" value="">
+            <input class="form-check-input" type="radio" name="long-term-storage" id="one-tb" value="less-than-1">
             <label class="form-check-label" for="one-tb">Less than 1 TB</label>
         </div>
         <div class="form-check form-check">
-            <input class="form-check-input" type="radio" name="long-term-storage" id="ten-tb" value="">
+            <input class="form-check-input" type="radio" name="long-term-storage" id="ten-tb" value="1-10">
             <label class="form-check-label" for="ten-tb">1 TB to 10 TB</label>
         </div>
         <div class="form-check form-check">
-            <input class="form-check-input" type="radio" name="long-term-storage" id="more-tb" value="">
+            <input class="form-check-input" type="radio" name="long-term-storage" id="more-tb" value="more-than-10">
             <label class="form-check-label" for="more-tb">More than 10 TB</label>
         </div>
     </div>
@@ -149,15 +150,15 @@
         <lable for="">Approximately how much temporary storage do you think you will need (inputs and outputs)?</lable>
         <br>
         <div class="form-check form-check">
-            <input class="form-check-input" type="radio" name="temp-storage" id="one-tb-temp" value="">
+            <input class="form-check-input" type="radio" name="temp-storage" id="one-tb-temp" value="less-than-1">
             <label class="form-check-label" for="one-tb-temp">Less than 1 TB</label>
         </div>
         <div class="form-check form-check">
-            <input class="form-check-input" type="radio" name="temp-storage" id="ten-tb-temp" value="">
+            <input class="form-check-input" type="radio" name="temp-storage" id="ten-tb-temp" value="1-10">
             <label class="form-check-label" for="ten-tb-temp">1 TB to 10 TB</label>
         </div>
         <div class="form-check form-check">
-            <input class="form-check-input" type="radio" name="temp-storage" id="more-tb-temp" value="">
+            <input class="form-check-input" type="radio" name="temp-storage" id="more-tb-temp" value="more-than-10">
             <label class="form-check-label" for="more-tb-temp">More than 10 TB</label>
         </div>
     </div>
@@ -167,15 +168,15 @@
         <lable for="">Approximately how much memory (RAM) does your job require?</lable>
         <br>
         <div class="form-check form-check">
-            <input class="form-check-input" type="radio" name="memory" id="sixtyfour-gb" value="">
+            <input class="form-check-input" type="radio" name="memory" id="sixtyfour-gb" value="less-than-64">
             <label class="form-check-label" for="sixtyfour-gb">Less than 64 GB</label>
         </div>
         <div class="form-check form-check">
-            <input class="form-check-input" type="radio" name="memory" id="five-twelve-gb" value="">
+            <input class="form-check-input" type="radio" name="memory" id="five-twelve-gb" value="64-512">
             <label class="form-check-label" for="five-twelve-gb">64 GB to 512 GB</label>
         </div>
         <div class="form-check form-check">
-            <input class="form-check-input" type="radio" name="memory" id="more-gb" value="">
+            <input class="form-check-input" type="radio" name="memory" id="more-gb" value="more-than-512">
             <label class="form-check-label" for="more-gb">More than 512 GB</label>
         </div>
     </div>
@@ -186,6 +187,7 @@
         <input class="form-control" type="text">
     </div>
     <!-- Question 7 -->
+        <!-- Graphical -->
     <div class="form-group">
         <label for="">Is there a graphical component to your jobs (i.e. image generation, simulation, etc)?</label>
         <br>
@@ -199,6 +201,7 @@
         </div>
     </div>
     <!-- Question 8 -->
+        <!-- CPU GPU parallel -->
     <div class="form-group">
         <label for="">Do you need CPU and GPU nodes running in parallel?</label>
         <br>
@@ -212,6 +215,7 @@
         </div>
     </div>
     <!-- Question 9 -->
+        <!-- Always Running -->
     <div class="form-group">
         <label for="">Does your job need to be running at all times?</label>
         <br>
@@ -225,6 +229,7 @@
         </div>
     </div>
     <!-- Question 10 -->
+        <!-- Virtual Machine -->
     <div class="form-group">
         <label for="">Does your program need to run on a Virtual machine?</label>
         <br>
@@ -236,6 +241,13 @@
             <input class="form-check-input" type="radio" name="vm" id="vm-not-needed" value="0">
             <label class="form-check-label" for="vm-not-needed">No</label>
         </div>
+    </div>
+    </div>
+    <div class="col-2" id="rpScore">
+    </div>
+    </div>
+    <div class="row">
+        <button type="button" class="btn btn-primary" id="submit-form">Submit</button>
     </div>
 </div>
 </form>
