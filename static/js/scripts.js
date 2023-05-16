@@ -5,15 +5,35 @@ const RPs = [['aces',"ACES (Texas A&M)"], ["anvil","Anvil (Purdue)"], ["bridges"
 ["kyric","KyRIC (Kentucky)"], ["rockfish","Rockfish (JHU)"], ["stampede","Stampede-2 (TACC)"],
 ["ranch","RANCH (TACC)"], ["osg","Open Science Grid (OSG)"], ["osn","Open Storage Network (OSN)"]]
 
+// RPs with Open on Demand or other GUIs
+rpWithGUI = ['aces', 'anvil', 'bridges', 'delta', 'expanse', 'faster', 'jetstream', 'stampede']
+    
 // fields of research
 const fields = ["Biology", "Chemistry", "Physics", "Computer Science", "Civil Engineering", "Economics",
    "Linguistics", "History", "Agriculture", "Medicine"].sort()
 
 // types of jobs
-const jobType = ["Data Analytics", "Data Mining", "NLP", "Textual Analysis", "Modeling and Simulation", "Bioinformatics",
-                 "Biophysics", "Biochemistry", "Fluid Dynamics", "Materials Science", "Image Processing", "Machine Learning",
-                 "Astronomic Science", "Digital Humanities", "Compuational Chemistry", "Genomics", "Deep Learning", "High Energy Physics",
-                 "Virtual Machine", "General", "Parallel"]
+const jobType = {"Data Analytics":['delta', 'bridges', 'darwin'],
+                 "Data Mining":['darwin'],
+                 "NLP":['kyric'],
+                 "Textual Analysis":['delta'],
+                 "Modeling and Simulation":['delta'],
+                 "Bioinformatics":['kyric','expanse'],
+                 "Biophysics":['kyric','expanse'],
+                 "Biochemistry":['kyric','expanse'],
+                 "Fluid Dynamics":['delta'],
+                 "Materials Science":['expanse'], 
+                 "Image Processing":['darwin'], 
+                 "Machine Learning":['delta','bridges','darwin'],
+                 "Astronomic Science":['expanse'], 
+                 "Digital Humanities":[], 
+                 "Compuational Chemistry":['expanse'], 
+                 "Genomics":[], 
+                 "Deep Learning":['delta'], 
+                 "High Energy Physics":['expanse'],
+                 "Virtual Machine":['jetstream'], 
+                 "General":['stampede','darwin'], 
+                 "Parallel":['stampede']}
 
 // rps for graphical jobs
 const graphicalRps = ['aces', 'bridges', 'darwin', 'delta', 'expanse', 'faster', 'kyric', 'stampede']
@@ -75,13 +95,12 @@ $(document).ready(function(){
     
     // autocomplete for selecting types of jobs
     $("#job-type-text-input").autocomplete({
-        source: jobType,
+        source: Object.keys(jobType),
         select: function(event, ui){
             $('#job-type-tag-container').append(
                 `<div class="tag" style="display: inline-block; margin: 2px;">
-                    <span class="badge badge-primary">
-                        ${ui.item.value}
-                        <a class="remove-tag" style="cursor:pointer; color: white; margin-left: 5px;">x</a>
+                    <span class="badge badge-primary" id="${ui.item.value}">${ui.item.value}
+                    <a class="remove-tag" name="remove-tag" style="cursor:pointer; color: white; margin-left: 5px;">x</a>
                     </span>
                 </div>`)
             this.value='';
@@ -104,10 +123,8 @@ $(document).ready(function(){
         $(`<label class="form-check-label" for=""> ${JSON.stringify(rpScores)}</label>`)
         )
 
-    // console.log(rpScores)
+    console.log(rpScores)
 
-    rpWithGUI = ['aces', 'anvil', 'bridges', 'delta', 'expanse', 'faster', 'jetstream', 'stampede']
-    
     // calculate scores when the form is submitted
     $("#submit-form").on("click", function(){
         calculate_score()
@@ -141,6 +158,15 @@ function calculate_score(){
     }
     
     // field of research
+
+    $(".badge").each(function(){
+        selectedJob = $(this).attr('id')
+        console.log("selections for job types", selectedJob)
+        for (let i=0; i<jobType[selectedJob].length; i++){
+            increase_score(jobType[selectedJob][i])
+        }
+    })
+
 
     // type of job
 
