@@ -8,7 +8,4 @@ Add the scoring based on different package requirements
 
 Hide the followup questions until the original questions are answered.
 
-Make the Long-Term Storage and Temp Storage questions dependant on the answer to the Data Storage question
-(Currently the answers to the Temp Storage and Long-Term Storage questions will affect the score even if the user says they don't need to store info on the RP)
-
 Calculate and display the scores after each selection.
