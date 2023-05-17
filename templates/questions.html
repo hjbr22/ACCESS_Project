@@ -30,21 +30,21 @@
       ACCESS Recommendation System
     </a>
 </nav>
-<form>
+<form onsubmit="return false">
 <div class="container">
     <div class="row">
-    <div class="col-6">
+    <div class="col-sm-6">
     <!-- Question 1 -->
         <!-- HPC USE -->
     <div class="form-group">
         <label for="">Have you used a supercomputer (HPC) before? </label>
         <br>
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="hpc-use" id="has-used-hpc" value="1">
+            <input class="form-check-input" type="radio" name="hpc-use" id="has-used-hpc" value="1" requried>
             <label class="form-check-label" for="has-used-hpc">Yes</label>
         </div>
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="hpc-use" id="has-not-used-hpc" value="0">
+            <input class="form-check-input" type="radio" name="hpc-use" id="has-not-used-hpc" value="0" required>
             <label class="form-check-label" for="has-not-used-hpc">No</label>
         </div>
     </div>
@@ -115,7 +115,7 @@
         <lable for="">Do you need to store any data on the RP?</lable>
         <br>
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="storage" id="storage-needed" value="1">
+            <input class="form-check-input" type="radio" name="storage" id="storage-needed" value="1" required>
             <label class="form-check-label" for="storage-needed">Yes</label>
         </div>
         <div class="form-check form-check-inline">
@@ -243,11 +243,12 @@
         </div>
     </div>
     </div>
-    <div class="col-2" id="rpScore">
+    <div class="form-group col-sm-6 text-wrap" id="rpScore">
+        <!-- score is added in js -->
     </div>
     </div>
     <div class="row">
-        <button type="button" class="btn btn-primary" id="submit-form">Submit</button>
+        <button type="submit" class="btn btn-primary" id="submit-form">Submit</button>
     </div>
 </div>
 </form>

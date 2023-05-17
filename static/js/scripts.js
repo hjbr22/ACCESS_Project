@@ -145,7 +145,11 @@ function increase_score(rp){
 
 function display_score(){
     $("#rpScore").append(
-        $(`<label class="form-check-label" for=""> ${JSON.stringify(rpScores)}</label>`)
+        $(`
+            <label class="form-check-label text-wrap" for=""> 
+                ${JSON.stringify(rpScores, null, 2)}
+            </label>`
+        )
         )
 }
 
@@ -187,26 +191,29 @@ function calculate_score(){
         }
     })
 
-    // long-term storage
-    ltStorageSelection = $("input[name='long-term-storage']:checked").val()
-    console.log('hello')
-    console.log($("input[name='long-term-storage']:checked").val())
-    if(ltStorageSelection){
-        supportingRps = ltStorage[ltStorageSelection]
-        console.log("need long-term storage " + ltStorageSelection)
-        for (let i=0; i < supportingRps.length; i++){
-            increase_score(supportingRps[i])
+    // needs to store data on RP
+    if($("input[name='storage']:checked").val() == 1){
+
+        // long-term storage
+        ltStorageSelection = $("input[name='long-term-storage']:checked").val()
+        console.log('hello')
+        console.log($("input[name='long-term-storage']:checked").val())
+        if(ltStorageSelection){
+            supportingRps = ltStorage[ltStorageSelection]
+            console.log("need long-term storage " + ltStorageSelection)
+            for (let i=0; i < supportingRps.length; i++){
+                increase_score(supportingRps[i])
+            }
         }
-    }
 
-
-    // temp storage
-    tempStorageSelection = $("input[name='temp-storage']:checked").val()
-    if(tempStorageSelection){
-        supportingRps = tempStorage[tempStorageSelection]
-        console.log("need temp storage " + tempStorageSelection)
-        for (let i=0; i < supportingRps.length; i++){
-            increase_score(supportingRps[i])
+        // temp storage
+        tempStorageSelection = $("input[name='temp-storage']:checked").val()
+        if(tempStorageSelection){
+            supportingRps = tempStorage[tempStorageSelection]
+            console.log("need temp storage " + tempStorageSelection)
+            for (let i=0; i < supportingRps.length; i++){
+                increase_score(supportingRps[i])
+            }
         }
     }
 
