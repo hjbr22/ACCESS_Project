@@ -6,14 +6,22 @@ const RPs = [['aces',"ACES (Texas A&M)"], ["anvil","Anvil (Purdue)"], ["bridges"
 ["ranch","RANCH (TACC)"], ["osg","Open Science Grid (OSG)"], ["osn","Open Storage Network (OSN)"]]
 
 // RPs with Open on Demand or other GUIs
-rpWithGUI = ['aces', 'anvil', 'bridges', 'delta', 'expanse', 'faster', 'jetstream', 'stampede']
+const rpWithGUI = ['aces', 'anvil', 'bridges', 'delta', 'expanse', 'faster', 'jetstream', 'stampede']
     
 // fields of research
-const fields = ["Biology", "Chemistry", "Physics", "Computer Science", "Civil Engineering", "Economics",
-   "Linguistics", "History", "Agriculture", "Medicine"].sort()
+const fieldsAndRps = {"Biology":['bridges','stampede','expanse'], 
+                "Chemistry":['bridges','stampede'], 
+                "Physics":['bridges','stampede','expanse'], 
+                "Computer Science":['bridges','stampede','expanse'], 
+                "Civil Engineering":['jetstream','bridges'], 
+                "Economics":['jetstream','expanse'],
+                "Linguistics":['osg'], 
+                "History":['osg'], 
+                "Agriculture":['kyric','anvil'], 
+                "Medicine":['ookami','rockfish','bridges']}
 
 // types of jobs
-const jobType = {"Data Analytics":['delta', 'bridges', 'darwin'],
+const jobTypeAndRps = {"Data Analytics":['delta', 'bridges', 'darwin'],
                  "Data Mining":['darwin'],
                  "NLP":['kyric'],
                  "Textual Analysis":['delta'],
@@ -76,10 +84,11 @@ $(document).ready(function(){
     }
 
     // populate the field of research dropdown
+    fields = Object.keys(fieldsAndRps).sort()
     for (let i = 0; i < fields.length; i++){
         $("#field-dropdown-options").append(
             $(`<div class="form-check dropdown-item">
-            <input class="form-check-input" type="checkbox" id="${fields[i].split(' ').join('-').toLocaleLowerCase()}-option" value="">
+            <input class="form-check-input" type="checkbox" id="${fields[i].split(' ').join('-').toLocaleLowerCase()}-option" value="${fields[i]}">
             <label class="form-check-label" for="${fields[i].split(' ').join('-').toLowerCase()}-option">${fields[i]}</label> 
             </div>`)
         )
@@ -95,7 +104,7 @@ $(document).ready(function(){
     
     // autocomplete for selecting types of jobs
     $("#job-type-text-input").autocomplete({
-        source: Object.keys(jobType),
+        source: Object.keys(jobTypeAndRps),
         select: function(event, ui){
             $('#job-type-tag-container').append(
                 `<div class="tag" style="display: inline-block; margin: 2px;">
@@ -119,9 +128,7 @@ $(document).ready(function(){
     ////
 
     // show the scores
-    $("#rpScore").append(
-        $(`<label class="form-check-label" for=""> ${JSON.stringify(rpScores)}</label>`)
-        )
+    display_score()
 
     console.log(rpScores)
 
@@ -134,7 +141,12 @@ $(document).ready(function(){
 
 function increase_score(rp){
     rpScores[rp] += 1
-    console.log(rpScores)
+}
+
+function display_score(){
+    $("#rpScore").append(
+        $(`<label class="form-check-label" for=""> ${JSON.stringify(rpScores)}</label>`)
+        )
 }
 
 function calculate_score(){
@@ -158,17 +170,22 @@ function calculate_score(){
     }
     
     // field of research
-
-    $(".badge").each(function(){
-        selectedJob = $(this).attr('id')
-        console.log("selections for job types", selectedJob)
-        for (let i=0; i<jobType[selectedJob].length; i++){
-            increase_score(jobType[selectedJob][i])
+    $("input[id$='-option']:checked").each(function(){
+        selectedField = $(this).val()
+        console.log("selections for field of research: ", selectedField)
+        for (let i=0; i<fieldsAndRps[selectedField].length; i++){
+            increase_score(fieldsAndRps[selectedField][i])
         }
     })
 
-
     // type of job
+    $(".badge").each(function(){
+        selectedJob = $(this).attr('id')
+        console.log("selections for job types", selectedJob)
+        for (let i=0; i<jobTypeAndRps[selectedJob].length; i++){
+            increase_score(jobTypeAndRps[selectedJob][i])
+        }
+    })
 
     // long-term storage
     ltStorageSelection = $("input[name='long-term-storage']:checked").val()
@@ -240,6 +257,9 @@ function calculate_score(){
         rpScores['jetstream'] += 1000
         console.log(rpScores)
     }
+
+    console.log(rpScores)
+    display_score()
 }
 
 function decrease_score(rp){
