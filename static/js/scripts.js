@@ -47,7 +47,7 @@ const jobTypeAndRps = {"Data Analytics":['delta', 'bridges', 'darwin'],
 const graphicalRps = ['aces', 'bridges', 'darwin', 'delta', 'expanse', 'faster', 'kyric', 'stampede']
 
 // CPU and GPU parallel RPs
-const parallelRPs = ['bridges', 'darwin', 'delta', 'expanse', 'stampede-2']
+const parallelRPs = ['bridges', 'darwin', 'delta', 'expanse', 'stampede']
 
 // long term storage
 const ltStorage ={'less-than-1':['delta', 'kyric', 'stampede'],
@@ -77,8 +77,8 @@ $(document).ready(function(){
     for (let i = 0; i < RPs.length; i++){
         $("#access-rps").append(
             $(`<div class="form-check">
-                <input class="form-check-input used-rps" type="checkbox" id="${RPs[i][0]}-option" value="${RPs[i][0]}">
-                <label class="form-check-label" for="${RPs[i][0]}-option">${RPs[i][1]}</label> 
+                <input class="form-check-input used-rps" type="checkbox" id="${RPs[i][0]}-option-rp" value="${RPs[i][0]}">
+                <label class="form-check-label" for="${RPs[i][0]}-option-rp">${RPs[i][1]}</label> 
                </div>`)
         )
     }
