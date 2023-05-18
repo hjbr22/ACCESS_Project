@@ -190,7 +190,7 @@ function calculate_score(){
             increase_score(jobTypeAndRps[selectedJob][i])
         }
     })
-    //test
+    
     // needs to store data on RP
     let needStorage = $("input[name='storage']:checked").val();
     if(needStorage == 1 || needStorage == 2){ //0 = no, 1 = yes, 2 = i don't know
