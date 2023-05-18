@@ -192,7 +192,8 @@ function calculate_score(){
     })
 
     // needs to store data on RP
-    if($("input[name='storage']:checked").val() == 1){
+    let needStorage = $("input[name='storage']:checked").val();
+    if(needStorage == 1 || needStorage == 2){ //0 = no, 1 = yes, 2 = i don't know
 
         // long-term storage
         ltStorageSelection = $("input[name='long-term-storage']:checked").val()
