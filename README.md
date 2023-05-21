@@ -10,7 +10,7 @@
 3. Assign yourself to that issue
 4. Make sure you are on the flask-app branch (```git branch``` use ```git checkout <branch-name>``` to switch branches)
 5. Pull from GitHub to make sure your local files are up to date (```git pull```)
-6. From the flask-app branch, Create a new branch ( ```git checkout -b issue-<#>-<descriptor>)
+6. From the flask-app branch, Create a new branch ( ```git checkout -b issue-<#>-<descriptor>```)
     This is the branch where you will make the changes to resolve the Issue
 4. Once the issue is resolved, create a pull request from your branch to the flask-app branch.
 8. **Never** Push to the main (flask-app) branch. Others will be pulling from that branch and unfinished
