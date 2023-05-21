@@ -1,7 +1,7 @@
 # ACCESS Recommender
 ## Running the application
 1. Pull down the repo in your home directory: ```git clone <URL>```
-2. Run ```source setup.sh```
+2. Run ```source setup.sh``` (you must have virtualenv installed)
 3. Run the app with  ```flask run``` or ```python3 -m flask run```
 
 ## Developing
