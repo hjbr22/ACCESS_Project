@@ -52,18 +52,21 @@ const parallelRPs = ['bridges', 'darwin', 'delta', 'expanse', 'stampede']
 // long term storage
 const ltStorage ={'less-than-1':['delta', 'kyric', 'stampede'],
                   '1-10': ['anvil', 'darwin', 'faster', 'ookami', 'rockfish', 'ranch'],
-                  'more-than-10':['aces', 'osn', 'jetstream', 'expanse', 'bridges']}
+                  'more-than-10':['aces', 'osn', 'jetstream', 'expanse', 'bridges'],
+                  'unsure':[]}
 
 // temp storage
 const tempStorage = {'less-than-1':['aces', 'faster', 'osg'],
                     '1-10':['darwin', 'delta', 'kyric', 'rockfish'],
-                    'more-than-10':['anvil', 'ookami', 'stampede', 'expanse', 'jetstream', 'bridges']}
+                    'more-than-10':['anvil', 'ookami', 'stampede', 'expanse', 'jetstream', 'bridges'],
+                    'unsure':[]}
 
 // memory
 const RPmemory = {'less-than-64':['aces', 'anvil', 'bridges', 'darwin', 'delta', 'expanse', 'faster', 'jetstream',
                'ookami', 'kyric', 'rockfish', 'stampede', 'osg'],
      '64-512':['anvil', 'stampede', 'delta', 'expanse', 'faster', 'rockfish', 'bridges', 'darwin'],
-     'more-than-512':['kyric', 'jetstream', 'bridges', 'delta', 'darwin', 'expanse', 'rockfish']}
+     'more-than-512':['kyric', 'jetstream', 'bridges', 'delta', 'darwin', 'expanse', 'rockfish'],
+     'unsure':[]}
 
 // Initialize scores for each RP
 let rpScores = {'aces':0, 'anvil':0, 'bridges':0, 'darwin':0, 'delta':0, 'expanse':0, 'faster':0, 'jetstream':0,
