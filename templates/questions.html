@@ -107,7 +107,7 @@
             <div id="job-type-tag-container" style="display: inline-block;"></div>
             <input type="text" id="job-type-text-input" style="border: none; outline: none; width: 200px;">
         </div>
-        <div id="job-type-tag-contianer"></div>
+        <div id="job-type-tag-container"></div>
     </div>
     <!-- Question 4 -->
         <!-- Data Storage -->
@@ -148,6 +148,10 @@
             <input class="form-check-input" type="radio" name="long-term-storage" id="more-tb" value="more-than-10">
             <label class="form-check-label" for="more-tb">More than 10 TB</label>
         </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="long-term-storage" id="unsure-tb" value="unsure">
+            <label class="form-check-label" for="unsure-tb">I don't know</label>
+        </div>
     </div>
         <!-- Temp Storage -->
     <div class="form-group">
@@ -164,6 +168,10 @@
         <div class="form-check form-check">
             <input class="form-check-input" type="radio" name="temp-storage" id="more-tb-temp" value="more-than-10">
             <label class="form-check-label" for="more-tb-temp">More than 10 TB</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="temp-storage" id="unsure-temp" value="unsure">
+            <label class="form-check-label" for="unsure-temp">I don't know</label>
         </div>
     </div>
     <!-- Question 5 -->
@@ -182,6 +190,10 @@
         <div class="form-check form-check">
             <input class="form-check-input" type="radio" name="memory" id="more-gb" value="more-than-512">
             <label class="form-check-label" for="more-gb">More than 512 GB</label>
+        </div>
+        <div class="form-check form-check">
+            <input class="form-check-input" type="radio" name="memory" id="unsure-gb" value="unsure">
+            <label class="form-check-label" for="unsure-gb">I don't know</label>
         </div>
     </div>
     <!-- Question 6 -->
@@ -203,6 +215,10 @@
             <input class="form-check-input" type="radio" name="graphics" id="not-graphical" value="0">
             <label class="form-check-label" for="not-graphical">No</label>
         </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="graphics" id="unsure-graphical" value="2">
+            <label class="form-check-label" for="unsure-graphical">I don't know</label>
+        </div>
     </div>
     <!-- Question 8 -->
         <!-- CPU GPU parallel -->
@@ -216,6 +232,10 @@
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="cpu-gpu-parallel" id="cpu-gpu-parallel-not-needed" value="0">
             <label class="form-check-label" for="cpu-gpu-parallel-not-needed">No</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="cpu-gpu-parallel" id="cpu-gpu-parallel-unsure" value="2">
+            <label class="form-check-label" for="cpu-gpu-parallel-unsure">I don't know</label>
         </div>
     </div>
     <!-- Question 9 -->
@@ -231,6 +251,10 @@
             <input class="form-check-input" type="radio" name="job-run" id="not-always-running" value="0">
             <label class="form-check-label" for="not-always-running">No</label>
         </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="job-run" id="unsure-running" value="2">
+            <label class="form-check-label" for="unsure-running">I don't know</label>
+        </div>
     </div>
     <!-- Question 10 -->
         <!-- Virtual Machine -->
@@ -244,6 +268,10 @@
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="vm" id="vm-not-needed" value="0">
             <label class="form-check-label" for="vm-not-needed">No</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="vm" id="vm-unsure" value="2">
+            <label class="form-check-label" for="vm-unsure">I don't know</label>
         </div>
     </div>
     </div>
