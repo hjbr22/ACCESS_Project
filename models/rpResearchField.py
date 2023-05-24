@@ -5,4 +5,4 @@ from models.researchField import ResearchFields
 class RpResearchField(BaseModel):
     id = PrimaryKeyField()
     rp = ForeignKeyField(RPS)
-    research_field = ForeignKeyField(ResearchFields, backref='research_field')
+    research_field = ForeignKeyField(ResearchFields, backref='rpResearchField')

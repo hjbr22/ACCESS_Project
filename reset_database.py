@@ -36,37 +36,146 @@ rps = [
     ]
 RPS.insert_many(rps).on_conflict_replace().execute()
 
+fields = [
+    {"field_name":"Biology"},
+    {"field_name":"Chemistry"},
+    {"field_name":"Physics"},
+    {"field_name":"Computer Science"},
+    {"field_name":"Civil Engineering"},
+    {"field_name":"Physics"},
+    {"field_name":"Civil Engineering"},
+    {"field_name":"Economics"},
+    {"field_name":"Linguistics"},
+    {"field_name":"History"},
+    {"field_name":"Agriculture"},
+    {"field_name":"Medicine"},
+]
+ResearchFields.insert_many(fields).on_conflict_replace().execute()
+
+rpResearch = [
+    {"rp": RPS.get(RPS.name == "Bridges-2"),
+     "research_field": ResearchFields.get(ResearchFields.field_name == "Biology")
+    },
+    {"rp": RPS.get(RPS.name == "stampede-2"),
+     "research_field": ResearchFields.get(ResearchFields.field_name == "Biology")
+    },
+    {"rp": RPS.get(RPS.name == "expanse"),
+     "research_field": ResearchFields.get(ResearchFields.field_name == "Biology")
+    },
+    {"rp": RPS.get(RPS.name == "bridges-2"),
+     "research_field": ResearchFields.get(ResearchFields.field_name == "Chemistry")
+    },
+    {"rp": RPS.get(RPS.name == "stampede-2"),
+     "research_field": ResearchFields.get(ResearchFields.field_name == "Chemistry")
+    },
+    {"rp": RPS.get(RPS.name == "bridges-2"),
+     "research_field": ResearchFields.get(ResearchFields.field_name == "Physics")
+    },
+    {"rp": RPS.get(RPS.name == "stampede-2"),
+     "research_field": ResearchFields.get(ResearchFields.field_name == "Physics")
+    },
+    {"rp": RPS.get(RPS.name == "expanse"),
+     "research_field": ResearchFields.get(ResearchFields.field_name == "Physics")
+    },
+    {"rp": RPS.get(RPS.name == "bridges-2"),
+     "research_field": ResearchFields.get(ResearchFields.field_name == "Computer Science")
+    },
+    {"rp": RPS.get(RPS.name == "stampede-2"),
+     "research_field": ResearchFields.get(ResearchFields.field_name == "Computer Science")
+    },
+    {"rp": RPS.get(RPS.name == "expanse"),
+     "research_field": ResearchFields.get(ResearchFields.field_name == "Computer Science")
+    },
+    {"rp": RPS.get(RPS.name == "jetstream2"),
+     "research_field": ResearchFields.get(ResearchFields.field_name == "Civil Engineering")
+    },
+    {"rp": RPS.get(RPS.name == "bridges-2"),
+     "research_field": ResearchFields.get(ResearchFields.field_name == "Civil Engineering")
+    },
+    {"rp": RPS.get(RPS.name == "jetstream2"),
+     "research_field": ResearchFields.get(ResearchFields.field_name == "Economics")
+    },
+    {"rp": RPS.get(RPS.name == "expanse"),
+     "research_field": ResearchFields.get(ResearchFields.field_name == "Economics")
+    },
+    {"rp": RPS.get(RPS.name == "open science grid"),
+     "research_field": ResearchFields.get(ResearchFields.field_name == "Linguistics")
+    },
+    {"rp": RPS.get(RPS.name == "open science grid"),
+     "research_field": ResearchFields.get(ResearchFields.field_name == "History")
+    },
+    {"rp": RPS.get(RPS.name == "kyric"),
+     "research_field": ResearchFields.get(ResearchFields.field_name == "Agriculture")
+    },
+    {"rp": RPS.get(RPS.name == "anvil"),
+     "research_field": ResearchFields.get(ResearchFields.field_name == "Agriculture")
+    },
+    {"rp": RPS.get(RPS.name == "ookami"),
+     "research_field": ResearchFields.get(ResearchFields.field_name == "Medicine")
+    },
+    {"rp": RPS.get(RPS.name == "rockfish"),
+     "research_field": ResearchFields.get(ResearchFields.field_name == "Medicine")
+    },
+    {"rp": RPS.get(RPS.name == "bridges-2"),
+     "research_field": ResearchFields.get(ResearchFields.field_name == "Medicine")
+    },
+]
+
+RpResearchField.insert_many(rpResearch).on_conflict_replace().execute()
+
 jobClass = [
-    {"class_name":"Biology"},
-    {"class_name":"Chemistry"},
-    {"class_name":"Physics"},
-    {"class_name":"Computer Science"},
-    {"class_name":"Civil Engineering"},
-    {"class_name":"Physics"},
-    {"class_name":"Civil Engineering"},
-    {"class_name":"Economics"},
-    {"class_name":"Linguistics"},
-    {"class_name":"History"},
-    {"class_name":"Agriculture"},
-    {"class_name":"Medicine"},
+    {"class_name":"Data Analytics"},
+    {"class_name":"Data Mining"},
+    {"class_name":"NLP"},
+    {"class_name":"Textual Analysis"},
+    {"class_name":"Modeling and Simulation"},
+    {"class_name":"Bioinformatics"},
+    {"class_name":"Biophysics"},
+    {"class_name":"BioChemistry"},
+    {"class_name":"Fluid Dynamics"},
+    {"class_name":"Image Processing"},
+    {"class_name":"Machine Learning"},
+    {"class_name":"Astronomic Science"},
+    {"class_name":"Digital Humanities"},
+    {"class_name":"Computational Chemistry"},
+    {"class_name":"Genomics"},
+    {"class_name":"Deep Learning"},
+    {"class_name":"High Energy Physics"},
+    {"class_name":"Virtual Machine"},
+    {"class_name":"General"},
+    {"class_name":"Parallel"},
 ]
 JobClass.insert_many(jobClass).on_conflict_replace().execute()
 
-{"Biology":['bridges','stampede','expanse'], 
-                "Chemistry":['bridges','stampede'], 
-                "Physics":['bridges','stampede','expanse'], 
-                "Computer Science":['bridges','stampede','expanse'], 
-                "Civil Engineering":['jetstream','bridges'], 
-                "Economics":['jetstream','expanse'],
-                "Linguistics":['osg'], 
-                "History":['osg'], 
-                "Agriculture":['kyric','anvil'], 
-                "Medicine":['ookami','rockfish','bridges']}
+#Class of jobs
+jobClassAndRps = {"Data Analytics":['delta', 'bridges', 'darwin'],
+                 "Data Mining":['darwin'],
+                 "NLP":['kyric'],
+                 "Textual Analysis":['delta'],
+                 "Modeling and Simulation":['delta'],
+                 "Bioinformatics":['kyric','expanse'],
+                 "Biophysics":['kyric','expanse'],
+                 "Biochemistry":['kyric','expanse'],
+                 "Fluid Dynamics":['delta'],
+                 "Materials Science":['expanse'], 
+                 "Image Processing":['darwin'], 
+                 "Machine Learning":['delta','bridges','darwin'],
+                 "Astronomic Science":['expanse'], 
+                 "Digital Humanities":[], 
+                 "Compuational Chemistry":['expanse'], 
+                 "Genomics":[], 
+                 "Deep Learning":['delta'], 
+                 "High Energy Physics":['expanse'],
+                 "Virtual Machine":['jetstream'], 
+                 "General":['stampede','darwin'], 
+                 "Parallel":['stampede']}
+print("printing keys: ", list(jobClassAndRps.keys()))
+for jobClass in list(jobClassAndRps.keys()):
+    print(jobClassAndRps[jobClass])
 
-job_class = JobClass.get_or_create(class_name="Biology")
+fieldName = ResearchFields.get_or_create(field_name="Biology")
 
-
-rpJob = RpJobClass.get_or_create(rp=RPS.select().where(RPS.name == 'bridges'),job_class=JobClass.get_by_id(1))
-# print(rpJob[0].id)
-print(f"prining rpJob, rp: {rpJob[0].rp.name}, job: {rpJob[0].job_class.class_name}")
+# rpJob = RpJobClass.get()
+# print(f"rp is : {rpJob.rp.name} job is: {rpJob.field.field_name}")
+# print(f"prining rpJob, rp: {rpJob.rp.name}, job: {rpJob.job_class.class_name}")
 db.close()
