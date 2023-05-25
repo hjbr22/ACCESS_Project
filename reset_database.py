@@ -8,12 +8,12 @@ from models.software import Software
 from models.rpSoftware import RpSoftware
 
 
-# example of how to add things to the database
 db.connect()
 
 tables = db.get_tables()
 print(f"the tables: {tables}")
 
+# delete all data and create blank tables
 db.drop_tables([RPS,JobClass,RpJobClass,ResearchFields,RpResearchField,Software,RpSoftware])
 db.create_tables([RPS,JobClass,RpJobClass,ResearchFields,RpResearchField,Software,RpSoftware])
 
@@ -34,6 +34,7 @@ rps = [
     {"name":"Open Science Grid"},
     {"name":"Open Storage Network"},
     ]
+print("Adding RPS data")
 RPS.insert_many(rps).on_conflict_replace().execute()
 
 fields = [
@@ -50,6 +51,7 @@ fields = [
     {"field_name":"Agriculture"},
     {"field_name":"Medicine"},
 ]
+print("Adding ResearchFields data")
 ResearchFields.insert_many(fields).on_conflict_replace().execute()
 
 rpResearch = [
@@ -120,7 +122,7 @@ rpResearch = [
      "research_field": ResearchFields.get(ResearchFields.field_name == "Medicine")
     },
 ]
-
+print("Adding RpResearchField data")
 RpResearchField.insert_many(rpResearch).on_conflict_replace().execute()
 
 jobClass = [
@@ -135,6 +137,7 @@ jobClass = [
     {"class_name":"Fluid Dynamics"},
     {"class_name":"Image Processing"},
     {"class_name":"Machine Learning"},
+    {"class_name": "Materials Science"},
     {"class_name":"Astronomic Science"},
     {"class_name":"Digital Humanities"},
     {"class_name":"Computational Chemistry"},
@@ -145,10 +148,11 @@ jobClass = [
     {"class_name":"General"},
     {"class_name":"Parallel"},
 ]
+print("Adding JobClass data")
 JobClass.insert_many(jobClass).on_conflict_replace().execute()
 
 #Class of jobs
-jobClassAndRps = {"Data Analytics":['delta', 'bridges', 'darwin'],
+jobClassAndRps = {"Data Analytics":['delta', 'bridges-2', 'darwin'],
                  "Data Mining":['darwin'],
                  "NLP":['kyric'],
                  "Textual Analysis":['delta'],
@@ -159,23 +163,24 @@ jobClassAndRps = {"Data Analytics":['delta', 'bridges', 'darwin'],
                  "Fluid Dynamics":['delta'],
                  "Materials Science":['expanse'], 
                  "Image Processing":['darwin'], 
-                 "Machine Learning":['delta','bridges','darwin'],
+                 "Machine Learning":['delta','bridges-2','darwin'],
                  "Astronomic Science":['expanse'], 
                  "Digital Humanities":[], 
-                 "Compuational Chemistry":['expanse'], 
+                 "Computational Chemistry":['expanse'], 
                  "Genomics":[], 
                  "Deep Learning":['delta'], 
                  "High Energy Physics":['expanse'],
-                 "Virtual Machine":['jetstream'], 
-                 "General":['stampede','darwin'], 
-                 "Parallel":['stampede']}
-print("printing keys: ", list(jobClassAndRps.keys()))
+                 "Virtual Machine":['jetstream2'], 
+                 "General":['stampede-2','darwin'], 
+                 "Parallel":['stampede-2']}
+
+rpJobClass = []
 for jobClass in list(jobClassAndRps.keys()):
-    print(jobClassAndRps[jobClass])
+    for rp in jobClassAndRps[jobClass]:
+        rpJobClass.append({"rp": RPS.get(RPS.name == rp),
+        "job_class": JobClass.get(JobClass.class_name == jobClass)
+        })
+print("Adding RPJobClass data")
+RpJobClass.insert_many(rpJobClass).on_conflict_replace().execute()
 
-fieldName = ResearchFields.get_or_create(field_name="Biology")
-
-# rpJob = RpJobClass.get()
-# print(f"rp is : {rpJob.rp.name} job is: {rpJob.field.field_name}")
-# print(f"prining rpJob, rp: {rpJob.rp.name}, job: {rpJob.job_class.class_name}")
 db.close()
