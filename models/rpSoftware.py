@@ -5,4 +5,4 @@ from models.rps import RPS
 class RpSoftware(BaseModel):
     id = PrimaryKeyField()
     rp = ForeignKeyField(RPS)
-    software = ForeignKeyField(Software, backref="rpSoftware")
+    software = ForeignKeyField(Software, backref="rp_with_Software")
