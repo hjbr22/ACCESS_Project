@@ -140,6 +140,14 @@ $(document).ready(function(){
         calculate_score()
     })
 
+    $('input[name="hpc-use"]').change(function() {
+        if ($(this).val() === '1') {
+          $('.hide').removeClass('d-none').show();
+        } else {
+          $('.access-hide').addClass('d-none').hide();
+        }
+      });
+
 });
 
 function increase_score(rp){
