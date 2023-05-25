@@ -19,10 +19,10 @@
 
 ## Database
 - If you make any changes to the database or the models file, make sure you make the appropriate changes in the
-    ```reset_database.py``` file as well. (so if you add a new column to the RPS table, 
-    make sure to add some data for that column in the ```reset_database.py``` file aswell)
+    ```reset_database.py``` file as well. (If you add a new column to the RPS table, 
+    make sure to add some data for that column in the ```reset_database.py``` file as well)
 - If you want to reset the database at any point, run ```python3 reset_database.py```.
-    Doing this will drop and recreate all tables and populate them with the test data.
+    Doing this will drop and recreate all tables and populate them with some sample data.
 
 **TODO:**
 See the issues on GitHub for TODO items
