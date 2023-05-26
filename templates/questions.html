@@ -64,6 +64,12 @@
         <!-- Previously used ACCESS HPCs -->
     <div class="form-group" id="access-rps">
         <label for="">Select the HPCs you have experience with:</label>
+        {% for rp in rps %}
+        <div class="form-check">
+            <input class="form-check-input used-rps" type="checkbox" id="{{rp.name}}-option-rp" value="{{rp.name}}">
+            <label class="form-check-label" for="{{rp.name}}-option-rp">{{rp.name}}</label>
+        </div>
+        {%endfor%}
             <!-- The options are added in javascript -->
     </div>
         <!-- Experience using HPC -->
