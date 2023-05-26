@@ -1,101 +1,74 @@
-// ACCESS RPs
-const RPs = [['aces',"ACES (Texas A&M)"], ["anvil","Anvil (Purdue)"], ["bridges","Bridges-2 (PSC)"],
-["darwin","DARWIN (Delaware)"], ["delta","Delta (NCSA)"], ["expanse","Expanse (SDSC)"],
-["faster","FASTER (SDSC)"], ["jetstream","Jetstream2 (IU)"], ["ookami","OOKAMI (Stonybrook)"],
-["kyric","KyRIC (Kentucky)"], ["rockfish","Rockfish (JHU)"], ["stampede","Stampede-2 (TACC)"],
-["ranch","RANCH (TACC)"], ["osg","Open Science Grid (OSG)"], ["osn","Open Storage Network (OSN)"]]
 
 // RPs with Open on Demand or other GUIs
-const rpWithGUI = ['aces', 'anvil', 'bridges', 'delta', 'expanse', 'faster', 'jetstream', 'stampede']
+const rpWithGUI = ['ACES', 'Anvil', 'Bridges-2', 'Delta', 'Expanse', 'FASTER', 'Jetstream2', 'Stampede-2']
     
 // fields of research
-const fieldsAndRps = {"Biology":['bridges','stampede','expanse'], 
-                "Chemistry":['bridges','stampede'], 
-                "Physics":['bridges','stampede','expanse'], 
-                "Computer Science":['bridges','stampede','expanse'], 
-                "Civil Engineering":['jetstream','bridges'], 
-                "Economics":['jetstream','expanse'],
-                "Linguistics":['osg'], 
-                "History":['osg'], 
-                "Agriculture":['kyric','anvil'], 
-                "Medicine":['ookami','rockfish','bridges']}
+const fieldsAndRps = {"Biology":['Bridges-2','Stampede-2','Expanse'], 
+                "Chemistry":['Bridges-2','Stampede-2'], 
+                "Physics":['Bridges-2','Stampede-2','Expanse'], 
+                "Computer Science":['Bridges-2','Stampede-2','Expanse'], 
+                "Civil Engineering":['Jetstream2','Bridges-2'], 
+                "Economics":['Jetstream2','Expanse'],
+                "Linguistics":['Open Science Grid'], 
+                "History":['Open Science Grid'], 
+                "Agriculture":['KyRIC','Anvil'], 
+                "Medicine":['OOKAMI','Rockfish','Bridges-2']}
 
 // types of jobs
-const jobTypeAndRps = {"Data Analytics":['delta', 'bridges', 'darwin'],
-                 "Data Mining":['darwin'],
-                 "NLP":['kyric'],
-                 "Textual Analysis":['delta'],
-                 "Modeling and Simulation":['delta'],
-                 "Bioinformatics":['kyric','expanse'],
-                 "Biophysics":['kyric','expanse'],
-                 "Biochemistry":['kyric','expanse'],
-                 "Fluid Dynamics":['delta'],
-                 "Materials Science":['expanse'], 
-                 "Image Processing":['darwin'], 
-                 "Machine Learning":['delta','bridges','darwin'],
-                 "Astronomic Science":['expanse'], 
+const jobTypeAndRps = {"Data Analytics":['Delta', 'Bridges-2', 'DARWIN'],
+                 "Data Mining":['DARWIN'],
+                 "NLP":['KyRIC'],
+                 "Textual Analysis":['Delta'],
+                 "Modeling and Simulation":['Delta'],
+                 "Bioinformatics":['KyRIC','Expanse'],
+                 "Biophysics":['KyRIC','Expanse'],
+                 "Biochemistry":['KyRIC','Expanse'],
+                 "Fluid Dynamics":['Delta'],
+                 "Materials Science":['Expanse'], 
+                 "Image Processing":['DARWIN'], 
+                 "Machine Learning":['Delta','Bridges-2','DARWIN'],
+                 "Astronomic Science":['Expanse'], 
                  "Digital Humanities":[], 
-                 "Computational Chemistry":['expanse'], 
+                 "Computational Chemistry":['Expanse'], 
                  "Genomics":[], 
-                 "Deep Learning":['delta'], 
-                 "High Energy Physics":['expanse'],
-                 "Virtual Machine":['jetstream'], 
-                 "General":['stampede','darwin'], 
-                 "Parallel":['stampede']}
+                 "Deep Learning":['Delta'], 
+                 "High Energy Physics":['Expanse'],
+                 "Virtual Machine":['Jetstream2'], 
+                 "General":['Stampede-2','DARWIN'], 
+                 "Parallel":['Stampede-2']}
 
 // rps for graphical jobs
-const graphicalRps = ['aces', 'bridges', 'darwin', 'delta', 'expanse', 'faster', 'kyric', 'stampede']
+const graphicalRps = ['ACES', 'Bridges-2', 'DARWIN', 'Delta', 'Expanse', 'FASTER', 'KyRIC', 'Stampede-2']
 
 // CPU and GPU parallel RPs
-const parallelRPs = ['bridges', 'darwin', 'delta', 'expanse', 'stampede']
+const parallelRPs = ['Bridges-2', 'DARWIN', 'Delta', 'Expanse', 'Stampede-2']
 
 // long term storage
-const ltStorage ={'less-than-1':['delta', 'kyric', 'stampede'],
-                  '1-10': ['anvil', 'darwin', 'faster', 'ookami', 'rockfish', 'ranch'],
-                  'more-than-10':['aces', 'osn', 'jetstream', 'expanse', 'bridges'],
+const ltStorage ={'less-than-1':['Delta', 'KyRIC', 'Stampede-2'],
+                  '1-10': ['Anvil', 'DARWIN', 'FASTER', 'OOKAMI', 'Rockfish', 'RANCH'],
+                  'more-than-10':['ACES', 'Open Storage Network', 'Jetstream2', 'Expanse', 'Bridges-2'],
                   'unsure':[]}
 
 // temp storage
-const tempStorage = {'less-than-1':['aces', 'faster', 'osg'],
-                    '1-10':['darwin', 'delta', 'kyric', 'rockfish'],
-                    'more-than-10':['anvil', 'ookami', 'stampede', 'expanse', 'jetstream', 'bridges'],
+const tempStorage = {'less-than-1':['ACES', 'FASTER', 'Open Science Grid'],
+                    '1-10':['DARWIN', 'Delta', 'KyRIC', 'Rockfish'],
+                    'more-than-10':['Anvil', 'OOKAMI', 'Stampede-2', 'Expanse', 'Jetstream2', 'Bridges-2'],
                     'unsure':[]}
 
 // memory
-const RPmemory = {'less-than-64':['aces', 'anvil', 'bridges', 'darwin', 'delta', 'expanse', 'faster', 'jetstream',
-               'ookami', 'kyric', 'rockfish', 'stampede', 'osg'],
-     '64-512':['anvil', 'stampede', 'delta', 'expanse', 'faster', 'rockfish', 'bridges', 'darwin'],
-     'more-than-512':['kyric', 'jetstream', 'bridges', 'delta', 'darwin', 'expanse', 'rockfish'],
+const RPmemory = {'less-than-64':['ACES', 'Anvil', 'Bridges-2', 'DARWIN', 'Delta', 'Expanse', 'FASTER', 'Jetstream2',
+               'OOKAMI', 'KyRIC', 'Rockfish', 'Stampede-2', 'Open Science Grid'],
+     '64-512':['Anvil', 'Stampede-2', 'Delta', 'Expanse', 'FASTER', 'Rockfish', 'Bridges-2', 'DARWIN'],
+     'more-than-512':['KyRIC', 'Jetstream2', 'Bridges-2', 'Delta', 'DARWIN', 'Expanse', 'Rockfish'],
      'unsure':[]}
 
 // Initialize scores for each RP
-let rpScores = {'aces':0, 'anvil':0, 'bridges':0, 'darwin':0, 'delta':0, 'expanse':0, 'faster':0, 'jetstream':0,
-'ookami':0, 'kyric':0, 'rockfish':0, 'stampede':0, 'ranch':0, 'osg':0, 'osn':0}
+let rpScores = {'ACES':0, 'Anvil':0, 'Bridges-2':0, 'DARWIN':0, 'Delta':0, 'Expanse':0, 'FASTER':0, 'Jetstream2':0,
+'OOKAMI':0, 'KyRIC':0, 'Rockfish':0, 'Stampede-2':0, 'RANCH':0, 'Open Science Grid':0, 'Open Storage Network':0}
 
 
 
 $(document).ready(function(){ 
-
-    // populate the experience with ACCESS providers options
-    for (let i = 0; i < RPs.length; i++){
-        $("#access-rps").append(
-            $(`<div class="form-check">
-                <input class="form-check-input used-rps" type="checkbox" id="${RPs[i][0]}-option-rp" value="${RPs[i][0]}">
-                <label class="form-check-label" for="${RPs[i][0]}-option-rp">${RPs[i][1]}</label> 
-               </div>`)
-        )
-    }
-
-    // populate the field of research dropdown
-    fields = Object.keys(fieldsAndRps).sort()
-    for (let i = 0; i < fields.length; i++){
-        $("#field-dropdown-options").append(
-            $(`<div class="form-check dropdown-item">
-            <input class="form-check-input" type="checkbox" id="${fields[i].split(' ').join('-').toLocaleLowerCase()}-option" value="${fields[i]}">
-            <label class="form-check-label" for="${fields[i].split(' ').join('-').toLowerCase()}-option">${fields[i]}</label> 
-            </div>`)
-        )
-    }
 
     // search the field of research dropdown
     $("#field-dropdown-search").on("keyup", function(){
@@ -124,11 +97,6 @@ $(document).ready(function(){
     $(document).on('click', '.remove-tag', function(){
         $(this).parents('.tag').remove()
     })
-
-
-    /////
-    // Recommending RPs
-    ////
 
     // show the scores
     display_score()
@@ -251,21 +219,21 @@ function calculate_score(){
         for (let i=0; i<parallelRPs.length; i++){
             increase_score(parallelRPs[i])
         }
-        rpScores['jetstream'] += 1000
+        rpScores['Jetstream2'] += 1000
         console.log(rpScores)
     }
 
     //job length
     if($("input[name='job-run']:checked").val() == 1){
         console.log("runs forever")
-        rpScores['jetstream'] += 1000
+        rpScores['Jetstream2'] += 1000
         console.log(rpScores)
     }
 
     // virtual machine
     if($("input[name='vm']:checked").val() == 1){
         console.log("needs vm")
-        rpScores['jetstream'] += 1000
+        rpScores['Jetstream2'] += 1000
         console.log(rpScores)
     }
 

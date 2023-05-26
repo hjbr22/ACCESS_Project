@@ -101,6 +101,13 @@
                 <input class="form-control" id="field-dropdown-search" type="text">
                 <div class="dropdown-divider"></div>
                     <!-- The options are added in javascript -->
+                    {% for field in research_fields%}
+                    <div class="form-check dropdown-item">
+                        {%set field_id = field.field_name.replace(" ", "-") %}
+                        <input class="form-check-input" type="checkbox" id="{{field_id}}-option" value="{{field.field_name}}">
+                        <label class="form-check-label" for="{{field_id}}-option">{{field.field_name}}</label> 
+                    </div>
+                    {%endfor%}
 
             </div>
         </div>
