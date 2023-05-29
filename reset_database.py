@@ -6,6 +6,7 @@ from models.researchField import ResearchFields
 from models.rpResearchField import RpResearchField
 from models.software import Software
 from models.rpSoftware import RpSoftware
+from models.rp_with_GUI import GUI
 
 
 db.connect()
@@ -182,5 +183,18 @@ for jobClass in list(jobClassAndRps.keys()):
         })
 print("Adding RPJobClass data")
 RpJobClass.insert_many(rpJobClass).on_conflict_replace().execute()
+
+rp_with_GUI = [
+    {"GUI":"ACES"},
+    {"GUI": "Anvil"},
+    {"GUI": "Bridges-2"},
+    {"GUI": "Delta"},
+    {"GUI": "Expanse"},
+    {"GUI": "FASTER"},
+    {"GUI": "Jetstream2"},
+    {"GUI": "Stampede-2"}]
+
+print("Adding GUI data")
+GUI.insert_many(rp_with_GUI).on_conflict_replace().execute()
 
 db.close()
