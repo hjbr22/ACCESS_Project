@@ -142,9 +142,18 @@ $(document).ready(function(){
 
     $('input[name="hpc-use"]').change(function() {
         if ($(this).val() === '1') {
-          $('.hide').removeClass('d-none').show();
+          $('.hide-hpc').removeClass('d-none').show();
         } else {
-          $('.access-hide').addClass('d-none').hide();
+          $('.hide-hpc').addClass('d-none').hide();
+        }
+      });
+    $('input[name="storage"]').change(function() {
+        if ($(this).val() === '1') {
+          $('.hide-data').removeClass('d-none').show();
+        } else if ($(this).val() === '2') {
+           $('.hide-data').removeClass('d-none').show(); 
+        } else {
+            $('.hide-data').addClass('d-none').hide();
         }
       });
 
