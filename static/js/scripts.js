@@ -140,6 +140,23 @@ $(document).ready(function(){
         calculate_score()
     })
 
+    $('input[name="hpc-use"]').change(function() {
+        if ($(this).val() === '1') {
+          $('.hide-hpc').removeClass('d-none').show();
+        } else {
+          $('.hide-hpc').addClass('d-none').hide();
+        }
+      });
+    $('input[name="storage"]').change(function() {
+        if ($(this).val() === '1') {
+          $('.hide-data').removeClass('d-none').show();
+        } else if ($(this).val() === '2') {
+           $('.hide-data').removeClass('d-none').show(); 
+        } else {
+            $('.hide-data').addClass('d-none').hide();
+        }
+      });
+
 });
 
 function increase_score(rp){

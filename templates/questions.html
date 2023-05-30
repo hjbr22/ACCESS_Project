@@ -49,25 +49,25 @@
         </div>
     </div>
         <!-- Familiarity with ACCESS HPCs -->
-    <div class="form-group">
+    <div class="form-group hide-hpc d-none">
         <label for=""> Are you familiar with any of the resource providers available to ACCESS?</label>
         <br>
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="access-familiratiy" id="is-familiar" value="1">
+            <input class="form-check-input" type="radio" name="access-familiarity" id="is-familiar" value="1">
             <label class="form-check-label" for="isFamiliar">Yes</label>
         </div>
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="access-familiratiy" id="is-not-familiar" value="0">
+            <input class="form-check-input" type="radio" name="access-familiarity" id="is-not-familiar" value="0">
             <label class="form-check-label" for="isnotFamiliar">No</label>
         </div>
     </div>
         <!-- Previously used ACCESS HPCs -->
-    <div class="form-group" id="access-rps">
+    <div class="form-group hide-hpc d-none" id="access-rps">
         <label for="">Select the HPCs you have experience with:</label>
             <!-- The options are added in javascript -->
     </div>
         <!-- Experience using HPC -->
-    <div class="form-group">
+    <div class="form-group hide-hpc d-none">
         <label for="">How much experience do you have with HPCs?</label>
         <br>
         <div class="form-check">
@@ -136,12 +136,12 @@
         </div>
     </div>
         <!-- File count -->
-    <div class="form-group">
+    <div class="form-group hide-data d-none">
         <label for="file-count">How many files?</label>
         <input type="number" class="form-control">
     </div>
         <!-- Long-Term Storage -->
-    <div class="form-group">
+    <div class="form-group hide-data d-none">
         <label for="">Approximately how much long-term storage do you think you will need?</label>
         <br>
         <div class="form-check form-check">
@@ -162,7 +162,7 @@
         </div>
     </div>
         <!-- Temp Storage -->
-    <div class="form-group">
+    <div class="form-group hide-data d-none">
         <label for="">Approximately how much temporary storage do you think you will need (inputs and outputs)?</label>
         <br>
         <div class="form-check form-check">
