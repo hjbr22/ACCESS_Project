@@ -44,7 +44,6 @@ fields = [
     {"field_name":"Physics"},
     {"field_name":"Computer Science"},
     {"field_name":"Civil Engineering"},
-    {"field_name":"Physics"},
     {"field_name":"Civil Engineering"},
     {"field_name":"Economics"},
     {"field_name":"Linguistics"},
