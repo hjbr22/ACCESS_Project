@@ -158,6 +158,10 @@ function display_score(){
 
 function calculate_score(){
 
+    //scores are reinitialized to 0 each time scores are caculated
+    rpScores = {'aces':0, 'anvil':0, 'bridges':0, 'darwin':0, 'delta':0, 'expanse':0, 'faster':0, 'jetstream':0,
+                'ookami':0, 'kyric':0, 'rockfish':0, 'stampede':0, 'ranch':0, 'osg':0, 'osn':0}
+
     console.log($("input[name='hpc-use']:checked").val() == 0)
     // has not used an HPC before
     if($("input[name='hpc-use']:checked").val() == 0){
