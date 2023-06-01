@@ -24,5 +24,12 @@
 - If you want to reset the database at any point, run ```python3 reset_database.py```.
     Doing this will drop and recreate all tables and populate them with some sample data.
 
+## Getting Modules
+- To get a list of the available modules on an HPC run `module avail`
+- To capture that output into a file, (first make sure you are in your scratch or work space)
+    then run  `module avail &> <file-name>.txt` (replace `file-name` with a descriptive name)
+- To parse through that data and get only the software and version, pass the file to the `get_modules_and_versions` function
+    in the `parse_modules` file on this repo.
+
 **TODO:**
 See the issues on GitHub for TODO items
