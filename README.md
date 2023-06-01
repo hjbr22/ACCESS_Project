@@ -2,7 +2,7 @@
 ## Running the application
 1. Pull down the repo in your home directory: ```git clone <URL>```
 2. Run ```source setup.sh``` (you must have virtualenv installed)
-    If you are having trouble with `source setup.sh` (on VS Code or elsewhere) 
+    - If you are having trouble with `source setup.sh` (on VS Code or elsewhere) 
     change your terminal to use bash (git bash works well) or manually install the requirements in `requirements.txt`
 4. Run the app with  ```flask run``` or ```python3 -m flask run```
 
