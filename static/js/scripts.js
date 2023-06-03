@@ -78,25 +78,67 @@ $(document).ready(function(){
         })
     })
     
-    // autocomplete for selecting types of jobs
-    $("#job-type-text-input").autocomplete({
-        source: Object.keys(jobTypeAndRps),
-        select: function(event, ui){
-            $('#job-type-tag-container').append(
-                `<div class="tag" style="display: inline-block; margin: 2px;">
-                    <span class="badge badge-primary" id="${ui.item.value}">${ui.item.value}
-                    <a class="remove-tag" name="remove-tag" style="cursor:pointer; color: white; margin-left: 5px;">x</a>
-                    </span>
-                </div>`)
-            this.value='';
-            return false;
+    //get the job classes
+    let job_types;
+    $.ajax({
+        type:"GET",
+        url:"/get_job_classes",
+        success:function(response){
+            job_types = response
+            console.log(job_types)
+            // autocomplete for selecting classes of jobs
+            console.log("job_types: ", Object.keys(jobTypeAndRps))
+            $("#job-type-text-input").autocomplete({
+                source: job_types,
+                select: function(event, ui){
+                    $('#job-type-tag-container').append(
+                        `<div class="tag" style="display: inline-block; margin: 2px;">
+                            <span class="badge badge-primary" id="${ui.item.value}">${ui.item.value}
+                            <a class="remove-tag" name="remove-tag" style="cursor:pointer; color: white; margin-left: 5px;">x</a>
+                            </span>
+                        </div>`)
+                    this.value='';
+                    return false;
+                }
+            })
+        },
+        error: function(error){
+            console.log("Error: ", error)
         }
     })
         
-    // remove the from job types when 'x' is clicked
+    // remove the job class when 'x' is clicked
     $(document).on('click', '.remove-tag', function(){
         $(this).parents('.tag').remove()
     })
+
+    $.ajax({
+        type:"GET",
+        url:"/get_software",
+        success:function(response){
+            softwareInfo = response
+            console.log(softwareInfo)
+            // autocomplete for selecting software
+            console.log("job_types: ", Object.keys(jobTypeAndRps))
+            $("#software-text-input").autocomplete({
+                source: softwareInfo,
+                select: function(event, ui){
+                    $('#software-tag-container').append(
+                        `<div class="tag" style="display: inline-block; margin: 2px;">
+                            <span class="badge badge-primary" id="${ui.item.value}">${ui.item.value}
+                            <a class="remove-tag" name="remove-tag" style="cursor:pointer; color: white; margin-left: 5px;">x</a>
+                            </span>
+                        </div>`)
+                    this.value='';
+                    return false;
+                }
+            })
+        },
+        error: function(error){
+            console.log("Error: ", error)
+        }
+    });
+
 
     // show the scores
     display_score()
@@ -143,7 +185,7 @@ function display_score(){
 
 function calculate_score(){
 
-    //scores are reinitialized to 0 each time scores are calculated
+    //scores are reinitialized to 0 each time scores are caculated
     rpScores = {'aces':0, 'anvil':0, 'bridges':0, 'darwin':0, 'delta':0, 'expanse':0, 'faster':0, 'jetstream':0,
                 'ookami':0, 'kyric':0, 'rockfish':0, 'stampede':0, 'ranch':0, 'osg':0, 'osn':0}
 
