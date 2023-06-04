@@ -1,6 +1,6 @@
 
 // RPs with Open on Demand or other GUIs
-const rpWithGUI = ['ACES', 'Anvil', 'Bridges-2', 'Delta', 'Expanse', 'FASTER', 'Jetstream2', 'Stampede-2']
+const rpWithGUI = ['ACES', 'Anvil', 'Bridges-2', 'Delta', 'FASTER', 'Jetstream2']
     
 // fields of research
 const fieldsAndRps = {"Biology":['Bridges-2','Stampede-2','Expanse'], 
