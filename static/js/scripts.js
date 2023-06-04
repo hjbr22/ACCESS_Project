@@ -122,6 +122,7 @@ $(document).ready(function(){
             console.log("job_types: ", Object.keys(jobTypeAndRps))
             $("#software-text-input").autocomplete({
                 source: softwareInfo,
+                maxShowItems: 10,
                 select: function(event, ui){
                     $('#software-tag-container').append(
                         `<div class="tag" style="display: inline-block; margin: 2px;">

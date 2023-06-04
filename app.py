@@ -19,14 +19,12 @@ def hello_world():
 @app.route("/get_job_classes")
 def get_job_classes():
     job_classes = JobClass.select().order_by(JobClass.class_name)
-    # print([job.class_name for job in job_classes])
     return([job.class_name for job in job_classes])
     
 @app.route("/get_software")
 def get_software():
     softwares = Software.select().order_by(Software.software_name)
     softwares_and_versions = [f"{software.software_name} {software.version}" for software in softwares]
-    print(softwares_and_versions)
 
     return softwares_and_versions
 
