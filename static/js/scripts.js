@@ -98,9 +98,6 @@ $(document).ready(function(){
         $(this).parents('.tag').remove()
     })
 
-    // show the scores
-    display_score()
-
     console.log(rpScores)
 
     // calculate scores when the form is submitted
@@ -144,8 +141,8 @@ function display_score(){
 function calculate_score(){
 
     //scores are reinitialized to 0 each time scores are caculated
-    rpScores = {'aces':0, 'anvil':0, 'bridges':0, 'darwin':0, 'delta':0, 'expanse':0, 'faster':0, 'jetstream':0,
-                'ookami':0, 'kyric':0, 'rockfish':0, 'stampede':0, 'ranch':0, 'osg':0, 'osn':0}
+    rpScores = {'ACES':0, 'Anvil':0, 'Bridges-2':0, 'DARWIN':0, 'Delta':0, 'Expanse':0, 'FASTER':0, 'Jetstream2':0,
+        'OOKAMI':0, 'KyRIC':0, 'Rockfish':0, 'Stampede-2':0, 'RANCH':0, 'Open Science Grid':0, 'Open Storage Network':0}
 
     console.log($("input[name='hpc-use']:checked").val() == 0)
     // has not used an HPC before
