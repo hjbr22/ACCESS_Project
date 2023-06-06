@@ -6,7 +6,10 @@ from models.researchField import ResearchFields
 from models.rpResearchField import RpResearchField
 from models.software import Software
 from models.rpSoftware import RpSoftware
-from models.rp_with_GUI import GUI
+from models.guiName import GUI
+from models.rpGUI import rpGUI
+from models.temp_storage import TS
+from models.rp_ts import RP_TS
 
 
 db.connect()
@@ -15,8 +18,8 @@ tables = db.get_tables()
 print(f"the tables: {tables}")
 
 # delete all data and create blank tables
-db.drop_tables([RPS,JobClass,RpJobClass,ResearchFields,RpResearchField,Software,RpSoftware])
-db.create_tables([RPS,JobClass,RpJobClass,ResearchFields,RpResearchField,Software,RpSoftware])
+db.drop_tables([RPS,JobClass,RpJobClass,ResearchFields,RpResearchField,Software,RpSoftware,GUI,rpGUI])
+db.create_tables([RPS,JobClass,RpJobClass,ResearchFields,RpResearchField,Software,RpSoftware,GUI,rpGUI])
 
 rps = [
     {"name":"ACES"},
@@ -44,6 +47,7 @@ fields = [
     {"field_name":"Physics"},
     {"field_name":"Computer Science"},
     {"field_name":"Civil Engineering"},
+    {"field_name":"Physics"},
     {"field_name":"Civil Engineering"},
     {"field_name":"Economics"},
     {"field_name":"Linguistics"},
@@ -183,17 +187,73 @@ for jobClass in list(jobClassAndRps.keys()):
 print("Adding RPJobClass data")
 RpJobClass.insert_many(rpJobClass).on_conflict_replace().execute()
 
-rp_with_GUI = [
-    {"GUI":"ACES"},
-    {"GUI": "Anvil"},
-    {"GUI": "Bridges-2"},
-    {"GUI": "Delta"},
-    {"GUI": "Expanse"},
-    {"GUI": "FASTER"},
-    {"GUI": "Jetstream2"},
-    {"GUI": "Stampede-2"}]
+Gui = [
+    {"gui":"OpenOnDemand"},
+    {"gui":"RStudio"},
+    {"gui":"JupyterLab"},
+    {"gui":"Exosphere"},
+    {"gui":"Horizon"},
+    {"gui":"CACAO"},
+    ]
 
 print("Adding GUI data")
-GUI.insert_many(rp_with_GUI).on_conflict_replace().execute()
+GUI.insert_many(Gui).on_conflict_replace().execute()
+
+#Types of GUI's
+
+rpGUI_together = {
+    "OpenOnDemand":['bridges-2', 'expanse', 'anvil', 'aces', 'faster'],
+    "RStudio":['aces'],
+    "JupyterLab":['aces'],
+    "Exosphere":['jetstream2'],
+    "Horizon":['jetstream2'],
+    "CACAO":['jetstream2']}
+
+rpgui = []
+for gui in list(rpGUI_together.keys()):
+    for rp in rpGUI_together[gui]:
+        rpgui.append({"rp": RPS.get(RPS.name == rp),
+        "rp_gui": GUI.get(GUI.gui == gui)})
+
+print("Adding the GUI to the RP list")
+rpGUI.insert_many(rpgui).on_conflict_replace().execute()
+
+
+#Temporary storage in TB
+
+temp_s = [
+        {"ts":"1"},
+        {"ts":"2"},
+        {"ts":"100"},
+        {"ts":"1.5"},
+        {"ts":"30"},
+        {"ts":"10"},
+        {"ts":"0"},
+        {"ts":"7000"}
+]
+
+#RP Temp Storage in TB
+
+rp_temp_s = {
+    "0":['ranch','bridges-2', 'jetstream2', 'open science grid', 'open storage network'],
+    "1":['aces', 'faster'],
+    "1.5":['delta'],
+    "2":['darwin'],
+    "10":['kyric','rockfish'],
+    "30":['ookami'],
+    "100":['anvil'],
+    "7000":['expanse']
+}
+
+rp_ts = []
+for temp_s in list(rp_temp_s.keys()):
+    for rp in rp_temp_s[temp_s]:
+        rp_ts.append({"rp": RPS.get(RPS.name == rp),
+        "ts": TS.get(TS.rp_s == temp_s)})
+
+print("Adding the Temporary Storage")
+RP_TS.insert_many(RP_TS).on_conflict_replace().execute()
+
+#Long Term Storage in TB
 
 db.close()
