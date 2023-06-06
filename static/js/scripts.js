@@ -266,3 +266,18 @@ function decrease_score(rp){
     rpScores[rp] -= 1
     console.log(rpScores)
 }
+
+function validateForm() {
+    var hpc_use = $("input[name='hpc-use']:checked").val();
+    var storage_needed = $("input[name='storage']:checked").val();
+  
+    if (hpc_use !== undefined && storage_needed !== undefined) {
+      openModal();
+    } else {
+      alert("Please select an option for both fields.");
+    }
+  }
+  
+  function openModal() {
+    $("#submitModal").modal("show");
+  }
