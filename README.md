@@ -2,6 +2,8 @@
 ## Running the application
 1. Pull down the repo in your home directory: ```git clone <URL>```
 2. Run ```source setup.sh``` (you must have virtualenv installed)
+    - If you are having trouble with `source setup.sh` (on VS Code or elsewhere) 
+    change your terminal to use bash (git bash works well) or manually install the requirements in `requirements.txt`
 3. Run the app with  ```flask run``` or ```python3 -m flask run```
 
 ## Developing
@@ -23,6 +25,13 @@
     make sure to add some data for that column in the ```reset_database.py``` file as well)
 - If you want to reset the database at any point, run ```python3 reset_database.py```.
     Doing this will drop and recreate all tables and populate them with some sample data.
+
+## Getting Modules
+- To get a list of the available modules on an HPC run `module avail`
+- To capture that output into a file, (first make sure you are in your scratch or work space)
+    run  `module avail &> <file-name>.txt` (replace `file-name` with a descriptive name)
+- To parse through that data and get only the software and version, pass the file to the `get_modules_and_versions` function
+    in the `parse_modules` file in this repo.
 
 **TODO:**
 See the issues on GitHub for TODO items
