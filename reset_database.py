@@ -6,7 +6,8 @@ from models.researchField import ResearchFields
 from models.rpResearchField import RpResearchField
 from models.software import Software
 from models.rpSoftware import RpSoftware
-from models.rp_with_GUI import GUI
+#from models.rp_with_GUI import GUI
+from models.rpParallel import RpParallel
 
 
 db.connect()
@@ -15,8 +16,8 @@ tables = db.get_tables()
 print(f"the tables: {tables}")
 
 # delete all data and create blank tables
-db.drop_tables([RPS,JobClass,RpJobClass,ResearchFields,RpResearchField,Software,RpSoftware])
-db.create_tables([RPS,JobClass,RpJobClass,ResearchFields,RpResearchField,Software,RpSoftware])
+db.drop_tables([RPS,JobClass,RpJobClass,ResearchFields,RpResearchField,Software,RpSoftware, RpParallel])
+db.create_tables([RPS,JobClass,RpJobClass,ResearchFields,RpResearchField,Software,RpSoftware, RpParallel])
 
 rps = [
     {"name":"ACES"},
@@ -183,17 +184,27 @@ for jobClass in list(jobClassAndRps.keys()):
 print("Adding RPJobClass data")
 RpJobClass.insert_many(rpJobClass).on_conflict_replace().execute()
 
-rp_with_GUI = [
-    {"GUI":"ACES"},
-    {"GUI": "Anvil"},
-    {"GUI": "Bridges-2"},
-    {"GUI": "Delta"},
-    {"GUI": "Expanse"},
-    {"GUI": "FASTER"},
-    {"GUI": "Jetstream2"},
-    {"GUI": "Stampede-2"}]
+#rp_with_GUI = [
+#    {"GUI":"ACES"},
+#    {"GUI": "Anvil"},
+#    {"GUI": "Bridges-2"},
+#    {"GUI": "Delta"},
+#   {"GUI": "Expanse"},
+#    {"GUI": "FASTER"},
+#    {"GUI": "Jetstream2"},
+#    {"GUI": "Stampede-2"}]
 
-print("Adding GUI data")
-GUI.insert_many(rp_with_GUI).on_conflict_replace().execute()
+#print("Adding GUI data")
+#GUI.insert_many(rp_with_GUI).on_conflict_replace().execute()
+
+#RP with Parallel CPU/GPU
+rp_with_parallel = [{"rp": RPS.get(RPS.name == "Bridges-2"), "rp_parallel": True,},
+    {"rp": RPS.get(RPS.name == 'DARWIN'), "rp_parallel": True},
+    {"rp": RPS.get(RPS.name == "Delta"), "rp_parallel": True},
+    {"rp": RPS.get(RPS.name == "Expanse"), "rp_parallel": True},
+    {"rp": RPS.get(RPS.name == "Stampede-2"), "rp_parallel": True}
+]
+print("Adding RP Parallel CPU/GPU Data")
+RpParallel.insert_many(rp_with_parallel).on_conflict_replace().execute()
 
 db.close()
