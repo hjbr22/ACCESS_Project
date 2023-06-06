@@ -7,7 +7,7 @@ from models.rpResearchField import RpResearchField
 from models.software import Software
 from models.rpSoftware import RpSoftware
 #from models.rp_with_GUI import GUI
-from models.rpParallel import RpParallel
+#from models.rpParallel import RpParallel
 
 
 db.connect()
@@ -16,22 +16,22 @@ tables = db.get_tables()
 print(f"the tables: {tables}")
 
 # delete all data and create blank tables
-db.drop_tables([RPS,JobClass,RpJobClass,ResearchFields,RpResearchField,Software,RpSoftware, RpParallel])
-db.create_tables([RPS,JobClass,RpJobClass,ResearchFields,RpResearchField,Software,RpSoftware, RpParallel])
+db.drop_tables([RPS,JobClass,RpJobClass,ResearchFields,RpResearchField,Software,RpSoftware])
+db.create_tables([RPS,JobClass,RpJobClass,ResearchFields,RpResearchField,Software,RpSoftware])
 
 rps = [
     {"name":"ACES"},
     {"name":"Anvil"},
-    {"name":"Bridges-2"},
-    {"name":"DARWIN"},
-    {"name":"Delta"},
-    {"name":"Expanse"},
+    {"name":"Bridges-2", "parallel": True},
+    {"name":"DARWIN", "parallel": True},
+    {"name":"Delta", "parallel": True},
+    {"name":"Expanse", "parallel": True},
     {"name":"FASTER"},
     {"name":"Jetstream2"},
     {"name":"OOKAMI"},
     {"name":"KyRIC"},
     {"name":"Rockfish"},
-    {"name":"Stampede-2"},
+    {"name":"Stampede-2", "parallel": True},
     {"name":"RANCH"},
     {"name":"Open Science Grid"},
     {"name":"Open Storage Network"},
@@ -196,15 +196,5 @@ RpJobClass.insert_many(rpJobClass).on_conflict_replace().execute()
 
 #print("Adding GUI data")
 #GUI.insert_many(rp_with_GUI).on_conflict_replace().execute()
-
-#RP with Parallel CPU/GPU
-rp_with_parallel = [{"rp": RPS.get(RPS.name == "Bridges-2"), "rp_parallel": True,},
-    {"rp": RPS.get(RPS.name == 'DARWIN'), "rp_parallel": True},
-    {"rp": RPS.get(RPS.name == "Delta"), "rp_parallel": True},
-    {"rp": RPS.get(RPS.name == "Expanse"), "rp_parallel": True},
-    {"rp": RPS.get(RPS.name == "Stampede-2"), "rp_parallel": True}
-]
-print("Adding RP Parallel CPU/GPU Data")
-RpParallel.insert_many(rp_with_parallel).on_conflict_replace().execute()
 
 db.close()
