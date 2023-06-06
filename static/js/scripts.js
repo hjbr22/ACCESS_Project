@@ -143,7 +143,7 @@ function display_score(){
 
 function calculate_score(){
 
-    //scores are reinitialized to 0 each time scores are caculated
+    //scores are reinitialized to 0 each time scores are calculated
     rpScores = {'aces':0, 'anvil':0, 'bridges':0, 'darwin':0, 'delta':0, 'expanse':0, 'faster':0, 'jetstream':0,
                 'ookami':0, 'kyric':0, 'rockfish':0, 'stampede':0, 'ranch':0, 'osg':0, 'osn':0}
 

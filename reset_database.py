@@ -7,7 +7,7 @@ from models.rpResearchField import RpResearchField
 from models.software import Software
 from models.rpSoftware import RpSoftware
 from models.rp_with_GUI import GUI
-
+from parse_modules import get_modules_and_versions
 
 db.connect()
 
@@ -183,17 +183,37 @@ for jobClass in list(jobClassAndRps.keys()):
 print("Adding RPJobClass data")
 RpJobClass.insert_many(rpJobClass).on_conflict_replace().execute()
 
-rp_with_GUI = [
-    {"GUI":"ACES"},
-    {"GUI": "Anvil"},
-    {"GUI": "Bridges-2"},
-    {"GUI": "Delta"},
-    {"GUI": "Expanse"},
-    {"GUI": "FASTER"},
-    {"GUI": "Jetstream2"},
-    {"GUI": "Stampede-2"}]
+# rp_with_GUI = [
+#     {"GUI":"ACES"},
+#     {"GUI": "Anvil"},
+#     {"GUI": "Bridges-2"},
+#     {"GUI": "Delta"},
+#     {"GUI": "Expanse"},
+#     {"GUI": "FASTER"},
+#     {"GUI": "Jetstream2"},
+#     {"GUI": "Stampede-2"}]
 
-print("Adding GUI data")
-GUI.insert_many(rp_with_GUI).on_conflict_replace().execute()
+# print("Adding GUI data")
+# GUI.insert_many(rp_with_GUI).on_conflict_replace().execute()
 
+# stampede modules
+stampedeFile = "stampede_available_modules.txt"
+
+stampedeModules = get_modules_and_versions(stampedeFile)
+# add modules to db
+software = []
+for mod in stampedeModules:
+    software.append({"software_name":mod[0],
+                        "version":mod[1]})
+    
+print("Adding Software")
+Software.insert_many(software).on_conflict_replace().execute()
+
+# associate modules with stampede
+stampede_mod = []
+for mod in stampedeModules:
+    stampede_mod.append({"rp":RPS.get(RPS.name=="Stampede-2"),
+                        "software": Software.get(Software.software_name==mod[0], Software.version==mod[1])})
+print("Associating Stampede and software")
+RpSoftware.insert_many(stampede_mod).on_conflict_replace().execute()
 db.close()
