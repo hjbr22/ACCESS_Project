@@ -8,16 +8,20 @@ def get_modules_and_versions(filename):
     The input file must contain the raw output gotten from running
     'module avail &> <file-name>.txt' on an RP
     """
-    with open(filename) as stampede_mods:
-        content = stampede_mods.read()
-        content = content.split("Where:")[0]
-        # content = content.split("\n")
+    with open(filename) as rpMods:
+        content = rpMods.read()
+        # The list of modules will end at 'Where:' so we ignore everything afterwards
+        mods = content.split("Where:")[0]
         moduleAndVersion = []
-        for i in content.split():
-            if ("----" in i) or ("/opt" in i) or ("(L" in i) or ("D)" in i):
+        for mod in mods.split():
+            # Ignore all characters used for separations or descriptions
+            if ("----" in mod) or ("/opt" in mod) or ("(L" in mod) or ("D)" in mod):
                 pass
             else:
-                # print("printing one \n", i, "\n")
-                moduleAndVersion.append(i.split("/"))
-    # print(moduleAndVersion)
+                if "/" in mod:
+                    # Separate modules by name and version
+                    moduleAndVersion.append(mod.split("/"))
+                else:
+                    # If the app has no version
+                    moduleAndVersion.append([mod,''])
     return(moduleAndVersion)

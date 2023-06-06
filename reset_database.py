@@ -203,12 +203,8 @@ stampedeModules = get_modules_and_versions(stampedeFile)
 # add modules to db
 software = []
 for mod in stampedeModules:
-    if len(mod) == 1:
-        software.append({"software_name":mod[0],
-                        "version":""})
-    else:
-        software.append({"software_name":mod[0],
-                         "version":mod[1]})
+    software.append({"software_name":mod[0],
+                        "version":mod[1]})
     
 print("Adding Software")
 Software.insert_many(software).on_conflict_replace().execute()
@@ -216,12 +212,8 @@ Software.insert_many(software).on_conflict_replace().execute()
 # associate modules with stampede
 stampede_mod = []
 for mod in stampedeModules:
-    if len(mod) == 1:
-        stampede_mod.append({"rp":RPS.get(RPS.name=="Stampede-2"),
-                            "software": Software.get(Software.software_name==mod[0])})
-    else:
-        stampede_mod.append({"rp":RPS.get(RPS.name=="Stampede-2"),
-                            "software": Software.get(Software.software_name==mod[0], Software.version==mod[1])})
+    stampede_mod.append({"rp":RPS.get(RPS.name=="Stampede-2"),
+                        "software": Software.get(Software.software_name==mod[0], Software.version==mod[1])})
 print("Associating Stampede and software")
 RpSoftware.insert_many(stampede_mod).on_conflict_replace().execute()
 db.close()
