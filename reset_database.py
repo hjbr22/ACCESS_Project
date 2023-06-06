@@ -7,7 +7,6 @@ from models.rpResearchField import RpResearchField
 from models.software import Software
 from models.rpSoftware import RpSoftware
 #from models.rp_with_GUI import GUI
-#from models.rpParallel import RpParallel
 
 
 db.connect()
