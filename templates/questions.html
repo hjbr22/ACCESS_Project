@@ -124,7 +124,7 @@
             <div id="job-type-tag-container" style="display: inline-block;"></div>
             <input type="text" id="job-type-text-input" style="border: none; outline: none; width: 200px;">
         </div>
-        <div id="job-type-tag-container"></div>
+        <!-- <div id="job-type-tag-container"></div> -->
     </div>
     <div class="form-group">
         <label for="job-type-add-tag">Tag not here? Add yours below.</label>
@@ -221,7 +221,10 @@
         <!-- Software and Libraries -->
     <div class="form-group">
         <label for="software-input">Which scientific libraries or software packages do you need for your job?</label>
-        <input class="form-control" type="text">
+        <div id="software-tag-input" class="form-control">
+            <div id="software-tag-container" style="display: inline-block;"></div>
+            <input type="text" id="software-text-input" style="border: none; outline: none;">
+        </div>
     </div>
     <div class="form-group">
         <label for="software-libraries-add-tag">Tag not here? Add yours below.</label>

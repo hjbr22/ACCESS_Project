@@ -1,6 +1,6 @@
 
 // RPs with Open on Demand or other GUIs
-const rpWithGUI = ['ACES', 'Anvil', 'Bridges-2', 'Delta', 'Expanse', 'FASTER', 'Jetstream2', 'Stampede-2']
+const rpWithGUI = ['ACES', 'Anvil', 'Bridges-2', 'Delta', 'FASTER', 'Jetstream2']
     
 // fields of research
 const fieldsAndRps = {"Biology":['Bridges-2','Stampede-2','Expanse'], 
@@ -78,25 +78,71 @@ $(document).ready(function(){
         })
     })
     
-    // autocomplete for selecting types of jobs
-    $("#job-type-text-input").autocomplete({
-        source: Object.keys(jobTypeAndRps),
-        select: function(event, ui){
-            $('#job-type-tag-container').append(
-                `<div class="tag" style="display: inline-block; margin: 2px;">
-                    <span class="badge badge-primary" id="${ui.item.value}">${ui.item.value}
-                    <a class="remove-tag" name="remove-tag" style="cursor:pointer; color: white; margin-left: 5px;">x</a>
-                    </span>
-                </div>`)
-            this.value='';
-            return false;
+    //get the job classes
+    let job_types;
+    $.ajax({
+        type:"GET",
+        url:"/get_job_classes",
+        success:function(response){
+            job_types = response
+            console.log(job_types)
+            // autocomplete for selecting classes of jobs
+            console.log("job_types: ", Object.keys(jobTypeAndRps))
+            $("#job-type-text-input").autocomplete({
+                source: job_types,
+                select: function(event, ui){
+                    $('#job-type-tag-container').append(
+                        `<div class="tag" style="display: inline-block; margin: 2px;">
+                            <span class="badge badge-primary" id="${ui.item.value}">${ui.item.value}
+                            <a class="remove-tag" name="remove-tag" style="cursor:pointer; color: white; margin-left: 5px;">x</a>
+                            </span>
+                        </div>`)
+                    this.value='';
+                    return false;
+                }
+            })
+        },
+        error: function(error){
+            console.log("Error: ", error)
         }
     })
         
-    // remove the from job types when 'x' is clicked
+    // remove the job class when 'x' is clicked
     $(document).on('click', '.remove-tag', function(){
         $(this).parents('.tag').remove()
     })
+
+    $.ajax({
+        type:"GET",
+        url:"/get_software",
+        success:function(response){
+            softwareInfo = response
+            console.log(softwareInfo)
+            // autocomplete for selecting software
+            console.log("job_types: ", Object.keys(jobTypeAndRps))
+            $("#software-text-input").autocomplete({
+                source: softwareInfo,
+                maxShowItems: 10,
+                select: function(event, ui){
+                    $('#software-tag-container').append(
+                        `<div class="tag" style="display: inline-block; margin: 2px;">
+                            <span class="badge badge-primary" id="${ui.item.value}">${ui.item.value}
+                            <a class="remove-tag" name="remove-tag" style="cursor:pointer; color: white; margin-left: 5px;">x</a>
+                            </span>
+                        </div>`)
+                    this.value='';
+                    return false;
+                }
+            })
+        },
+        error: function(error){
+            console.log("Error: ", error)
+        }
+    });
+
+
+    // show the scores
+    display_score()
 
     console.log(rpScores)
 
