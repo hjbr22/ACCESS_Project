@@ -8,8 +8,7 @@ from models.software import Software
 from models.rpSoftware import RpSoftware
 from models.guiName import GUI
 from models.rpGUI import rpGUI
-from models.temp_storage import TS
-from models.rp_ts import RP_TS
+from parse_modules import get_modules_and_versions
 
 
 db.connect()
@@ -24,16 +23,16 @@ db.create_tables([RPS,JobClass,RpJobClass,ResearchFields,RpResearchField,Softwar
 rps = [
     {"name":"ACES"},
     {"name":"Anvil"},
-    {"name":"Bridges-2"},
-    {"name":"DARWIN"},
-    {"name":"Delta"},
-    {"name":"Expanse"},
+    {"name":"Bridges-2", "parallel": True},
+    {"name":"DARWIN", "parallel": True},
+    {"name":"Delta", "parallel": True},
+    {"name":"Expanse", "parallel": True},
     {"name":"FASTER"},
     {"name":"Jetstream2"},
     {"name":"OOKAMI"},
     {"name":"KyRIC"},
     {"name":"Rockfish"},
-    {"name":"Stampede-2"},
+    {"name":"Stampede-2", "parallel": True},
     {"name":"RANCH"},
     {"name":"Open Science Grid"},
     {"name":"Open Storage Network"},
@@ -218,42 +217,24 @@ for gui in list(rpGUI_together.keys()):
 print("Adding the GUI to the RP list")
 rpGUI.insert_many(rpgui).on_conflict_replace().execute()
 
+# stampede modules
+stampedeFile = "stampede_available_modules.txt"
 
-#Temporary storage in TB
+stampedeModules = get_modules_and_versions(stampedeFile)
+# add modules to db
+software = []
+for mod in stampedeModules:
+    software.append({"software_name":mod[0],
+                        "version":mod[1]})
+    
+print("Adding Software")
+Software.insert_many(software).on_conflict_replace().execute()
 
-temp_s = [
-        {"ts":"1"},
-        {"ts":"2"},
-        {"ts":"100"},
-        {"ts":"1.5"},
-        {"ts":"30"},
-        {"ts":"10"},
-        {"ts":"0"},
-        {"ts":"7000"}
-]
-
-#RP Temp Storage in TB
-
-rp_temp_s = {
-    "0":['ranch','bridges-2', 'jetstream2', 'open science grid', 'open storage network'],
-    "1":['aces', 'faster'],
-    "1.5":['delta'],
-    "2":['darwin'],
-    "10":['kyric','rockfish'],
-    "30":['ookami'],
-    "100":['anvil'],
-    "7000":['expanse']
-}
-
-rp_ts = []
-for temp_s in list(rp_temp_s.keys()):
-    for rp in rp_temp_s[temp_s]:
-        rp_ts.append({"rp": RPS.get(RPS.name == rp),
-        "ts": TS.get(TS.rp_s == temp_s)})
-
-print("Adding the Temporary Storage")
-RP_TS.insert_many(RP_TS).on_conflict_replace().execute()
-
-#Long Term Storage in TB
-
+# associate modules with stampede
+stampede_mod = []
+for mod in stampedeModules:
+    stampede_mod.append({"rp":RPS.get(RPS.name=="Stampede-2"),
+                        "software": Software.get(Software.software_name==mod[0], Software.version==mod[1])})
+print("Associating Stampede and software")
+RpSoftware.insert_many(stampede_mod).on_conflict_replace().execute()
 db.close()
