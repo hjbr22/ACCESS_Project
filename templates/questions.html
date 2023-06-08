@@ -30,7 +30,7 @@
       ACCESS Recommendation System
     </a>
 </nav>
-<form onsubmit="return false">
+<form onsubmit="return false" class="needs-validation" novalidate>
 <div class="container">
     <div class="row">
     <div class="col-sm-6">
@@ -40,7 +40,7 @@
         <label for="">Have you used a supercomputer (HPC) before? </label>
         <br>
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="hpc-use" id="has-used-hpc" value="1" requried>
+            <input class="form-check-input" type="radio" name="hpc-use" id="has-used-hpc" value="1" required>
             <label class="form-check-label" for="has-used-hpc">Yes</label>
         </div>
         <div class="form-check form-check-inline">
@@ -140,11 +140,11 @@
             <label class="form-check-label" for="storage-needed">Yes</label>
         </div>
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="storage" id="storage-not-needed" value="0">
+            <input class="form-check-input" type="radio" name="storage" id="storage-not-needed" value="0" required>
             <label class="form-check-label" for="storage-not-needed">No</label>
         </div>
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="storage" id="storage-unsure" value="2">
+            <input class="form-check-input" type="radio" name="storage" id="storage-unsure" value="2" required>
             <label class="form-check-label" for="storage-unsure">I don't know</label>
         </div>
     </div>
@@ -307,7 +307,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">RP Recommendations</h5>
+              <h5 class="modal-title" id="modalTitle">RP Recommendations</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -322,7 +322,7 @@
         </div>
       </div>
     <!-- Submit button trigger modal-->
-    <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#submitModal" id="submit-form">Submit</button>
+    <button type="button" class="btn btn-primary" id="submit-form">Submit</button>
     </div>
     </div>
 </div>

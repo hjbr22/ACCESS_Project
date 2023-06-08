@@ -148,7 +148,11 @@ $(document).ready(function(){
 
     // calculate scores when the form is submitted
     $("#submit-form").on("click", function(){
-        calculate_score()
+        var formIsValid = validateForm();
+        if (formIsValid){
+            calculate_score();
+            openModal();
+        }
     })
 
     $('input[name="hpc-use"]').change(function() {
@@ -309,3 +313,34 @@ function decrease_score(rp){
     rpScores[rp] -= 1
     console.log(rpScores)
 }
+
+function validateForm() {
+    var valid = 1;
+
+    //Find elements based on required attribute
+    var reqFields = $("[required]")
+    
+    reqFields.each(function(){
+        //Find name for those elements
+        var name = $(this).attr("name");
+        
+        //Find values from those names if name exists, otherwise
+        //directly check value. If value on required question is
+        //undefined, set valid to 0 and display error message.
+        if (name){
+            if ($(`input[name=${name}]:checked`).val() == undefined){
+                valid = 0;
+            }
+        }else{
+            if (!$(this).val()){
+                valid = 0;
+            }
+        }
+    });
+  
+    return valid;
+}
+  
+  function openModal() {
+    $("#submitModal").modal("show");
+  }
