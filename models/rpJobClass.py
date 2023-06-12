@@ -6,3 +6,4 @@ class RpJobClass(BaseModel):
     id = PrimaryKeyField()
     rp = ForeignKeyField(RPS)
     job_class = ForeignKeyField(JobClass, backref="rps_with_JobClass")
+    suitability = IntegerField(default=1)
