@@ -10,8 +10,6 @@ from models.gui import GUI
 from models.rpGUI import RpGUI
 from parse_modules import get_modules_and_versions
 
-
-
 db.connect()
 
 tables = db.get_tables()
@@ -58,70 +56,92 @@ ResearchFields.insert_many(fields).on_conflict_replace().execute()
 
 rpResearch = [
     {"rp": RPS.get(RPS.name == "Bridges-2"),
-     "research_field": ResearchFields.get(ResearchFields.field_name == "Biology")
+     "research_field": ResearchFields.get(ResearchFields.field_name == "Biology"),
+     "suitability":1,
     },
     {"rp": RPS.get(RPS.name == "stampede-2"),
-     "research_field": ResearchFields.get(ResearchFields.field_name == "Biology")
+     "research_field": ResearchFields.get(ResearchFields.field_name == "Biology"),
+     "suitability":1,
     },
     {"rp": RPS.get(RPS.name == "expanse"),
-     "research_field": ResearchFields.get(ResearchFields.field_name == "Biology")
+     "research_field": ResearchFields.get(ResearchFields.field_name == "Biology"),
+     "suitability":1,
     },
     {"rp": RPS.get(RPS.name == "bridges-2"),
-     "research_field": ResearchFields.get(ResearchFields.field_name == "Chemistry")
+     "research_field": ResearchFields.get(ResearchFields.field_name == "Chemistry"),
+     "suitability":1,
     },
     {"rp": RPS.get(RPS.name == "stampede-2"),
-     "research_field": ResearchFields.get(ResearchFields.field_name == "Chemistry")
+     "research_field": ResearchFields.get(ResearchFields.field_name == "Chemistry"),
+     "suitability":1,
     },
     {"rp": RPS.get(RPS.name == "bridges-2"),
-     "research_field": ResearchFields.get(ResearchFields.field_name == "Physics")
+     "research_field": ResearchFields.get(ResearchFields.field_name == "Physics"),
+     "suitability":1,
     },
     {"rp": RPS.get(RPS.name == "stampede-2"),
-     "research_field": ResearchFields.get(ResearchFields.field_name == "Physics")
+     "research_field": ResearchFields.get(ResearchFields.field_name == "Physics"),
+     "suitability":1,
     },
     {"rp": RPS.get(RPS.name == "expanse"),
-     "research_field": ResearchFields.get(ResearchFields.field_name == "Physics")
+     "research_field": ResearchFields.get(ResearchFields.field_name == "Physics"),
+     "suitability":1,
     },
     {"rp": RPS.get(RPS.name == "bridges-2"),
-     "research_field": ResearchFields.get(ResearchFields.field_name == "Computer Science")
+     "research_field": ResearchFields.get(ResearchFields.field_name == "Computer Science"),
+     "suitability":1,
     },
     {"rp": RPS.get(RPS.name == "stampede-2"),
-     "research_field": ResearchFields.get(ResearchFields.field_name == "Computer Science")
+     "research_field": ResearchFields.get(ResearchFields.field_name == "Computer Science"),
+     "suitability":1,
     },
     {"rp": RPS.get(RPS.name == "expanse"),
-     "research_field": ResearchFields.get(ResearchFields.field_name == "Computer Science")
+     "research_field": ResearchFields.get(ResearchFields.field_name == "Computer Science"),
+     "suitability":1,
     },
     {"rp": RPS.get(RPS.name == "jetstream2"),
-     "research_field": ResearchFields.get(ResearchFields.field_name == "Civil Engineering")
+     "research_field": ResearchFields.get(ResearchFields.field_name == "Civil Engineering"),
+     "suitability":1,
     },
     {"rp": RPS.get(RPS.name == "bridges-2"),
-     "research_field": ResearchFields.get(ResearchFields.field_name == "Civil Engineering")
+     "research_field": ResearchFields.get(ResearchFields.field_name == "Civil Engineering"),
+     "suitability":1,
     },
     {"rp": RPS.get(RPS.name == "jetstream2"),
-     "research_field": ResearchFields.get(ResearchFields.field_name == "Economics")
+     "research_field": ResearchFields.get(ResearchFields.field_name == "Economics"),
+     "suitability":1,
     },
     {"rp": RPS.get(RPS.name == "expanse"),
-     "research_field": ResearchFields.get(ResearchFields.field_name == "Economics")
+     "research_field": ResearchFields.get(ResearchFields.field_name == "Economics"),
+     "suitability":1,
     },
     {"rp": RPS.get(RPS.name == "open science grid"),
-     "research_field": ResearchFields.get(ResearchFields.field_name == "Linguistics")
+     "research_field": ResearchFields.get(ResearchFields.field_name == "Linguistics"),
+     "suitability":1,
     },
     {"rp": RPS.get(RPS.name == "open science grid"),
-     "research_field": ResearchFields.get(ResearchFields.field_name == "History")
+     "research_field": ResearchFields.get(ResearchFields.field_name == "History"),
+     "suitability":1,
     },
     {"rp": RPS.get(RPS.name == "kyric"),
-     "research_field": ResearchFields.get(ResearchFields.field_name == "Agriculture")
+     "research_field": ResearchFields.get(ResearchFields.field_name == "Agriculture"),
+     "suitability":1,
     },
     {"rp": RPS.get(RPS.name == "anvil"),
-     "research_field": ResearchFields.get(ResearchFields.field_name == "Agriculture")
+     "research_field": ResearchFields.get(ResearchFields.field_name == "Agriculture"),
+     "suitability":1,
     },
     {"rp": RPS.get(RPS.name == "ookami"),
-     "research_field": ResearchFields.get(ResearchFields.field_name == "Medicine")
+     "research_field": ResearchFields.get(ResearchFields.field_name == "Medicine"),
+     "suitability":1,
     },
     {"rp": RPS.get(RPS.name == "rockfish"),
-     "research_field": ResearchFields.get(ResearchFields.field_name == "Medicine")
+     "research_field": ResearchFields.get(ResearchFields.field_name == "Medicine"),
+     "suitability":1,
     },
     {"rp": RPS.get(RPS.name == "bridges-2"),
-     "research_field": ResearchFields.get(ResearchFields.field_name == "Medicine")
+     "research_field": ResearchFields.get(ResearchFields.field_name == "Medicine"),
+     "suitability":1,
     },
 ]
 print("Adding RpResearchField data")
@@ -180,7 +200,8 @@ rpJobClass = []
 for jobClass in list(jobClassAndRps.keys()):
     for rp in jobClassAndRps[jobClass]:
         rpJobClass.append({"rp": RPS.get(RPS.name == rp),
-        "job_class": JobClass.get(JobClass.class_name == jobClass)
+        "job_class": JobClass.get(JobClass.class_name == jobClass),
+        "suitability":1,
         })
 print("Adding RPJobClass data")
 RpJobClass.insert_many(rpJobClass).on_conflict_replace().execute()
@@ -207,14 +228,14 @@ rpGUI_together = {
     "Horizon":['jetstream2'],
     "CACAO":['jetstream2']}
 
-rpgui = []
+rpGui = []
 for gui in list(rpGUI_together.keys()):
     for rp in rpGUI_together[gui]:
-        rpgui.append({"rp": RPS.get(RPS.name == rp),
+        rpGui.append({"rp": RPS.get(RPS.name == rp),
         "rp_gui": GUI.get(GUI.gui == gui)})
 
 print("Adding the GUI to the RP list")
-RpGUI.insert_many(rpgui).on_conflict_replace().execute()
+RpGUI.insert_many(rpGui).on_conflict_replace().execute()
 
 #stampede modules
 
@@ -237,7 +258,8 @@ Software.insert_many(software).on_conflict_replace().execute()
 stampede_mod = []
 for mod in stampedeModules:
     stampede_mod.append({"rp":RPS.get(RPS.name=="Stampede-2"),
-                        "software": Software.get(Software.software_name==mod[0], Software.version==mod[1])})
+                        "software": Software.get(Software.software_name==mod[0], Software.version==mod[1]),
+                        "suitability":1})
 print("Associating Stampede and software")
 RpSoftware.insert_many(stampede_mod).on_conflict_replace().execute()
 
