@@ -6,9 +6,10 @@ from models.researchField import ResearchFields
 from models.rpResearchField import RpResearchField
 from models.software import Software
 from models.rpSoftware import RpSoftware
-from models.guiName import GUI
-from models.rpGUI import rpGUI
+from models.gui import GUI
+from models.rpGUI import RpGUI
 from parse_modules import get_modules_and_versions
+
 
 
 db.connect()
@@ -17,25 +18,25 @@ tables = db.get_tables()
 print(f"the tables: {tables}")
 
 # delete all data and create blank tables
-db.drop_tables([RPS,JobClass,RpJobClass,ResearchFields,RpResearchField,Software,RpSoftware,GUI,rpGUI])
-db.create_tables([RPS,JobClass,RpJobClass,ResearchFields,RpResearchField,Software,RpSoftware,GUI,rpGUI])
+db.drop_tables([RPS,JobClass,RpJobClass,ResearchFields,RpResearchField,Software,RpSoftware,GUI,RpGUI])
+db.create_tables([RPS,JobClass,RpJobClass,ResearchFields,RpResearchField,Software,RpSoftware,GUI,RpGUI])
 
 rps = [
-    {"name":"ACES"},
-    {"name":"Anvil"},
-    {"name":"Bridges-2", "parallel": True},
-    {"name":"DARWIN", "parallel": True},
-    {"name":"Delta", "parallel": True},
-    {"name":"Expanse", "parallel": True},
-    {"name":"FASTER"},
-    {"name":"Jetstream2"},
-    {"name":"OOKAMI"},
-    {"name":"KyRIC"},
-    {"name":"Rockfish"},
-    {"name":"Stampede-2", "parallel": True},
-    {"name":"RANCH"},
-    {"name":"Open Science Grid"},
-    {"name":"Open Storage Network"},
+    {"name":"ACES", "scratch_tb":1, "longterm_tb":100},
+    {"name":"Anvil", "scratch_tb":100, "longterm_tb":50},
+    {"name":"Bridges-2", "scratch_tb":0, "longterm_tb":0, "parallel": True},
+    {"name":"DARWIN", "scratch_tb":2, "longterm_tb":10, "parallel": True},
+    {"name":"Delta", "scratch_tb":1.5, "longterm_tb":0.5, "parallel": True},
+    {"name":"Expanse", "scratch_tb":7000, "longterm_tb":12000, "parallel": True},
+    {"name":"FASTER", "scratch_tb":1, "longterm_tb":50},
+    {"name":"Jetstream2", "scratch_tb":0, "longterm_tb":0},
+    {"name":"OOKAMI", "scratch_tb":30, "longterm_tb":80},
+    {"name":"KyRIC", "scratch_tb":10, "longterm_tb":0.5},
+    {"name":"Rockfish", "scratch_tb":10, "longterm_tb":100},
+    {"name":"Stampede-2", "scratch_tb":0, "longterm_tb":1, "parallel": True},
+    {"name":"RANCH", "scratch_tb":0, "longterm_tb":20},
+    {"name":"Open Science Grid", "scratch_tb":0, "longterm_tb":0.5},
+    {"name":"Open Storage Network", "scratch_tb":0, "longterm_tb":0},
     ]
 print("Adding RPS data")
 RPS.insert_many(rps).on_conflict_replace().execute()
@@ -45,8 +46,6 @@ fields = [
     {"field_name":"Chemistry"},
     {"field_name":"Physics"},
     {"field_name":"Computer Science"},
-    {"field_name":"Civil Engineering"},
-    {"field_name":"Physics"},
     {"field_name":"Civil Engineering"},
     {"field_name":"Economics"},
     {"field_name":"Linguistics"},
@@ -215,26 +214,31 @@ for gui in list(rpGUI_together.keys()):
         "rp_gui": GUI.get(GUI.gui == gui)})
 
 print("Adding the GUI to the RP list")
-rpGUI.insert_many(rpgui).on_conflict_replace().execute()
+RpGUI.insert_many(rpgui).on_conflict_replace().execute()
 
-# stampede modules
+#stampede modules
+
 stampedeFile = "stampede_available_modules.txt"
 
 stampedeModules = get_modules_and_versions(stampedeFile)
-# add modules to db
+
+#add modules to db
+
 software = []
 for mod in stampedeModules:
     software.append({"software_name":mod[0],
                         "version":mod[1]})
-    
+
 print("Adding Software")
 Software.insert_many(software).on_conflict_replace().execute()
 
-# associate modules with stampede
+#associate modules with stampede
+
 stampede_mod = []
 for mod in stampedeModules:
     stampede_mod.append({"rp":RPS.get(RPS.name=="Stampede-2"),
                         "software": Software.get(Software.software_name==mod[0], Software.version==mod[1])})
 print("Associating Stampede and software")
 RpSoftware.insert_many(stampede_mod).on_conflict_replace().execute()
+
 db.close()
