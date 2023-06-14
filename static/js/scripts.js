@@ -77,36 +77,42 @@ $(document).ready(function(){
             $(this).toggle(($(this).text().toLowerCase().indexOf(value)>-1))
         })
     })
-    
-    //get the job classes
-    let job_types;
+
+    //get the job classes from database and create whitelist
+    var jobWhitelist = [];
     $.ajax({
         type:"GET",
         url:"/get_job_classes",
         success:function(response){
-            job_types = response
-            console.log(job_types)
-            // autocomplete for selecting classes of jobs
-            console.log("job_types: ", Object.keys(jobTypeAndRps))
-            $("#job-type-text-input").autocomplete({
-                source: job_types,
-                select: function(event, ui){
-                    $('#job-type-tag-container').append(
-                        `<div class="tag" style="display: inline-block; margin: 2px;">
-                            <span class="badge badge-primary" id="${ui.item.value}">${ui.item.value}
-                            <a class="remove-tag" name="remove-tag" style="cursor:pointer; color: white; margin-left: 5px;">x</a>
-                            </span>
-                        </div>`)
-                    this.value='';
-                    return false;
-                }
-            })
+            jobWhitelist = response;
+            console.log(jobWhitelist);
         },
         error: function(error){
             console.log("Error: ", error)
         }
     })
+    console.log(jobWhitelist);
+
+    var jobInput = $("#job-type-text-input");
+    var tagify = new Tagify(jobInput);
+    console.log(tagify);
+
+    /*var testWhitelist = ["hello", "this", "sucks"];
+
+    var jobInput = $("#job-type-text-input").val();
+            tagify = new Tagify(jobInput, {
+                enforceWhitelist: true,
+                whitelist: testWhitelist
+            });
+
+   /* var jobInput = $("#job-type-text-input").val();
+    console.log(jobInput);
+    tagify = new Tagify(jobInput, {
+        enforceWhitelist: true,
+        whitelist: jobWhitelist
+    });*/
         
+
     // remove the job class when 'x' is clicked
     $(document).on('click', '.remove-tag', function(){
         $(this).parents('.tag').remove()

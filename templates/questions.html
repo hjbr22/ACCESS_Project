@@ -14,6 +14,11 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
+    <!-- Tagify-->
+    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css">
+
     <!-- javascript file -->
     <script src="../static/js/scripts.js"></script>
 
@@ -125,7 +130,7 @@
         <label for="">What class of job are you looking to perform on the HPC?</label>
         <div id="job-type-tag-input" class="form-control">
             <div id="job-type-tag-container" style="display: inline-block;"></div>
-            <input type="text" id="job-type-text-input" style="border: none; outline: none; width: 200px;">
+            <input type="text" id="job-type-text-input" style="border: none; outline: none; width: 200px;" value="html, css, autofocus">
         </div>
         <!-- <div id="job-type-tag-container"></div> -->
     </div>
