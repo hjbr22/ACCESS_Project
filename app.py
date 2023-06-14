@@ -1,14 +1,15 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for
 import json
 from models.rps import RPS
 from models.researchField import ResearchFields
 from models.jobClass import JobClass
 from models.software import Software
+from logic.score import calculate_score
 
 app = Flask(__name__)
 
 @app.route("/")
-def hello_world():
+def recommender_page(score=None):
 
     rps = RPS.select()
     research_fields = ResearchFields.select().order_by(ResearchFields.field_name)
@@ -27,6 +28,15 @@ def get_software():
     softwares_and_versions = [f"{software.software_name} {software.version}" for software in softwares]
 
     return softwares_and_versions
+
+@app.route("/get_score", methods=["GET","POST"])
+def get_score():
+    data = request.form
+    print("\n HELLO \n")
+    print(data)
+    print("\n HELLO \n")
+    score = calculate_score(data)
+    return redirect(url_for('recommender_page',score=score))
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=8080)

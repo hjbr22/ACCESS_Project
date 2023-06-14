@@ -85,9 +85,7 @@ $(document).ready(function(){
         url:"/get_job_classes",
         success:function(response){
             job_types = response
-            console.log(job_types)
             // autocomplete for selecting classes of jobs
-            console.log("job_types: ", Object.keys(jobTypeAndRps))
             $("#job-type-text-input").autocomplete({
                 source: job_types,
                 select: function(event, ui){
@@ -117,9 +115,7 @@ $(document).ready(function(){
         url:"/get_software",
         success:function(response){
             softwareInfo = response
-            console.log(softwareInfo)
             // autocomplete for selecting software
-            console.log("job_types: ", Object.keys(jobTypeAndRps))
             $("#software-text-input").autocomplete({
                 source: softwareInfo,
                 maxShowItems: 10,
@@ -144,16 +140,17 @@ $(document).ready(function(){
     // show the scores
     display_score()
 
-    console.log(rpScores)
 
-    // calculate scores when the form is submitted
-    $("#submit-form").on("click", function(){
-        var formIsValid = validateForm();
-        if (formIsValid){
-            calculate_score();
-            openModal();
-        }
-    })
+    // // calculate scores when the form is submitted
+    // $("#submit-form").on("click", function(){
+    //     var formIsValid = validateForm();
+    //     if (formIsValid){
+    //         calculate_score();
+    //         openModal();
+    //         display_score();
+
+    //     }
+    // })
 
     $('input[name="hpc-use"]').change(function() {
         if ($(this).val() === '1') {
@@ -190,24 +187,26 @@ function display_score(){
 
 function calculate_score(){
 
+
+    //calculating score from backend
+
+
+
+
     //scores are reinitialized to 0 each time scores are caculated
     rpScores = {'ACES':0, 'Anvil':0, 'Bridges-2':0, 'DARWIN':0, 'Delta':0, 'Expanse':0, 'FASTER':0, 'Jetstream2':0,
         'OOKAMI':0, 'KyRIC':0, 'Rockfish':0, 'Stampede-2':0, 'RANCH':0, 'Open Science Grid':0, 'Open Storage Network':0}
 
-    console.log($("input[name='hpc-use']:checked").val() == 0)
     // has not used an HPC before
     if($("input[name='hpc-use']:checked").val() == 0){
-        console.log("has not used super computer")
         for (let i=0; i < rpWithGUI.length; i++ ){
             increase_score(rpWithGUI[i])
         }
     }
     //if they have used an HPC before
     else if ($("input[name='hpc-use']:checked").val() == 1){ 
-        console.log("has used HPC before")
         // if they have used an ACCESS hpc before
         $(".used-rps:checkbox:checked").each(function(){
-            console.log($(this).val())
             increase_score($(this).val())
         })
     }
@@ -215,7 +214,6 @@ function calculate_score(){
     // field of research
     $("input[id$='-option']:checked").each(function(){
         selectedField = $(this).val()
-        console.log("selections for field of research: ", selectedField)
         for (let i=0; i<fieldsAndRps[selectedField].length; i++){
             increase_score(fieldsAndRps[selectedField][i])
         }
@@ -224,7 +222,6 @@ function calculate_score(){
     // type of job
     $(".badge").each(function(){
         selectedJob = $(this).attr('id')
-        console.log("selections for job types", selectedJob)
         for (let i=0; i<jobTypeAndRps[selectedJob].length; i++){
             increase_score(jobTypeAndRps[selectedJob][i])
         }
@@ -236,11 +233,8 @@ function calculate_score(){
 
         // long-term storage
         ltStorageSelection = $("input[name='long-term-storage']:checked").val()
-        console.log('hello')
-        console.log($("input[name='long-term-storage']:checked").val())
         if(ltStorageSelection){
             supportingRps = ltStorage[ltStorageSelection]
-            console.log("need long-term storage " + ltStorageSelection)
             for (let i=0; i < supportingRps.length; i++){
                 increase_score(supportingRps[i])
             }
@@ -250,7 +244,6 @@ function calculate_score(){
         tempStorageSelection = $("input[name='temp-storage']:checked").val()
         if(tempStorageSelection){
             supportingRps = tempStorage[tempStorageSelection]
-            console.log("need temp storage " + tempStorageSelection)
             for (let i=0; i < supportingRps.length; i++){
                 increase_score(supportingRps[i])
             }
@@ -260,10 +253,8 @@ function calculate_score(){
 
     // memory
     memSelection = $("input[name='memory']:checked").val()
-    console.log(memSelection)
     if(memSelection){
         supportingRps = RPmemory[memSelection]
-        console.log("need memory " + memSelection)
         for (let i=0; i < supportingRps.length; i++){
             increase_score(supportingRps[i])
         }
@@ -274,8 +265,6 @@ function calculate_score(){
 
     // graphical component
     if($("input[name='graphics']:checked").val() == 1){
-        console.log($("input[name='graphics']:checked").val())
-        console.log("has graphical component")
         for (let i=0; i<graphicalRps.length; i++){
             increase_score(graphicalRps[i])
         }
@@ -283,35 +272,26 @@ function calculate_score(){
 
     //CPU and GPU parallel
     if($("input[name='cpu-gpu-parallel']:checked").val() == 1){
-        console.log("needs CPU GPU parallel")
         for (let i=0; i<parallelRPs.length; i++){
             increase_score(parallelRPs[i])
         }
         rpScores['Jetstream2'] += 1000
-        console.log(rpScores)
     }
 
     //job length
     if($("input[name='job-run']:checked").val() == 1){
-        console.log("runs forever")
         rpScores['Jetstream2'] += 1000
-        console.log(rpScores)
     }
 
     // virtual machine
     if($("input[name='vm']:checked").val() == 1){
-        console.log("needs vm")
         rpScores['Jetstream2'] += 1000
-        console.log(rpScores)
     }
 
-    console.log(rpScores)
-    display_score()
 }
 
 function decrease_score(rp){
     rpScores[rp] -= 1
-    console.log(rpScores)
 }
 
 function validateForm() {
