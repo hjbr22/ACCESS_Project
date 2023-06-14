@@ -38,7 +38,7 @@
       ACCESS Recommendation System
     </a>
 </nav>
-<form onsubmit="return false" class="needs-validation" novalidate>
+<form class="needs-validation" action="/get_score" method="post" novalidate>
 <div class="container">
     <div class="row">
     <div class="col-sm-6">
@@ -77,11 +77,10 @@
         <label for="">Select the HPCs you have experience with:</label>
         {% for rp in rps %}
         <div class="form-check">
-            <input class="form-check-input used-rps" type="checkbox" id="{{rp.name}}-option-rp" value="{{rp.name}}">
+            <input class="form-check-input used-rps" name="used-hpc" type="checkbox" id="{{rp.name}}-option-rp" value="{{rp.name}}">
             <label class="form-check-label" for="{{rp.name}}-option-rp">{{rp.name}}</label>
         </div>
         {%endfor%}
-            <!-- The options are added in javascript -->
     </div>
         <!-- Experience using HPC -->
     <div class="form-group hide-hpc d-none">
@@ -329,7 +328,7 @@
         </div>
       </div>
     <!-- Submit button trigger modal-->
-    <button type="button" class="btn btn-primary" id="submit-form">Submit</button>
+    <button type="submit" class="btn btn-primary" id="submit-form">Submit</button>
     </div>
     </div>
 </div>
