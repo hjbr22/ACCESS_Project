@@ -114,7 +114,7 @@
                     {% for field in research_fields%}
                     <div class="form-check dropdown-item">
                         {%set field_id = field.field_name.replace(" ", "-") %}
-                        <input class="form-check-input" type="checkbox" id="{{field_id}}-option" value="{{field.field_name}}">
+                        <input class="form-check-input" name="research-field" type="checkbox" id="{{field_id}}-option" value="{{field.field_name}}">
                         <label class="form-check-label" for="{{field_id}}-option">{{field.field_name}}</label> 
                     </div>
                     {%endfor%}
@@ -131,6 +131,8 @@
         <div class="form-group">
             <label for="">What class of job are you looking to perform on the HPC?</label>
             <input type="text" id="job-type-text-input" style="border: none; outline: none; width: 200px;">
+            <!-- hidden input which will store the values of what is selected -->
+            <input type="text" id="job-class-values" class="d-none" name="job-class" >
         </div>
         <div class="form-group">
             <label for="job-type-add-tag">Tag not here? Add yours below.</label>
@@ -160,7 +162,7 @@
         <!-- File count -->
     <div class="form-group hide-data d-none">
         <label for="file-count">How many files?</label>
-        <input type="number" class="form-control">
+        <input type="number" name="num-files" class="form-control">
     </div>
         <!-- Long-Term Storage -->
     <div class="form-group hide-data d-none">
@@ -319,6 +321,7 @@
               </button>
             </div>
             <div class="modal-body" id="rpScore">
+                {{recommendations}}
                 <!-- scores are calculated in scripts.js-->
             </div>
             <div class="modal-footer">

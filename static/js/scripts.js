@@ -87,15 +87,15 @@ $(document).ready(function(){
 
 
     // // calculate scores when the form is submitted
-    // $("#submit-form").on("click", function(){
-    //     var formIsValid = validateForm();
-    //     if (formIsValid){
-    //         calculate_score();
-    //         openModal();
-    //         display_score();
+    $("#submit-form").on("click", function(){
+        var formIsValid = validateForm();
+        if (formIsValid){
+            // calculate_score();
+            openModal();
+            // display_score();
 
-    //     }
-    // })
+        }
+    })
 
     $('input[name="hpc-use"]').change(function() {
         if ($(this).val() === '1') {
@@ -131,7 +131,6 @@ function display_score(){
 }
 
 function calculate_score(){
-
 
     //calculating score from backend
 
