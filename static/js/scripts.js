@@ -1,4 +1,3 @@
-
 // RPs with Open on Demand or other GUIs
 const rpWithGUI = ['ACES', 'Anvil', 'Bridges-2', 'Delta', 'FASTER', 'Jetstream2']
     
@@ -96,6 +95,9 @@ $(document).ready(function(){
                             </span>
                         </div>`)
                     this.value='';
+                    let selected_jobs =  $("input[name=job-class]").val()
+                    let current_selection = ui.item.value
+                    $("input[name=job-class]").val(selected_jobs.concat(",",current_selection))
                     return false;
                 }
             })
@@ -142,15 +144,15 @@ $(document).ready(function(){
 
 
     // // calculate scores when the form is submitted
-    // $("#submit-form").on("click", function(){
-    //     var formIsValid = validateForm();
-    //     if (formIsValid){
-    //         calculate_score();
-    //         openModal();
-    //         display_score();
+    $("#submit-form").on("click", function(){
+        var formIsValid = validateForm();
+        if (formIsValid){
+            // calculate_score();
+            openModal();
+            // display_score();
 
-    //     }
-    // })
+        }
+    })
 
     $('input[name="hpc-use"]').change(function() {
         if ($(this).val() === '1') {
@@ -186,7 +188,6 @@ function display_score(){
 }
 
 function calculate_score(){
-
 
     //calculating score from backend
 
