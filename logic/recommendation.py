@@ -173,6 +173,8 @@ def get_recommendations(formData):
 
     # Software
 
+
+
     # Graphics
     graphicsNeeded = formData.get("graphics")
     # TODO: add scoring after the graphics data has been added to the db
@@ -192,7 +194,6 @@ def get_recommendations(formData):
                 scoreBoard[rp] = 1  
 
 
-
     # Job needs to be running always
     # TODO: add scoring after relevant data has been added to the db
     alwaysRunningNeeded = formData.get("always-running")
@@ -200,7 +201,7 @@ def get_recommendations(formData):
         pass
 
     # Virtual machine
-    # TODO: add scoring after relevant data hs been added to the db
+    # TODO: add scoring after relevant data has been added to the db
     VmNeeded = formData.get("vm-needed")
     if VmNeeded:
         pass

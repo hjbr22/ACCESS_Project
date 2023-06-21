@@ -31,10 +31,13 @@ def get_software():
 
 @app.route("/get_score", methods=["GET","POST"])
 def get_score():
+    print("hello")
     data = request.form
+    print(data)
     recommendations = get_recommendations(data)
     print(recommendations)
-    return redirect(url_for('recommender_page',recommendations=recommendations))
+    return recommendations
+    # return redirect(url_for('recommender_page',recommendations=recommendations))
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=8080)
