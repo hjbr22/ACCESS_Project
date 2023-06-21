@@ -9,7 +9,7 @@ from logic.recommendation import get_recommendations
 app = Flask(__name__)
 
 @app.route("/")
-def recommender_page(score=None):
+def recommender_page():
 
     rps = RPS.select()
     research_fields = ResearchFields.select().order_by(ResearchFields.field_name)
@@ -25,18 +25,19 @@ def get_job_classes():
 @app.route("/get_software")
 def get_software():
     softwares = Software.select().order_by(Software.software_name)
-    softwares_and_versions = [f"{software.software_name} {software.version}" for software in softwares]
+    softwares_and_versions = [f"{software.software_name}" for software in softwares]
 
     return softwares_and_versions
 
-@app.route("/get_score", methods=["GET","POST"])
+@app.route("/get_score", methods=['POST'])
 def get_score():
     print("hello")
-    data = request.form
+    data = request.get_json()
     print(data)
+    print(f"software data: {data['software']}, software data length: {len(data['software'])}, does it exist: {bool(data['software'])}")
     recommendations = get_recommendations(data)
     print(recommendations)
-    return recommendations
+    return json.dumps(recommendations)
     # return redirect(url_for('recommender_page',recommendations=recommendations))
 
 if __name__ == '__main__':

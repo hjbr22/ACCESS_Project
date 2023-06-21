@@ -4,6 +4,8 @@ from models.rpResearchField import RpResearchField
 from models.jobClass import JobClass
 from models.rpJobClass import RpJobClass
 from models.rps import RPS
+from models.software import Software
+from models.rpSoftware import RpSoftware
 import operator
 from functools import reduce
 
@@ -50,7 +52,7 @@ def calculate_score_rf(researchFieldList,scoreBoard):
 def calculate_score_jc(jobClassList,scoreBoard):
     """
     Calculates and gives points to rps based on the items in the jobClassList
-    jobClassList: list of research fields the user selected
+    jobClassList: list of job classes the user selected
     scoreBoard: dict with RPs as keys and their scores as values
                 if RP has not been assigned a value yet then it will not be in the dict
     return: returns the updated scoreboard
@@ -74,6 +76,37 @@ def calculate_score_jc(jobClassList,scoreBoard):
         else:
             scoreBoard[rp] = 1
     
+    return(scoreBoard)
+
+def calculate_score_software(softwareList,scoreBoard):
+    """
+    Calculates and gives points to rps based on the items in the softwareList
+    softwareList: list of softwares the user selected
+    scoreBoard: dict with RPs as keys and their scores as values
+                if RP has not been assigned a value yet then it will not be in the dict
+    return: returns the updated scoreboard
+    """
+    # Set the parameters used to filter the table
+    print(softwareList)
+    filter = []
+    for software in softwareList:
+        filter.append((Software.software_name == f"{software}"))
+    
+    # Combine the RpSoftware and Software tables, and 
+    # Only select the ones that match the filter
+    rpWithSoftware = (RpSoftware.select()
+                                .join(Software, on=(RpSoftware.software==Software.id))
+                                .where(reduce(operator.or_,filter))).select()
+
+    for row in rpWithSoftware:
+        rp = row.rp.name
+        suitability = row.suitability
+        print(rp, row.software.software_name)
+        if rp in scoreBoard:
+            scoreBoard[rp] = calculate_points(scoreBoard[rp],suitability)
+        else:
+            scoreBoard[rp] = 1
+
     return(scoreBoard)
 
 def classify_rp_storage(storageType):
@@ -119,16 +152,16 @@ def get_recommendations(formData):
                 scoreBoard[rp] = 1  
 
     # If user has used ACCESS hpc
-    elif formData.getlist("used-hpc"):
+    elif formData.get("used-hpc"):
         # increase score for all ACCESS RPs user has experience with
-        for rp in formData.getlist("used-hpc"):
+        for rp in formData.get("used-hpc"):
             if rp in scoreBoard:
                 scoreBoard[rp] += 1
             else:
                 scoreBoard[rp] = 1
     
     # Research Field
-    researchFieldList = formData.getlist("research-field")
+    researchFieldList = formData.get("research-field")
     if researchFieldList:
         scoreBoard = calculate_score_rf(researchFieldList,scoreBoard)
     
@@ -140,23 +173,26 @@ def get_recommendations(formData):
 
     # Storage
     storageNeeded = formData.get("storage")
-    if storageNeeded:
+    print(f"\nHELLO storage needed is : {storageNeeded}, bool: {int(storageNeeded)}")
+    if len(storageNeeded):
 
         ## TODO: Need to get data for i-nodes and calculates scores accordingly here:
         numFiles = formData.get("num-files")
         longTermStorageNeeded = formData.get("long-term-storage")
         scratchStorageNeeded = formData.get("temp-storage")
 
-        if longTermStorageNeeded != "unsure":
+        if (longTermStorageNeeded != "unsure" and longTermStorageNeeded) :
             storageType = "long-term"
             classifiedRpsLt = classify_rp_storage(storageType)
+            print("here I am ", classifiedRpsLt)
+            print(longTermStorageNeeded)
             for rp in classifiedRpsLt[longTermStorageNeeded]:
                 if rp in scoreBoard:
                     scoreBoard[rp] = calculate_points(scoreBoard[rp])
                 else:
                     scoreBoard[rp] = 1
 
-        if scratchStorageNeeded != "unsure":
+        if (longTermStorageNeeded and scratchStorageNeeded != "unsure"):
             storageType = "scratch"
             classifiedRpsScratch = classify_rp_storage(storageType)
             for rp in classifiedRpsScratch[scratchStorageNeeded]:
@@ -172,7 +208,10 @@ def get_recommendations(formData):
         pass
 
     # Software
-
+    softwares = formData.get("software")
+    softwareList = softwares.split(",")
+    if softwareList:
+        scoreBoard = calculate_score_software(softwareList, scoreBoard)
 
 
     # Graphics
@@ -183,7 +222,7 @@ def get_recommendations(formData):
 
     # CPU and GPU in parallel
     CpuGpuParallelNeeded = formData.get("cpu-gpu-parallel")
-    if CpuGpuParallelNeeded:
+    if int(CpuGpuParallelNeeded):
         parallelRPs = RPS.select().where(RPS.parallel==True)
         parallelRpNames = [rp.name for rp in parallelRPs]
 
