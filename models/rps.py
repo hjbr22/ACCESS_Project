@@ -5,4 +5,4 @@ class RPS(BaseModel):
     name = CharField(unique=True, constraints=[SQL('COLLATE NOCASE')])
     scratch_tb = FloatField()
     longterm_tb = FloatField()
-    parallel = BooleanField(default=False)
+    parallel = IntegerField(default=0)
