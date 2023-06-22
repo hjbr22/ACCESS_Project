@@ -1,4 +1,3 @@
-
 // RPs with Open on Demand or other GUIs
 const rpWithGUI = ['ACES', 'Anvil', 'Bridges-2', 'Delta', 'FASTER', 'Jetstream2']
     
@@ -66,7 +65,8 @@ const RPmemory = {'less-than-64':['ACES', 'Anvil', 'Bridges-2', 'DARWIN', 'Delta
 let rpScores = {'ACES':0, 'Anvil':0, 'Bridges-2':0, 'DARWIN':0, 'Delta':0, 'Expanse':0, 'FASTER':0, 'Jetstream2':0,
 'OOKAMI':0, 'KyRIC':0, 'Rockfish':0, 'Stampede-2':0, 'RANCH':0, 'Open Science Grid':0, 'Open Storage Network':0}
 
-
+//Load tags.js into this file
+import {jobTagify, softwareTagify, jobTagInput, softwareTagInput} from "./tags.js"
 
 $(document).ready(function(){ 
 
@@ -77,69 +77,10 @@ $(document).ready(function(){
             $(this).toggle(($(this).text().toLowerCase().indexOf(value)>-1))
         })
     })
-    
-    //get the job classes
-    let job_types;
-    $.ajax({
-        type:"GET",
-        url:"/get_job_classes",
-        success:function(response){
-            job_types = response
-            console.log(job_types)
-            // autocomplete for selecting classes of jobs
-            console.log("job_types: ", Object.keys(jobTypeAndRps))
-            $("#job-type-text-input").autocomplete({
-                source: job_types,
-                select: function(event, ui){
-                    $('#job-type-tag-container').append(
-                        `<div class="tag" style="display: inline-block; margin: 2px;">
-                            <span class="badge badge-primary" id="${ui.item.value}">${ui.item.value}
-                            <a class="remove-tag" name="remove-tag" style="cursor:pointer; color: white; margin-left: 5px;">x</a>
-                            </span>
-                        </div>`)
-                    this.value='';
-                    return false;
-                }
-            })
-        },
-        error: function(error){
-            console.log("Error: ", error)
-        }
-    })
-        
-    // remove the job class when 'x' is clicked
-    $(document).on('click', '.remove-tag', function(){
-        $(this).parents('.tag').remove()
-    })
 
-    $.ajax({
-        type:"GET",
-        url:"/get_software",
-        success:function(response){
-            softwareInfo = response
-            console.log(softwareInfo)
-            // autocomplete for selecting software
-            console.log("job_types: ", Object.keys(jobTypeAndRps))
-            $("#software-text-input").autocomplete({
-                source: softwareInfo,
-                maxShowItems: 10,
-                select: function(event, ui){
-                    $('#software-tag-container').append(
-                        `<div class="tag" style="display: inline-block; margin: 2px;">
-                            <span class="badge badge-primary" id="${ui.item.value}">${ui.item.value}
-                            <a class="remove-tag" name="remove-tag" style="cursor:pointer; color: white; margin-left: 5px;">x</a>
-                            </span>
-                        </div>`)
-                    this.value='';
-                    return false;
-                }
-            })
-        },
-        error: function(error){
-            console.log("Error: ", error)
-        }
-    });
-
+    //Event listeners for job and software tags
+    jobTagify.on('input', jobTagInput);
+    softwareTagify.on('input', softwareTagInput);
 
     // show the scores
     display_score()
@@ -235,7 +176,7 @@ function calculate_score(){
     if(needStorage == 1 || needStorage == 2){ //0 = no, 1 = yes, 2 = i don't know
 
         // long-term storage
-        ltStorageSelection = $("input[name='long-term-storage']:checked").val()
+        var ltStorageSelection = $("input[name='long-term-storage']:checked").val()
         console.log('hello')
         console.log($("input[name='long-term-storage']:checked").val())
         if(ltStorageSelection){
@@ -247,7 +188,7 @@ function calculate_score(){
         }
 
         // temp storage
-        tempStorageSelection = $("input[name='temp-storage']:checked").val()
+        var tempStorageSelection = $("input[name='temp-storage']:checked").val()
         if(tempStorageSelection){
             supportingRps = tempStorage[tempStorageSelection]
             console.log("need temp storage " + tempStorageSelection)
@@ -259,7 +200,7 @@ function calculate_score(){
 
 
     // memory
-    memSelection = $("input[name='memory']:checked").val()
+    var memSelection = $("input[name='memory']:checked").val()
     console.log(memSelection)
     if(memSelection){
         supportingRps = RPmemory[memSelection]
@@ -340,7 +281,8 @@ function validateForm() {
   
     return valid;
 }
-  
-  function openModal() {
+
+//function to show modal upon clicking submit button
+function openModal() {
     $("#submitModal").modal("show");
-  }
+}
