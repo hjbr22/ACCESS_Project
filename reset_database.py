@@ -27,7 +27,7 @@ rps = [
     {"name":"Delta", "scratch_tb":1.5, "longterm_tb":0.5, "parallel": 1, "graphical":2},
     {"name":"Expanse", "scratch_tb":7000, "longterm_tb":12000, "parallel": 1, "graphical":2},
     {"name":"FASTER", "scratch_tb":1, "longterm_tb":50, "graphical":2},
-    {"name":"Jetstream2", "scratch_tb":0, "longterm_tb":0},
+    {"name":"Jetstream2", "scratch_tb":0, "longterm_tb":0, "virtual_machine":2},
     {"name":"OOKAMI", "scratch_tb":30, "longterm_tb":80},
     {"name":"KyRIC", "scratch_tb":10, "longterm_tb":0.5, "graphical":2},
     {"name":"Rockfish", "scratch_tb":10, "longterm_tb":100},

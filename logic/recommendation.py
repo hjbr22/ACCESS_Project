@@ -220,11 +220,11 @@ def get_recommendations(formData):
     if graphicsNeeded == '1':
         graphicalRps = RPS.select().where(RPS.graphical > 0)
         for rp in graphicalRps:
+            suitability = rp.graphical
             if rp.name in scoreBoard:
-                suitability = rp.graphical
                 scoreBoard[rp.name] = calculate_points(scoreBoard[rp.name], suitability)
             else:
-                scoreBoard[rp.name] = 1
+                scoreBoard[rp.name] = 1 * suitability
 
     # CPU and GPU in parallel
     CpuGpuParallelNeeded = formData.get("cpu-gpu-parallel")
@@ -247,9 +247,15 @@ def get_recommendations(formData):
 
     # Virtual machine
     # TODO: add scoring after relevant data has been added to the db
-    VmNeeded = formData.get("vm-needed")
-    if VmNeeded:
-        pass
+    VmNeeded = formData.get("vm")
+    if VmNeeded == '1':
+        vmRps = RPS.select().where(RPS.virtual_machine > 0)
+        for rp in vmRps:
+            suitability = rp.virtual_machine
+            if rp.name in scoreBoard:
+                scoreBoard[rp.name] = calculate_points(scoreBoard[rp.name], suitability)
+            else:
+                scoreBoard[rp.name] = 1 * suitability
 
     
     return scoreBoard
