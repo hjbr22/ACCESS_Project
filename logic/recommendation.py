@@ -137,6 +137,8 @@ def classify_rp_storage(storageType):
 
     return classifiedRps
 
+
+
 def get_recommendations(formData):
     scoreBoard = {}
     
@@ -173,8 +175,7 @@ def get_recommendations(formData):
 
     # Storage
     storageNeeded = formData.get("storage")
-    print(f"\nHELLO storage needed is : {storageNeeded}, bool: {int(storageNeeded)}")
-    if len(storageNeeded):
+    if storageNeeded:
 
         ## TODO: Need to get data for i-nodes and calculates scores accordingly here:
         numFiles = formData.get("num-files")
@@ -213,16 +214,21 @@ def get_recommendations(formData):
     if softwareList:
         scoreBoard = calculate_score_software(softwareList, scoreBoard)
 
-
     # Graphics
     graphicsNeeded = formData.get("graphics")
     # TODO: add scoring after the graphics data has been added to the db
-    if graphicsNeeded:
-        pass
+    if graphicsNeeded == '1':
+        graphicalRps = RPS.select().where(RPS.graphical > 0)
+        for rp in graphicalRps:
+            if rp.name in scoreBoard:
+                suitability = rp.graphical
+                scoreBoard[rp.name] = calculate_points(scoreBoard[rp.name], suitability)
+            else:
+                scoreBoard[rp.name] = 1
 
     # CPU and GPU in parallel
     CpuGpuParallelNeeded = formData.get("cpu-gpu-parallel")
-    if int(CpuGpuParallelNeeded):
+    if (CpuGpuParallelNeeded and int(CpuGpuParallelNeeded) != 0):
         parallelRPs = RPS.select().where(RPS.parallel==True)
         parallelRpNames = [rp.name for rp in parallelRPs]
 

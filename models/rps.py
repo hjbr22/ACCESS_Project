@@ -6,3 +6,4 @@ class RPS(BaseModel):
     scratch_tb = FloatField()
     longterm_tb = FloatField()
     parallel = IntegerField(default=0)
+    graphical = IntegerField(default=0)
