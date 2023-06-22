@@ -40,3 +40,6 @@ $PYTHON -m pip install --upgrade pip
 # install requirements
 $PYTHON -m pip install -r requirements.txt
 # To generate a new requirements.txt file, run "pip freeze > requirements.txt"
+
+#reset the database
+$PYTHON reset_database.py
