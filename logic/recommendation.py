@@ -257,6 +257,5 @@ def get_recommendations(formData):
             else:
                 scoreBoard[rp.name] = 1 * suitability
 
-    
     return scoreBoard
 
