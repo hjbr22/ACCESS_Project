@@ -40,3 +40,9 @@ $PYTHON -m pip install --upgrade pip
 # install requirements
 $PYTHON -m pip install -r requirements.txt
 # To generate a new requirements.txt file, run "pip freeze > requirements.txt"
+
+#Reset database command line and the parse module command line
+
+$PYTHON parse_modules.py
+
+$PYTHON reset_database.py
