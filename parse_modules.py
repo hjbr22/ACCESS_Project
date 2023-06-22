@@ -13,15 +13,20 @@ def get_modules_and_versions(filename):
         # The list of modules will end at 'Where:' so we ignore everything afterwards
         mods = content.split("Where:")[0]
         moduleAndVersion = []
+        moduleVRS = {}
         for mod in mods.split():
             # Ignore all characters used for separations or descriptions
             if ("----" in mod) or ("/opt" in mod) or ("(L" in mod) or ("D)" in mod):
                 pass
             else:
                 if "/" in mod:
-                    # Separate modules by name and version
-                    moduleAndVersion.append(mod.split("/"))
+                    moduleName, moduleVersion = mod.split("/", 1)
+                    if moduleName in moduleVRS:
+                        moduleVRS[moduleName] += f", {moduleVersion}"
+                    else:
+                        moduleVRS[moduleName] = moduleVersion
                 else:
                     # If the app has no version
-                    moduleAndVersion.append([mod,''])
+                    moduleVRS[mod] = ''
+        moduleAndVersion = [[moduleName, moduleVersion] for moduleName, moduleVersion in moduleVRS.items()]
     return(moduleAndVersion)
