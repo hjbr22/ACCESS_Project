@@ -30,7 +30,6 @@
 </head>
 
 
-<!-- add header -->
 <!-- Image and text -->
 <nav class="navbar navbar-light bg-light">
     <a class="navbar-brand" href="#">
@@ -110,7 +109,6 @@
             <div class="dropdown-menu" id="field-dropdown-options" aria-labelledby="field-button">
                 <input class="form-control" id="field-dropdown-search" type="text">
                 <div class="dropdown-divider"></div>
-                    <!-- The options are added in javascript -->
                     {% for field in research_fields%}
                     <div class="form-check dropdown-item">
                         {%set field_id = field.field_name.replace(" ", "-") %}
@@ -130,9 +128,7 @@
         <!-- Type of job -->
         <div class="form-group">
             <label for="">What class of job are you looking to perform on the HPC?</label>
-            <input type="text" id="job-type-text-input" style="border: none; outline: none; width: 200px;">
-            <!-- hidden input which will store the values of what is selected -->
-            <input type="text" id="job-class-values" class="d-none" name="job-class" >
+            <input type="text" id="job-type-text-input" name="job-class" style="border: none; outline: none; width: 200px;">
         </div>
         <div class="form-group">
             <label for="job-type-add-tag">Tag not here? Add yours below.</label>
@@ -232,7 +228,7 @@
         <!-- Software and Libraries -->
     <div class="form-group">
         <label for="software-input">Which scientific libraries or software packages do you need for your job?</label>
-        <input type="text" id="software-text-input" style="border: none; outline: none;">
+        <input type="text" id="software-text-input" name="software" style="border: none; outline: none;">
     </div>
     <div class="form-group">
         <label for="software-libraries-add-tag">Tag not here? Add yours below.</label>

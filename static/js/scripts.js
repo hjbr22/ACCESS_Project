@@ -1,8 +1,3 @@
-
-
-// rps for graphical jobs
-const graphicalRps = ['ACES', 'Bridges-2', 'DARWIN', 'Delta', 'Expanse', 'FASTER', 'KyRIC', 'Stampede-2']
-
 // memory
 const RPmemory = {'less-than-64':['ACES', 'Anvil', 'Bridges-2', 'DARWIN', 'Delta', 'Expanse', 'FASTER', 'Jetstream2',
                'OOKAMI', 'KyRIC', 'Rockfish', 'Stampede-2', 'Open Science Grid'],
@@ -33,18 +28,18 @@ $(document).ready(function(){
 
     // // calculate scores when the form is submitted
     $("#submit-form").on("click", function(){
-        form = document.getElementById("recommendation-form")
-        formData = new FormData(form)
+        var form = document.getElementById("recommendation-form")
         var formIsValid = validateForm();
-        if (formIsValid){
+        if (1){
+            let formData = get_form_data(form);
             calculate_score(formData).then(function(recommendation){
                 display_score(recommendation);
                 openModal();
             }).catch(function(error){
                 console.log("error when calculating score: ", error)
             })
+            form.reset()
         }
-        form.reset()
     })
 
     $('input[name="hpc-use"]').change(function() {
@@ -74,6 +69,16 @@ function display_score(score){
             </label>`
         )
         )
+}
+
+function get_form_data(form){
+    let formData = new FormData(form)
+    let softwareTagValues = softwareTagify.value.map(tag => tag.value)
+    formData.set('software', softwareTagValues)
+    let jobTagValues = jobTagify.value.map(tag=>tag.value)
+    formData.set('job-class',jobTagValues)
+
+    return formData
 }
 
 function calculate_score(formData){
@@ -132,7 +137,6 @@ function validateForm() {
             }
         }
     });
-  
     return valid;
 }
 

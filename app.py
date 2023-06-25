@@ -31,12 +31,8 @@ def get_software():
 
 @app.route("/get_score", methods=['POST'])
 def get_score():
-    print("hello")
     data = request.get_json()
-    print(data)
-    print(f"software data: {data['software']}, software data length: {len(data['software'])}, does it exist: {bool(data['software'])}")
     recommendations = get_recommendations(data)
-    print(recommendations)
     return json.dumps(recommendations)
     # return redirect(url_for('recommender_page',recommendations=recommendations))
 

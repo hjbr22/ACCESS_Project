@@ -87,7 +87,6 @@ def calculate_score_software(softwareList,scoreBoard):
     return: returns the updated scoreboard
     """
     # Set the parameters used to filter the table
-    print(softwareList)
     filter = []
     for software in softwareList:
         filter.append((Software.software_name == f"{software}"))
@@ -101,7 +100,6 @@ def calculate_score_software(softwareList,scoreBoard):
     for row in rpWithSoftware:
         rp = row.rp.name
         suitability = row.suitability
-        print(rp, row.software.software_name)
         if rp in scoreBoard:
             scoreBoard[rp] = calculate_points(scoreBoard[rp],suitability)
         else:
@@ -141,7 +139,7 @@ def classify_rp_storage(storageType):
 
 def get_recommendations(formData):
     scoreBoard = {}
-    
+    yes = '1'
     # If user has not used an hpc before
     if formData.get("hpc-use") == '0':
         rpsWithGui = RpGUI.select()
@@ -185,8 +183,6 @@ def get_recommendations(formData):
         if (longTermStorageNeeded != "unsure" and longTermStorageNeeded) :
             storageType = "long-term"
             classifiedRpsLt = classify_rp_storage(storageType)
-            print("here I am ", classifiedRpsLt)
-            print(longTermStorageNeeded)
             for rp in classifiedRpsLt[longTermStorageNeeded]:
                 if rp in scoreBoard:
                     scoreBoard[rp] = calculate_points(scoreBoard[rp])
@@ -217,7 +213,7 @@ def get_recommendations(formData):
     # Graphics
     graphicsNeeded = formData.get("graphics")
     # TODO: add scoring after the graphics data has been added to the db
-    if graphicsNeeded == '1':
+    if graphicsNeeded == yes:
         graphicalRps = RPS.select().where(RPS.graphical > 0)
         for rp in graphicalRps:
             suitability = rp.graphical
@@ -229,7 +225,7 @@ def get_recommendations(formData):
     # CPU and GPU in parallel
     CpuGpuParallelNeeded = formData.get("cpu-gpu-parallel")
     if (CpuGpuParallelNeeded and int(CpuGpuParallelNeeded) != 0):
-        parallelRPs = RPS.select().where(RPS.parallel==True)
+        parallelRPs = RPS.select().where(RPS.parallel > 0)
         parallelRpNames = [rp.name for rp in parallelRPs]
 
         for rp in parallelRpNames:
@@ -242,13 +238,19 @@ def get_recommendations(formData):
     # Job needs to be running always
     # TODO: add scoring after relevant data has been added to the db
     alwaysRunningNeeded = formData.get("always-running")
-    if alwaysRunningNeeded:
-        pass
+    if alwaysRunningNeeded == yes:
+        arRps = RPS.select().where(RPS.always_running > 0)
+        arRpsNames = [rp.name for rp in arRps]
+        for rp in arRpsNames:
+            if rp in scoreBoard:
+                scoreBoard[rp] = calculate_points(scoreBoard[rp])
+            else:
+                scoreBoard[rp] = 1  
 
     # Virtual machine
     # TODO: add scoring after relevant data has been added to the db
     VmNeeded = formData.get("vm")
-    if VmNeeded == '1':
+    if VmNeeded == yes:
         vmRps = RPS.select().where(RPS.virtual_machine > 0)
         for rp in vmRps:
             suitability = rp.virtual_machine
