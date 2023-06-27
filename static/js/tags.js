@@ -9,7 +9,13 @@ var softwareWhitelist = getSoftwareWhitelist();
 var jobInput = document.querySelector("input[id=job-type-text-input]");
 jobTagify = new Tagify (jobInput, {
     enforceWhitelist: true,
-    whitelist: []
+    whitelist: [],
+    editTags:{
+        keepInvalidTags: false,
+        },
+    dropdown:{
+        enabled:2
+        }
 })
 
 //Find user input in software question

@@ -1,14 +1,15 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for
 import json
 from models.rps import RPS
 from models.researchField import ResearchFields
 from models.jobClass import JobClass
 from models.software import Software
+from logic.recommendation import get_recommendations
 
 app = Flask(__name__)
 
 @app.route("/")
-def hello_world():
+def recommender_page():
 
     rps = RPS.select()
     research_fields = ResearchFields.select().order_by(ResearchFields.field_name)
@@ -24,9 +25,16 @@ def get_job_classes():
 @app.route("/get_software")
 def get_software():
     softwares = Software.select().order_by(Software.software_name)
-    softwares_and_versions = [f"{software.software_name} {software.version}" for software in softwares]
+    softwares_and_versions = [f"{software.software_name}" for software in softwares]
 
     return softwares_and_versions
+
+@app.route("/get_score", methods=['POST'])
+def get_score():
+    data = request.get_json()
+    recommendations = get_recommendations(data)
+    return json.dumps(recommendations)
+    # return redirect(url_for('recommender_page',recommendations=recommendations))
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=8080)

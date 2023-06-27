@@ -30,7 +30,6 @@
 </head>
 
 
-<!-- add header -->
 <!-- Image and text -->
 <nav class="navbar navbar-light bg-light">
     <a class="navbar-brand" href="#">
@@ -38,7 +37,7 @@
       ACCESS Recommendation System
     </a>
 </nav>
-<form onsubmit="return false" class="needs-validation" novalidate>
+<form class="needs-validation" id="recommendation-form" novalidate>
 <div class="container">
     <div class="row">
     <div class="col-sm-6">
@@ -77,11 +76,10 @@
         <label for="">Select the HPCs you have experience with:</label>
         {% for rp in rps %}
         <div class="form-check">
-            <input class="form-check-input used-rps" type="checkbox" id="{{rp.name}}-option-rp" value="{{rp.name}}">
+            <input class="form-check-input used-rps" name="used-hpc" type="checkbox" id="{{rp.name}}-option-rp" value="{{rp.name}}">
             <label class="form-check-label" for="{{rp.name}}-option-rp">{{rp.name}}</label>
         </div>
         {%endfor%}
-            <!-- The options are added in javascript -->
     </div>
         <!-- Experience using HPC -->
     <div class="form-group hide-hpc d-none">
@@ -111,11 +109,10 @@
             <div class="dropdown-menu" id="field-dropdown-options" aria-labelledby="field-button">
                 <input class="form-control" id="field-dropdown-search" type="text">
                 <div class="dropdown-divider"></div>
-                    <!-- The options are added in javascript -->
                     {% for field in research_fields%}
                     <div class="form-check dropdown-item">
                         {%set field_id = field.field_name.replace(" ", "-") %}
-                        <input class="form-check-input" type="checkbox" id="{{field_id}}-option" value="{{field.field_name}}">
+                        <input class="form-check-input" name="research-field" type="checkbox" id="{{field_id}}-option" value="{{field.field_name}}">
                         <label class="form-check-label" for="{{field_id}}-option">{{field.field_name}}</label> 
                     </div>
                     {%endfor%}
@@ -131,7 +128,7 @@
         <!-- Type of job -->
         <div class="form-group">
             <label for="">What class of job are you looking to perform on the HPC?</label>
-            <input type="text" id="job-type-text-input" style="border: none; outline: none; width: 200px;">
+            <input type="text" id="job-type-text-input" name="job-class" style="border: none; outline: none; width: 200px;">
         </div>
         <div class="form-group">
             <label for="job-type-add-tag">Tag not here? Add yours below.</label>
@@ -161,7 +158,7 @@
         <!-- File count -->
     <div class="form-group hide-data d-none">
         <label for="file-count">How many files?</label>
-        <input type="number" class="form-control">
+        <input type="number" name="num-files" class="form-control">
     </div>
         <!-- Long-Term Storage -->
     <div class="form-group hide-data d-none">
@@ -231,7 +228,7 @@
         <!-- Software and Libraries -->
     <div class="form-group">
         <label for="software-input">Which scientific libraries or software packages do you need for your job?</label>
-        <input type="text" id="software-text-input" style="border: none; outline: none;">
+        <input type="text" id="software-text-input" name="software" style="border: none; outline: none;">
     </div>
     <div class="form-group">
         <label for="software-libraries-add-tag">Tag not here? Add yours below.</label>
@@ -320,6 +317,7 @@
               </button>
             </div>
             <div class="modal-body" id="rpScore">
+                {{recommendations}}
                 <!-- scores are calculated in scripts.js-->
             </div>
             <div class="modal-footer">
