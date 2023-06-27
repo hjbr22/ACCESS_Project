@@ -153,6 +153,10 @@ $(document).ready(function(){
             calculate_score();
             openModal();
         }
+        else
+        {
+            alert("Please fill out all of the required fields");
+        }
     })
 
     $('input[name="hpc-use"]').change(function() {
