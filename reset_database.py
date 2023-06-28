@@ -9,6 +9,8 @@ from models.rpSoftware import RpSoftware
 from models.gui import GUI
 from models.rpGUI import RpGUI
 from parse_modules import get_modules_and_versions
+import glob #for reading the text files
+import os
 
 db.connect()
 
@@ -237,26 +239,36 @@ for gui in list(rpGUI_together.keys()):
 print("Adding the GUI to the RP list")
 RpGUI.insert_many(rpGui).on_conflict_replace().execute()
 
-#stampede modules
+#Accessing all of the module text files and putting them into their respective arrays
 
-stampedeFile = "stampede_available_modules.txt"
+os.chdir('softwares')
 
-stampedeModules = get_modules_and_versions(stampedeFile)
-
-#add modules to db
-
+modules = glob.glob('*.txt')
 software = []
-for mod in stampedeModules:
-    software.append({"software_name":mod[0],
-                        "version":mod[1]})
+
+for name in modules:
+    parsed = get_modules_and_versions(modules[name])
+    #add modules to db
+    for mod in parsed:
+        software.append({"software_name":mod[0],
+                            "version":mod[1]})
 
 print("Adding Software")
 Software.insert_many(software).on_conflict_replace().execute()
 
-#associate modules with stampede
+#associate modules with specific RP
 
-stampede_mod = []
-for mod in stampedeModules:
+stampede_mod, aces_mod, anvil_mod, bridges_mod, darwin_mod, delta_mod, faster_mod, jetstream_mod = []
+aces_parsed = get_modules_and_versions(modules[0])
+anvil_parsed = get_modules_and_versions(modules[1])
+bridges_parsed = get_modules_and_versions(modules[2])
+darwin_parsed = get_modules_and_versions(modules[3])
+delta_parsed = get_modules_and_versions(modules[4])
+faster_parsed = get_modules_and_versions(modules[5])
+jetstream_mod = get_modules_and_versions(modules[6])
+stampede_parsed = get_modules_and_versions(modules[7])
+
+for mod in stampede_parsed:
     stampede_mod.append({"rp":RPS.get(RPS.name=="Stampede-2"),
                         "software": Software.get(Software.software_name==mod[0], Software.version==mod[1]),
                         "suitability":1})
