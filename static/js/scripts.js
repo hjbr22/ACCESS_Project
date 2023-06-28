@@ -28,12 +28,12 @@ $(document).ready(function(){
     // // calculate scores when the form is submitted
     $("#submit-form").on("click", function(){
         var form = document.getElementById("recommendation-form")
-        var formIsValid = validateForm();
         if (1){
             let formData = get_form_data(form);
             calculate_score(formData).then(function(recommendation){
                 display_score(recommendation);
-                openModal();
+                find_top_three(recommendation);
+                openModal(recommendation);
             }).catch(function(error){
                 console.log("error when calculating score: ", error)
             })
@@ -110,7 +110,8 @@ function calculate_score(formData){
                 reject(error)
             }
         });
-    });    
+    }); 
+       
 }
 
 function validateForm() {
@@ -139,12 +140,13 @@ function validateForm() {
     return valid;
 }
 
-function find_top_three(scores){
-    var topThree = [];
 
-    for (var rp in scores) {
-    if (scores.hasOwnProperty(rp)) {
-        var score = scores[rp];
+function find_top_three(scores){
+    var parsedScores =JSON.parse(scores);
+    var topThree=[];
+    for (var rp in parsedScores) {
+    if (parsedScores.hasOwnProperty(rp)) {
+        var score = parsedScores[rp];
         topThree.push({ name: rp, score: score });
     }
     }
@@ -167,7 +169,6 @@ function find_top_three(scores){
 //function to show modal upon clicking submit button
 function openModal() {
     $("#submitModal").modal("show");
-    find_top_three(rpScores);
 }
 
 //Listen to modal boxes for clicks. Expands upon clicks.
