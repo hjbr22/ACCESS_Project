@@ -77,7 +77,6 @@ $(document).ready(function(){
             $(this).toggle(($(this).text().toLowerCase().indexOf(value)>-1))
         })
     })
-
     //Event listeners for job and software tags
     jobTagify.on('input', jobTagInput);
     softwareTagify.on('input', softwareTagInput);
@@ -92,7 +91,7 @@ $(document).ready(function(){
         var formIsValid = validateForm();
         if (formIsValid){
             calculate_score();
-            openModal();
+            openModal();     
         }
     })
 
@@ -131,6 +130,8 @@ function display_score(){
 
 function calculate_score(){
 
+    var selectedField = '';
+    var supportingRps = '';
     //scores are reinitialized to 0 each time scores are caculated
     rpScores = {'ACES':0, 'Anvil':0, 'Bridges-2':0, 'DARWIN':0, 'Delta':0, 'Expanse':0, 'FASTER':0, 'Jetstream2':0,
         'OOKAMI':0, 'KyRIC':0, 'Rockfish':0, 'Stampede-2':0, 'RANCH':0, 'Open Science Grid':0, 'Open Storage Network':0}
@@ -282,7 +283,60 @@ function validateForm() {
     return valid;
 }
 
+function find_top_three(scores){
+    var topThree = [];
+
+    for (var rp in scores) {
+    if (scores.hasOwnProperty(rp)) {
+        var score = scores[rp];
+        topThree.push({ name: rp, score: score });
+    }
+    }
+
+    topThree.sort(function(a, b) {
+    return b.score - a.score;
+    });
+
+    topThree = topThree.slice(0, 3);
+    $('#box1-name').text(topThree[0].name);
+    $('#score1').text(topThree[0].score);
+  
+    $('#box2-name').text(topThree[1].name);
+    $('#score2').text(topThree[1].score);
+  
+    $('#box3-name').text(topThree[2].name);
+    $('#score3').text(topThree[2].score);
+    console.log('text set')
+}
 //function to show modal upon clicking submit button
 function openModal() {
     $("#submitModal").modal("show");
+    find_top_three(rpScores);
 }
+
+//Listen to modal boxes for clicks. Expands upon clicks.
+var boxes = document.querySelectorAll('.box');
+boxes.forEach(function(box) {
+    box.addEventListener('click', function() {
+      console.log('Box clicked!');
+      this.classList.toggle('expand');
+  
+      // Update the top margin of score2 based on the "expand" state
+      if (box.id === 'box1') {
+        console.log('Found score2');
+        document.getElementById('score2').style.marginTop = this.classList.contains('expand') ? '180px' : '65px';
+        document.getElementById('score3').style.marginTop = this.classList.contains('expand') ? '225px' : '110px';
+        if (document.getElementById('box2').classList.contains('expand')){
+          document.getElementById('score3').style.marginTop = this.classList.contains('expand') ? '340px' : '225px';
+        }
+      }
+      else if (box.id ==='box2'){
+        if (document.getElementById('box1').classList.contains('expand')){
+          document.getElementById('score3').style.marginTop = this.classList.contains('expand') ? '340px' : '225px';
+        }
+        else{
+          document.getElementById('score3').style.marginTop = this.classList.contains('expand') ? '225px' : '110px';
+        }
+      }
+      });
+    });
