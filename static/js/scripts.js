@@ -65,7 +65,7 @@ const RPmemory = {'less-than-64':['ACES', 'Anvil', 'Bridges-2', 'DARWIN', 'Delta
 let rpScores = {'ACES':0, 'Anvil':0, 'Bridges-2':0, 'DARWIN':0, 'Delta':0, 'Expanse':0, 'FASTER':0, 'Jetstream2':0,
 'OOKAMI':0, 'KyRIC':0, 'Rockfish':0, 'Stampede-2':0, 'RANCH':0, 'Open Science Grid':0, 'Open Storage Network':0}
 
-//Load tags.js into this file
+//Load necessary variables and functions from tags.js into this file
 import {jobTagify, softwareTagify, jobTagInput, softwareTagInput} from "./tags.js"
 
 $(document).ready(function(){ 
@@ -93,6 +93,7 @@ $(document).ready(function(){
         if (formIsValid){
             calculate_score();
             openModal();
+            console.log("job tags: ", jobTagify)
         }
     })
 
