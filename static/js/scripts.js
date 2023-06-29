@@ -5,9 +5,6 @@ const RPmemory = {'less-than-64':['ACES', 'Anvil', 'Bridges-2', 'DARWIN', 'Delta
      'more-than-512':['KyRIC', 'Jetstream2', 'Bridges-2', 'Delta', 'DARWIN', 'Expanse', 'Rockfish'],
      'unsure':[]}
 
-
-//Load tags.js into this file
-import {jobTagify, softwareTagify, jobTagInput, softwareTagInput} from "./tags.js"
 $(document).ready(function(){ 
 
     // search the field of research dropdown
@@ -17,10 +14,6 @@ $(document).ready(function(){
             $(this).toggle(($(this).text().toLowerCase().indexOf(value)>-1))
         })
     })
-
-    //Event listeners for job and software tags
-    jobTagify.on('input', jobTagInput);
-    softwareTagify.on('input', softwareTagInput);
 
     // show the scores
     display_score()
