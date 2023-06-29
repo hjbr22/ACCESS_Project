@@ -247,7 +247,7 @@ modules = glob.glob('*.txt')
 software = []
 
 for name in modules:
-    parsed = get_modules_and_versions(modules[name])
+    parsed = get_modules_and_versions(name)
     #add modules to db
     for mod in parsed:
         software.append({"software_name":mod[0],
@@ -258,15 +258,74 @@ Software.insert_many(software).on_conflict_replace().execute()
 
 #associate modules with specific RP
 
-stampede_mod, aces_mod, anvil_mod, bridges_mod, darwin_mod, delta_mod, faster_mod, jetstream_mod = []
+stampede_mod =[]
+aces_mod = []
+anvil_mod = []
+bridges_mod = []
+darwin_mod= []
+delta_mod = []
+faster_mod= []
+jetstream_mod = []
+
+
 aces_parsed = get_modules_and_versions(modules[0])
 anvil_parsed = get_modules_and_versions(modules[1])
 bridges_parsed = get_modules_and_versions(modules[2])
 darwin_parsed = get_modules_and_versions(modules[3])
 delta_parsed = get_modules_and_versions(modules[4])
 faster_parsed = get_modules_and_versions(modules[5])
-jetstream_mod = get_modules_and_versions(modules[6])
+jetstream_parsed = get_modules_and_versions(modules[6])
 stampede_parsed = get_modules_and_versions(modules[7])
+
+
+for mod in aces_parsed:
+    aces_mod.append({"rp":RPS.get(RPS.name=="ACES"),
+                        "software": Software.get(Software.software_name==mod[0], Software.version==mod[1]),
+                        "suitability":1})
+print("Associating ACES and software")
+RpSoftware.insert_many(aces_mod).on_conflict_replace().execute()
+
+for mod in anvil_parsed:
+    anvil_mod.append({"rp":RPS.get(RPS.name=="Anvil"),
+                        "software": Software.get(Software.software_name==mod[0], Software.version==mod[1]),
+                        "suitability":1})
+print("Associating Anvil and software")
+RpSoftware.insert_many(anvil_mod).on_conflict_replace().execute()
+
+for mod in bridges_parsed:
+    bridges_mod.append({"rp":RPS.get(RPS.name=="Bridges-2"),
+                        "software": Software.get(Software.software_name==mod[0], Software.version==mod[1]),
+                        "suitability":1})
+print("Associating Bridges and software")
+RpSoftware.insert_many(bridges_mod).on_conflict_replace().execute()
+
+for mod in darwin_parsed:
+    darwin_mod.append({"rp":RPS.get(RPS.name=="DARWIN"),
+                        "software": Software.get(Software.software_name==mod[0], Software.version==mod[1]),
+                        "suitability":1})
+print("Associating DARWIN and software")
+RpSoftware.insert_many(darwin_mod).on_conflict_replace().execute()
+
+for mod in delta_parsed:
+    delta_mod.append({"rp":RPS.get(RPS.name=="Delta"),
+                        "software": Software.get(Software.software_name==mod[0], Software.version==mod[1]),
+                        "suitability":1})
+print("Associating Delta and software")
+RpSoftware.insert_many(delta_mod).on_conflict_replace().execute()
+
+for mod in faster_parsed:
+    faster_mod.append({"rp":RPS.get(RPS.name=="FASTER"),
+                        "software": Software.get(Software.software_name==mod[0], Software.version==mod[1]),
+                        "suitability":1})
+print("Associating FASTER and software")
+RpSoftware.insert_many(faster_mod).on_conflict_replace().execute()
+
+for mod in jetstream_parsed:
+    jetstream_mod.append({"rp":RPS.get(RPS.name=="Jetstream2"),
+                        "software": Software.get(Software.software_name==mod[0], Software.version==mod[1]),
+                        "suitability":1})
+print("Associating Jetstream2 and software")
+RpSoftware.insert_many(jetstream_mod).on_conflict_replace().execute()
 
 for mod in stampede_parsed:
     stampede_mod.append({"rp":RPS.get(RPS.name=="Stampede-2"),
@@ -274,5 +333,7 @@ for mod in stampede_parsed:
                         "suitability":1})
 print("Associating Stampede and software")
 RpSoftware.insert_many(stampede_mod).on_conflict_replace().execute()
+
+
 
 db.close()
