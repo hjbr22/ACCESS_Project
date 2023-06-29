@@ -14,15 +14,26 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
+    <!-- Tagify-->
+    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css">
+
+    <!-- tagify script file -->
+    <script type="module" src="../static/js/tags.js"></script>
+
     <!-- javascript file -->
-    <script src="../static/js/scripts.js"></script>
+    <script type="module" src="../static/js/scripts.js"></script>
 
     <!-- CSS file -->
     <link rel="stylesheet" type="text/css" href="../static/css/main.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/modal.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 
 
-<!-- add header -->
 <!-- Image and text -->
 <nav class="navbar navbar-light bg-light">
     <a class="navbar-brand" href="#">
@@ -30,7 +41,7 @@
       ACCESS Recommendation System
     </a>
 </nav>
-<form onsubmit="return false" class="needs-validation" novalidate>
+<form class="needs-validation" id="recommendation-form" novalidate>
 <div class="container">
     <div class="row">
     <!-- Question 1 -->
@@ -69,11 +80,10 @@
         <label for="">Select the HPCs you have experience with:</label>
         {% for rp in rps %}
         <div class="form-check">
-            <input class="form-check-input used-rps" type="checkbox" id="{{rp.name}}-option-rp" value="{{rp.name}}">
+            <input class="form-check-input used-rps" name="used-hpc" type="checkbox" id="{{rp.name}}-option-rp" value="{{rp.name}}">
             <label class="form-check-label" for="{{rp.name}}-option-rp">{{rp.name}}</label>
         </div>
         {%endfor%}
-            <!-- The options are added in javascript -->
     </div>
         <!-- Experience using HPC -->
     <div class="form-group hide-hpc d-none">
@@ -103,11 +113,10 @@
             <div class="dropdown-menu" id="field-dropdown-options" aria-labelledby="field-button">
                 <input class="form-control" id="field-dropdown-search" type="text">
                 <div class="dropdown-divider"></div>
-                    <!-- The options are added in javascript -->
                     {% for field in research_fields%}
                     <div class="form-check dropdown-item">
                         {%set field_id = field.field_name.replace(" ", "-") %}
-                        <input class="form-check-input" type="checkbox" id="{{field_id}}-option" value="{{field.field_name}}">
+                        <input class="form-check-input" name="research-field" type="checkbox" id="{{field_id}}-option" value="{{field.field_name}}">
                         <label class="form-check-label" for="{{field_id}}-option">{{field.field_name}}</label> 
                     </div>
                     {%endfor%}
@@ -121,19 +130,15 @@
     </div>
     <!-- Question 3 -->
         <!-- Type of job -->
-    <div class="form-group">
-        <label for="">What class of job are you looking to perform on the HPC?</label>
-        <div id="job-type-tag-input" class="form-control">
-            <div id="job-type-tag-container" style="display: inline-block;"></div>
-            <input type="text" id="job-type-text-input" style="border: none; outline: none; width: 200px;">
+        <div class="form-group">
+            <label for="">What class of job are you looking to perform on the HPC?</label>
+            <input type="text" id="job-type-text-input" name="job-class" style="border: none; outline: none; width: 200px;">
         </div>
-        <!-- <div id="job-type-tag-container"></div> -->
-    </div>
-    <div class="form-group">
-        <label for="job-type-add-tag">Tag not here? Add yours below.</label>
-        <input id="job-type-add-tag" class="form-control" type="text">
-    </div>
-    <!-- Question 4 -->
+        <div class="form-group">
+            <label for="job-type-add-tag">Tag not here? Add yours below.</label>
+            <input id="job-type-add-tag" class="form-control" type="text">
+        </div>
+    <!-- Question 4 --> 
         <!-- Data Storage -->
     <div class="form-group">
         <label for="">Do you need to store any data on the RP? *</label>
@@ -157,7 +162,7 @@
         <!-- File count -->
     <div class="form-group hide-data d-none">
         <label for="file-count">How many files?</label>
-        <input type="number" class="form-control">
+        <input type="number" name="num-files" class="form-control">
     </div>
         <!-- Long-Term Storage -->
     <div class="form-group hide-data d-none">
@@ -227,10 +232,7 @@
         <!-- Software and Libraries -->
     <div class="form-group">
         <label for="software-input">Which scientific libraries or software packages do you need for your job?</label>
-        <div id="software-tag-input" class="form-control">
-            <div id="software-tag-container" style="display: inline-block;"></div>
-            <input type="text" id="software-text-input" style="border: none; outline: none;">
-        </div>
+        <input type="text" id="software-text-input" name="software" style="border: none; outline: none;">
     </div>
     <div class="form-group">
         <label for="software-libraries-add-tag">Tag not here? Add yours below.</label>
@@ -313,23 +315,52 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="modalTitle">RP Recommendations</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body" id="rpScore">
-                <!-- scores are calculated in scripts.js-->
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <h5 class="modal-title">Recommendations:</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </div>
+              
+              <!-- Modal body -->
+              <div class="modal-body">
+                <div class="box" id ="box1">
+                  <div class="box-content">
+                  <h3 class="box-title" id='box1-name'></h3>
+                  <div class="tags-container"></div>
+                  </div>
+                  <span class="caret"><i class="fas fa-caret-down"></i></span>
+                </div>
+                <div class="box" id="box2">
+                  <div class="box-content">
+                  <h3 class="box-title" id='box2-name'></h3>
+                  <div class="tags-container"></div>
+                  </div>
+                  <span class="caret"><i class="fas fa-caret-down"></i></span>
+                  
+                </div>
+                <div class="box" id='box3'>
+                  <div class="box-content">
+                  <h3 class="box-title" id='box3-name'></h3>
+                  <div class="tags-container"></div>
+                  </div>
+                  <span class="caret"><i class="fas fa-caret-down"></i></span>
+                </div>
+          <div class="score-container">
+            <p class="score-title">Score</p>
+              <div class="score-column">
+                <span class="score" id='score1'></span>
+                <span class="score" id="score2"></span>
+                <span class="score" id="score3"></span>
+              </div>
+          </div>
+              
+              <!-- Modal footer -->
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
             </div>
           </div>
         </div>
       </div>
     <!-- Submit button trigger modal-->
     <button type="button" class="btn btn-primary" id="submit-form">Submit</button>
-    </div>
-    </div>
 </div>
 </form>
