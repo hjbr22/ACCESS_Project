@@ -39,6 +39,10 @@ $(document).ready(function(){
             })
             form.reset()
         }
+        else
+        {
+            alert("Please fill out all of the required fields");
+        }
     })
 
     $('input[name="hpc-use"]').change(function() {
