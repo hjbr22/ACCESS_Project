@@ -114,33 +114,7 @@ function calculate_score(formData){
        
 }
 
-function validateForm() {
-    var valid = 1;
-
-    //Find elements based on required attribute
-    var reqFields = $("[required]")
-    
-    reqFields.each(function(){
-        //Find name for those elements
-        var name = $(this).attr("name");
-        
-        //Find values from those names if name exists, otherwise
-        //directly check value. If value on required question is
-        //undefined, set valid to 0 and display error message.
-        if (name){
-            if ($(`input[name=${name}]:checked`).val() == undefined){
-                valid = 0;
-            }
-        }else{
-            if (!$(this).val()){
-                valid = 0;
-            }
-        }
-    });
-    return valid;
-}
-
-
+//function to parse JSON data a create a list of top three recommendations
 function find_top_three(scores){
     var parsedScores =JSON.parse(scores);
     var topThree=[];
@@ -164,7 +138,7 @@ function find_top_three(scores){
   
     $('#box3-name').text(topThree[2].name);
     $('#score3').text(topThree[2].score);
-    console.log('text set')
+    console.log('Text set')
 }
 //function to show modal upon clicking submit button
 function openModal() {
@@ -178,9 +152,8 @@ boxes.forEach(function(box) {
       console.log('Box clicked!');
       this.classList.toggle('expand');
   
-      // Update the top margin of score2 based on the "expand" state
+      // Update the top margin of score2 and 3 based on the "expand" state
       if (box.id === 'box1') {
-        console.log('Found score2');
         document.getElementById('score2').style.marginTop = this.classList.contains('expand') ? '180px' : '65px';
         document.getElementById('score3').style.marginTop = this.classList.contains('expand') ? '225px' : '110px';
         if (document.getElementById('box2').classList.contains('expand')){
