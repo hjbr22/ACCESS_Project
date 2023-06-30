@@ -3,7 +3,11 @@ const RPmemory = {'less-than-64':['ACES', 'Anvil', 'Bridges-2', 'DARWIN', 'Delta
                'OOKAMI', 'KyRIC', 'Rockfish', 'Stampede-2', 'Open Science Grid'],
      '64-512':['Anvil', 'Stampede-2', 'Delta', 'Expanse', 'FASTER', 'Rockfish', 'Bridges-2', 'DARWIN'],
      'more-than-512':['KyRIC', 'Jetstream2', 'Bridges-2', 'Delta', 'DARWIN', 'Expanse', 'Rockfish'],
-     'unsure':[]}
+     'unsure':[]};
+
+//Import tagify objects for event listeners     
+import { jobTagify, softwareTagify, jobNoMatches, softwareNoMatches, hideAddJob, showAddJob, hideAddSoftware, showAddSoftware } from "./tags.js";
+
 
 $(document).ready(function(){ 
 
@@ -13,7 +17,17 @@ $(document).ready(function(){
         $("#field-dropdown-options .dropdown-item").filter(function(){
             $(this).toggle(($(this).text().toLowerCase().indexOf(value)>-1))
         })
-    })
+    });
+
+    jobTagify.on("dropdown:noMatch", jobNoMatches)
+    .on("add", hideAddJob)
+    .on("remove", showAddJob);
+
+    
+
+    softwareTagify.on("dropdown:noMatch", softwareNoMatches)
+    .on("add", hideAddSoftware)
+    .on("remove", showAddSoftware);
 
     // show the scores
     display_score()
@@ -35,6 +49,7 @@ $(document).ready(function(){
         }
     })
 
+    //Show RPs if user has experience
     $('input[name="hpc-use"]').change(function() {
         if ($(this).val() === '1') {
           $('.hide-hpc').removeClass('d-none').show();
@@ -42,6 +57,7 @@ $(document).ready(function(){
           $('.hide-hpc').addClass('d-none').hide();
         }
       });
+    //Show storage questions if user needs storage
     $('input[name="storage"]').change(function() {
         if ($(this).val() === '1') {
           $('.hide-data').removeClass('d-none').show();
