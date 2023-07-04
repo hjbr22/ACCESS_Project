@@ -27,6 +27,10 @@
 
     <!-- CSS file -->
     <link rel="stylesheet" type="text/css" href="../static/css/main.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/modal.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 
 
@@ -40,18 +44,18 @@
 <form class="needs-validation" id="recommendation-form" novalidate>
 <div class="container">
     <div class="row">
-    <div class="col-sm-6">
     <!-- Question 1 -->
         <!-- HPC USE -->
+    <div class = "col-sm-6">
+        <div style="color:#FF0000;">
+            <label for="" style="font-size: 0.8em;">Required questions are marked with an astrik (*)</label>
+        </div>   
     <div class="form-group">
-        <label for="">Have you used a supercomputer (HPC) before? </label>
+        <label for="">Have you used a supercomputer (HPC) before? *</label>
         <br>
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="hpc-use" id="has-used-hpc" value="1" required>
             <label class="form-check-label" for="has-used-hpc">Yes</label>
-            <div class="invalid-feedback">
-                This question is required
-            </div>
         </div>
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="hpc-use" id="has-not-used-hpc" value="0" required>
@@ -137,7 +141,7 @@
     <!-- Question 4 --> 
         <!-- Data Storage -->
     <div class="form-group">
-        <label for="">Do you need to store any data on the RP?</label>
+        <label for="">Do you need to store any data on the RP? *</label>
         <br>
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="storage" id="storage-needed" value="1" required>
@@ -311,24 +315,52 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="modalTitle">RP Recommendations</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body" id="rpScore">
-                {{recommendations}}
-                <!-- scores are calculated in scripts.js-->
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <h5 class="modal-title">Recommendations:</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </div>
+              
+              <!-- Modal body -->
+              <div class="modal-body">
+                <div class="box" id ="box1">
+                  <div class="box-content">
+                  <h3 class="box-title" id='box1-name'></h3>
+                  <div class="tags-container"></div>
+                  </div>
+                  <span class="caret"><i class="fas fa-caret-down"></i></span>
+                </div>
+                <div class="box" id="box2">
+                  <div class="box-content">
+                  <h3 class="box-title" id='box2-name'></h3>
+                  <div class="tags-container"></div>
+                  </div>
+                  <span class="caret"><i class="fas fa-caret-down"></i></span>
+                  
+                </div>
+                <div class="box" id='box3'>
+                  <div class="box-content">
+                  <h3 class="box-title" id='box3-name'></h3>
+                  <div class="tags-container"></div>
+                  </div>
+                  <span class="caret"><i class="fas fa-caret-down"></i></span>
+                </div>
+          <div class="score-container">
+            <p class="score-title">Score</p>
+              <div class="score-column">
+                <span class="score" id='score1'></span>
+                <span class="score" id="score2"></span>
+                <span class="score" id="score3"></span>
+              </div>
+          </div>
+              
+              <!-- Modal footer -->
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
             </div>
           </div>
         </div>
       </div>
     <!-- Submit button trigger modal-->
     <button type="button" class="btn btn-primary" id="submit-form">Submit</button>
-    </div>
-    </div>
 </div>
 </form>

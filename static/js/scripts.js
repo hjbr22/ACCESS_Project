@@ -26,6 +26,7 @@ $(document).ready(function(){
     softwareTagify.on("dropdown:noMatch", softwareNoMatches)
     .on("add", hideAddSoftware)
     .on("remove", showAddSoftware);
+    });
 
     // show the scores
     display_score()
@@ -34,16 +35,20 @@ $(document).ready(function(){
     // // calculate scores when the form is submitted
     $("#submit-form").on("click", function(){
         var form = document.getElementById("recommendation-form")
-        var formIsValid = validateForm();
         if (1){
             let formData = get_form_data(form);
             calculate_score(formData).then(function(recommendation){
                 display_score(recommendation);
-                openModal();
+                find_top_three(recommendation);
+                openModal(recommendation);
             }).catch(function(error){
                 console.log("error when calculating score: ", error)
             })
             form.reset()
+        }
+        else
+        {
+            alert("Please fill out all of the required fields");
         }
     })
 
@@ -118,36 +123,63 @@ function calculate_score(formData){
                 reject(error)
             }
         });
-    });    
+    }); 
+       
 }
 
-function validateForm() {
-    var valid = 1;
+//function to parse JSON data a create a list of top three recommendations
+function find_top_three(scores){
+    var parsedScores =JSON.parse(scores);
+    var topThree=[];
+    for (var rp in parsedScores) {
+    if (parsedScores.hasOwnProperty(rp)) {
+        var score = parsedScores[rp];
+        topThree.push({ name: rp, score: score });
+    }
+    }
 
-    //Find elements based on required attribute
-    var reqFields = $("[required]")
-    
-    reqFields.each(function(){
-        //Find name for those elements
-        var name = $(this).attr("name");
-        
-        //Find values from those names if name exists, otherwise
-        //directly check value. If value on required question is
-        //undefined, set valid to 0 and display error message.
-        if (name){
-            if ($(`input[name=${name}]:checked`).val() == undefined){
-                valid = 0;
-            }
-        }else{
-            if (!$(this).val()){
-                valid = 0;
-            }
-        }
+    topThree.sort(function(a, b) {
+    return b.score - a.score;
     });
-    return valid;
-}
 
+    topThree = topThree.slice(0, 3);
+    $('#box1-name').text(topThree[0].name);
+    $('#score1').text(topThree[0].score);
+  
+    $('#box2-name').text(topThree[1].name);
+    $('#score2').text(topThree[1].score);
+  
+    $('#box3-name').text(topThree[2].name);
+    $('#score3').text(topThree[2].score);
+    console.log('Text set')
+}
 //function to show modal upon clicking submit button
 function openModal() {
     $("#submitModal").modal("show");
 }
+
+//Listen to modal boxes for clicks. Expands upon clicks.
+var boxes = document.querySelectorAll('.box');
+boxes.forEach(function(box) {
+    box.addEventListener('click', function() {
+      console.log('Box clicked!');
+      this.classList.toggle('expand');
+  
+      // Update the top margin of score2 and 3 based on the "expand" state
+      if (box.id === 'box1') {
+        document.getElementById('score2').style.marginTop = this.classList.contains('expand') ? '180px' : '65px';
+        document.getElementById('score3').style.marginTop = this.classList.contains('expand') ? '225px' : '110px';
+        if (document.getElementById('box2').classList.contains('expand')){
+          document.getElementById('score3').style.marginTop = this.classList.contains('expand') ? '340px' : '225px';
+        }
+      }
+      else if (box.id ==='box2'){
+        if (document.getElementById('box1').classList.contains('expand')){
+          document.getElementById('score3').style.marginTop = this.classList.contains('expand') ? '340px' : '225px';
+        }
+        else{
+          document.getElementById('score3').style.marginTop = this.classList.contains('expand') ? '225px' : '110px';
+        }
+      }
+      });
+    });
