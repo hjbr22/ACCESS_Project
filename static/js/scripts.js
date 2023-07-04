@@ -23,8 +23,6 @@ $(document).ready(function(){
     .on("add", hideAddJob)
     .on("remove", showAddJob);
 
-    
-
     softwareTagify.on("dropdown:noMatch", softwareNoMatches)
     .on("add", hideAddSoftware)
     .on("remove", showAddSoftware);
