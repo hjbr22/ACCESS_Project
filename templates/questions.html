@@ -132,11 +132,11 @@
         <!-- Type of job -->
         <div class="form-group">
             <label for="">What class of job are you looking to perform on the HPC?</label>
-            <input type="text" id="job-type-text-input" name="job-class" style="border: none; outline: none; width: 200px;">
+            <input type="text" id="job-type-text-input">
         </div>
-        <div class="form-group">
-            <label for="job-type-add-tag">Tag not here? Add yours below.</label>
-            <input id="job-type-add-tag" class="form-control" type="text">
+        <div class="form-group hide-add-job d-none">
+            <label for="">Add other job classes: </label>
+            <input id="job-type-add-tag" type="text">
         </div>
     <!-- Question 4 --> 
         <!-- Data Storage -->
@@ -232,11 +232,11 @@
         <!-- Software and Libraries -->
     <div class="form-group">
         <label for="software-input">Which scientific libraries or software packages do you need for your job?</label>
-        <input type="text" id="software-text-input" name="software" style="border: none; outline: none;">
+        <input type="text" id="software-text-input">
     </div>
-    <div class="form-group">
-        <label for="software-libraries-add-tag">Tag not here? Add yours below.</label>
-        <input id="software-libraries-add-tag" class="form-control" type="text">
+    <div class="form-group hide-add-software d-none">
+        <label for="software-libraries-add-tag">Add other softwares/packages:</label>
+        <input id="software-libraries-add-tag" type="text">
     </div>
     <!-- Question 7 -->
         <!-- Graphical -->

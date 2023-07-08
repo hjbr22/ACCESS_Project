@@ -1,31 +1,57 @@
 //Declare tagify variables
 export var jobTagify, softwareTagify;
 
-/*DO NOT USE JQUERY WITH TAGIFY */
-var jobWhitelist = getJobWhitelist();
-var softwareWhitelist = getSoftwareWhitelist();
+/* #################################
+!!! DO NOT USE JQUERY WITH TAGIFY !!! 
+   ################################ */
+
+//Collect whitelist from ajax call
+var jobWhitelist = await getJobWhitelist();
+var softwareWhitelist = await getSoftwareWhitelist();
+
+//Add "Other" option to whitelists
+jobWhitelist.push("Other");
+softwareWhitelist.push("Other");
 
 //Find user input in job class question
 var jobInput = document.querySelector("input[id=job-type-text-input]");
 jobTagify = new Tagify (jobInput, {
     enforceWhitelist: true,
-    whitelist: [],
-    editTags:{
-        keepInvalidTags: false,
-        },
+    whitelist: jobWhitelist,
+    editTags: false,
     dropdown:{
-        enabled:2
+        enabled: 0,
+        maxItems: 10,
+        highlightFirst: true
         }
-})
+});
+
+//Create tagify input for "add job classes" question
+var addJobInput = document.querySelector("input[id=job-type-add-tag]");
+var addJobTagify = new Tagify(addJobInput, {
+    blacklist: jobWhitelist
+});
 
 //Find user input in software question
 var softwareInput = document.querySelector("input[id=software-text-input]");
 softwareTagify = new Tagify (softwareInput, {
     enforceWhitelist: true,
-    whitelist: []
+    whitelist: softwareWhitelist,
+    editTags: false,
+    dropdown: {
+        enabled: 0,
+        maxItems: 10,
+        highlightFirst: true
+    }
 });
 
-// grab whitelist for job class tags from AJAX
+//Create tagify input for "add software/packages" question
+var addSoftwareInput = document.querySelector("input[id=software-libraries-add-tag]");
+var addSoftwareTagify = new Tagify(addSoftwareInput, {
+    blacklist: softwareWhitelist
+});
+
+// grab whitelist for job class tags via AJAX
 async function getJobWhitelist(){
     return await $.ajax({
         type: "GET",
@@ -33,7 +59,7 @@ async function getJobWhitelist(){
     });
 }
 
-// grab whitelist for software tags from AJAX
+// grab whitelist for software tags via AJAX
 async function getSoftwareWhitelist(){
     return await $.ajax({
         type: "GET",
@@ -41,35 +67,36 @@ async function getSoftwareWhitelist(){
     });
 }
 
-
-export async function jobTagInput(){
-    // clear current whitelist
-	jobTagify.settings.whitelist.length = 0; // reset current whitelist
-	// show loader & hide suggestions dropdown (if opened)
-    jobTagify.loading(true).dropdown.hide.call(jobTagify)
-
-	var newWhitelist = await getJobWhitelist();
-
-	// replace tagify "whitelist" array values with new values 
-    // and add back the ones already choses as Tags
-    jobTagify.settings.whitelist.push(...newWhitelist, ...jobTagify.value)
-
-    // render the suggestions dropdown
-    jobTagify.loading(false).dropdown.show.call(jobTagify);
+export function jobNoMatches(){
+    jobTagify.suggestedListItems = ["Other"];
 }
 
-export async function softwareTagInput(){
-    // clear current whitelist
-	softwareTagify.settings.whitelist.length = 0; // reset current whitelist
-	// show loader & hide suggestions dropdown (if opened)
-    softwareTagify.loading(true).dropdown.hide.call(softwareTagify)
+export function softwareNoMatches(){
+    softwareTagify.suggestedListItems = ["Other"];
+}
 
-	var newWhitelist = await getSoftwareWhitelist();
+export function hideAddJob(e){
+    console.log("added tag:", e.detail.data.value);
+    if (e.detail.data.value.toLowerCase() === "other"){
+        $(".hide-add-job").removeClass('d-none').show();
+    }
+}
 
-	// replace tagify "whitelist" array values with new values 
-    // and add back the ones already choses as Tags
-    softwareTagify.settings.whitelist.push(...newWhitelist, ...softwareTagify.value)
+export function showAddJob(e){
+    if (e.detail.data.value.toLowerCase() === "other"){
+        $(".hide-add-job").addClass('d-none').hide()
+    }
+}
 
-    // render the suggestions dropdown
-    softwareTagify.loading(false).dropdown.show.call(softwareTagify);
+export function hideAddSoftware(e){
+    console.log("added tag:", e.detail.data.value);
+    if (e.detail.data.value.toLowerCase() === "other"){
+        $(".hide-add-software").removeClass('d-none').show();
+    }
+}
+
+export function showAddSoftware(e){
+    if (e.detail.data.value.toLowerCase() === "other"){
+        $(".hide-add-software").addClass('d-none').hide()
+    }
 }
