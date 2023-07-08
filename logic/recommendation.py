@@ -161,7 +161,8 @@ def get_recommendations(formData):
                 scoreBoard[rp] = 1
     
     # Research Field
-    researchFieldList = formData.get("research-field")
+    researchFields = formData.get("research-field")
+    researchFieldList = researchFields.split(",")
     if researchFieldList:
         scoreBoard = calculate_score_rf(researchFieldList,scoreBoard)
     
