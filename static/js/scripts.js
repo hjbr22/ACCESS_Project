@@ -26,7 +26,7 @@ $(document).ready(function(){
     softwareTagify.on("dropdown:noMatch", softwareNoMatches)
     .on("add", hideAddSoftware)
     .on("remove", showAddSoftware);
-    });
+
 
     // show the scores
     display_score()

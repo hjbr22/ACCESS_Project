@@ -78,7 +78,6 @@ export function softwareNoMatches(){
 export function hideAddJob(e){
     console.log("added tag:", e.detail.data.value);
     if (e.detail.data.value.toLowerCase() === "other"){
-        console.log("its working")
         $(".hide-add-job").removeClass('d-none').show();
     }
 }
@@ -92,7 +91,6 @@ export function showAddJob(e){
 export function hideAddSoftware(e){
     console.log("added tag:", e.detail.data.value);
     if (e.detail.data.value.toLowerCase() === "other"){
-        console.log("its working")
         $(".hide-add-software").removeClass('d-none').show();
     }
 }
