@@ -6,18 +6,18 @@ const RPmemory = {'less-than-64':['ACES', 'Anvil', 'Bridges-2', 'DARWIN', 'Delta
      'unsure':[]};
 
 //Import tagify objects for event listeners     
-import { jobTagify, softwareTagify, jobNoMatches, softwareNoMatches, hideAddJob, showAddJob, hideAddSoftware, showAddSoftware } from "./tags.js";
+import { jobTagify, softwareTagify, fieldTagify,
+     fieldNoMatches, jobNoMatches, softwareNoMatches,
+     hideAddField, showAddField,
+     hideAddJob, showAddJob,
+    hideAddSoftware, showAddSoftware } from "./tags.js";
 
 
 $(document).ready(function(){ 
 
-    // search the field of research dropdown
-    $("#field-dropdown-search").on("keyup", function(){
-        var value = $(this).val().toLowerCase();
-        $("#field-dropdown-options .dropdown-item").filter(function(){
-            $(this).toggle(($(this).text().toLowerCase().indexOf(value)>-1))
-        })
-    });
+    fieldTagify.on("dropdown:noMatch", fieldNoMatches)
+    .on("add", hideAddField)
+    .on("remove", showAddField);
 
     jobTagify.on("dropdown:noMatch", jobNoMatches)
     .on("add", hideAddJob)
@@ -85,6 +85,8 @@ function display_score(score){
 
 function get_form_data(form){
     let formData = new FormData(form)
+    let fieldTagValues = fieldTagify.value.map(tag => tag.value)
+    formData.set('research-field', fieldTagValues)
     let softwareTagValues = softwareTagify.value.map(tag => tag.value)
     formData.set('software', softwareTagValues)
     let jobTagValues = jobTagify.value.map(tag=>tag.value)
@@ -98,7 +100,7 @@ function calculate_score(formData){
     // get and process data from each input field
     let jsonData = {}
     formData.forEach(function(value,key){
-        if (key == "used-hpc" || key == "research-field"){
+        if (key == "used-hpc"){
             if (!jsonData[key]) {
                 jsonData[key] = [value];
             } else {
