@@ -9,9 +9,11 @@ from models.rpSoftware import RpSoftware
 from models.gui import GUI
 from models.rpGUI import RpGUI
 from parse_modules import get_modules_and_versions
+from rp_modules import organize_modules
+import glob #for reading the text files
+import os
 
 db.connect()
-
 tables = db.get_tables()
 print(f"the tables: {tables}")
 
@@ -237,30 +239,60 @@ for gui in list(rpGUI_together.keys()):
 print("Adding the GUI to the RP list")
 RpGUI.insert_many(rpGui).on_conflict_replace().execute()
 
-#stampede modules
+#Accessing all of the module text files and putting them into their respective arrays
 
-stampedeFile = "stampede_available_modules.txt"
+os.chdir('softwares')
 
-stampedeModules = get_modules_and_versions(stampedeFile)
-
-#add modules to db
-
+modules = glob.glob('*.txt')
 software = []
-for mod in stampedeModules:
-    software.append({"software_name":mod[0],
-                        "version":mod[1]})
+
+for name in modules:
+    parsed = get_modules_and_versions(name)
+    #add modules to db
+    for mod in parsed:
+        #Ignoring duplicates in the software table
+        if Software.select().where(Software.software_name == mod[0]).exists():
+            pass
+        else:
+            software.append({"software_name":mod[0],
+                            "version":mod[1]})
 
 print("Adding Software")
 Software.insert_many(software).on_conflict_replace().execute()
 
-#associate modules with stampede
+#associate modules with specific RP
 
-stampede_mod = []
-for mod in stampedeModules:
-    stampede_mod.append({"rp":RPS.get(RPS.name=="Stampede-2"),
-                        "software": Software.get(Software.software_name==mod[0], Software.version==mod[1]),
-                        "suitability":1})
-print("Associating Stampede and software")
+
+aces_parsed = get_modules_and_versions(modules[0])
+anvil_parsed = get_modules_and_versions(modules[1])
+bridges_parsed = get_modules_and_versions(modules[2])
+darwin_parsed = get_modules_and_versions(modules[3])
+delta_parsed = get_modules_and_versions(modules[4])
+faster_parsed = get_modules_and_versions(modules[5])
+jetstream_parsed = get_modules_and_versions(modules[6])
+stampede_parsed = get_modules_and_versions(modules[7])
+
+stampede_mod = organize_modules(stampede_parsed, "Stampede-2")
+aces_mod = organize_modules(aces_parsed, "ACES")
+anvil_mod = organize_modules(anvil_parsed, "Anvil")
+bridges_mod = organize_modules(bridges_parsed, "Bridges-2")
+darwin_mod= organize_modules(darwin_parsed, "DARWIN")
+delta_mod = organize_modules(delta_parsed, "Delta")
+faster_mod= organize_modules(faster_parsed, "FASTER")
+jetstream_mod = organize_modules(jetstream_parsed, "Jetstream2")
+
+print("Adding Software to RP")
+RpSoftware.insert_many(aces_mod).on_conflict_replace().execute()
+RpSoftware.insert_many(anvil_mod).on_conflict_replace().execute()
+RpSoftware.insert_many(bridges_mod).on_conflict_replace().execute()
+RpSoftware.insert_many(darwin_mod).on_conflict_replace().execute()
+RpSoftware.insert_many(delta_mod).on_conflict_replace().execute()
+RpSoftware.insert_many(faster_mod).on_conflict_replace().execute()
+RpSoftware.insert_many(jetstream_mod).on_conflict_replace().execute()
 RpSoftware.insert_many(stampede_mod).on_conflict_replace().execute()
+
+
+
+
 
 db.close()

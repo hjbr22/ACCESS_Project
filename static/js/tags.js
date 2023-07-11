@@ -1,17 +1,38 @@
 //Declare tagify variables
-export var jobTagify, softwareTagify;
+export var fieldTagify, jobTagify, softwareTagify;
 
 /* #################################
 !!! DO NOT USE JQUERY WITH TAGIFY !!! 
    ################################ */
 
 //Collect whitelist from ajax call
+var fieldWhitelist = await getFieldWhitelist();
 var jobWhitelist = await getJobWhitelist();
 var softwareWhitelist = await getSoftwareWhitelist();
 
 //Add "Other" option to whitelists
+fieldWhitelist.push("Other");
 jobWhitelist.push("Other");
 softwareWhitelist.push("Other");
+
+//Find user input in research field question
+var fieldInput = document.querySelector("input[id=field-text-input]");
+fieldTagify = new Tagify (fieldInput, {
+    enforceWhitelist: true,
+    whitelist: fieldWhitelist,
+    editTags: false,
+    dropdown:{
+        enabled: 0,
+        maxItems: 10,
+        highlightFirst: true
+        }
+});
+
+//Create tagify input for "add research fields" question
+var addFieldInput = document.querySelector("input[id=field-add-tag");
+var addFieldTagify = new Tagify(addFieldInput, {
+    blacklist: fieldWhitelist
+});
 
 //Find user input in job class question
 var jobInput = document.querySelector("input[id=job-type-text-input]");
@@ -51,6 +72,14 @@ var addSoftwareTagify = new Tagify(addSoftwareInput, {
     blacklist: softwareWhitelist
 });
 
+//grab whitelist for research fields tags via AJAX
+async function getFieldWhitelist(){
+    return await $.ajax({
+        type: "GET",
+        url: "/get_research_fields"
+    });
+}
+
 // grab whitelist for job class tags via AJAX
 async function getJobWhitelist(){
     return await $.ajax({
@@ -67,6 +96,10 @@ async function getSoftwareWhitelist(){
     });
 }
 
+export function fieldNoMatches(){
+    fieldTagify.suggestedListItems = ["Other"];
+}
+
 export function jobNoMatches(){
     jobTagify.suggestedListItems = ["Other"];
 }
@@ -75,8 +108,19 @@ export function softwareNoMatches(){
     softwareTagify.suggestedListItems = ["Other"];
 }
 
+export function hideAddField(e){
+    if (e.detail.data.value.toLowerCase() === "other"){
+        $(".hide-add-field").removeClass('d-none').show();
+    }
+}
+
+export function showAddField(e){
+    if (e.detail.data.value.toLowerCase() === "other"){
+        $(".hide-add-field").addClass('d-none').hide()
+    }
+}
+
 export function hideAddJob(e){
-    console.log("added tag:", e.detail.data.value);
     if (e.detail.data.value.toLowerCase() === "other"){
         $(".hide-add-job").removeClass('d-none').show();
     }
@@ -89,7 +133,6 @@ export function showAddJob(e){
 }
 
 export function hideAddSoftware(e){
-    console.log("added tag:", e.detail.data.value);
     if (e.detail.data.value.toLowerCase() === "other"){
         $(".hide-add-software").removeClass('d-none').show();
     }

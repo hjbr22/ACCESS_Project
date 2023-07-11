@@ -31,6 +31,11 @@ def recommender_page():
                            rps = rps, 
                            research_fields = research_fields)
 
+@app.route("/get_research_fields")
+def get_resarch_fields():
+    research_fields = ResearchFields.select().order_by(ResearchFields.field_name)
+    return([field.field_name for field in research_fields])
+
 @app.route("/get_job_classes")
 def get_job_classes():
     job_classes = JobClass.select().order_by(JobClass.class_name)

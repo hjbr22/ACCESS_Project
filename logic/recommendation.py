@@ -178,8 +178,10 @@ def get_recommendations(formData):
         query_logger.info("User Input - Used HPCs:\n%s", formData.get('used-hpc'))
     
     # Research Field
-    researchFieldList = formData.get("research-field")
+    researchFields = formData.get("research-field")
+    researchFieldList = researchFields.split(",")
     query_logger.info("User Input - RP - Fields:\n%s", researchFieldList)
+
     if researchFieldList:
         scoreBoard = calculate_score_rf(researchFieldList,scoreBoard)
     
