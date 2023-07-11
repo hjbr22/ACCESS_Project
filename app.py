@@ -4,9 +4,23 @@ from models.rps import RPS
 from models.researchField import ResearchFields
 from models.jobClass import JobClass
 from models.software import Software
+#from logic.form_logging import log_form_data
 from logic.recommendation import get_recommendations
+import logging
 
 app = Flask(__name__)
+
+#Initialize recommendations logger
+recs_logger = logging.getLogger(__name__)
+
+#Override default logging level
+recs_logger.setLevel('INFO')
+
+#Handler/Formatter for recommendation logs. Send to recs.log with time/name of logger/level/information
+recs_handler = logging.FileHandler("query.log", mode='w')
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+recs_handler.setFormatter(formatter)
+recs_logger.addHandler(recs_handler)
 
 @app.route("/")
 def recommender_page():
@@ -32,7 +46,9 @@ def get_software():
 @app.route("/get_score", methods=['POST'])
 def get_score():
     data = request.get_json()
+    #log_form_data(data)
     recommendations = get_recommendations(data)
+    #recs_logger.info("Recommendations: %s", recommendations)
     return json.dumps(recommendations)
     # return redirect(url_for('recommender_page',recommendations=recommendations))
 
