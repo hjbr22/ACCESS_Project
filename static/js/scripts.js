@@ -28,14 +28,12 @@ $(document).ready(function(){
     .on("remove", showAddSoftware);
 
 
-    // show the scores
-    display_score()
-
-
     // // calculate scores when the form is submitted
+    
     $("#submit-form").on("click", function(){
         var form = document.getElementById("recommendation-form")
-        if (1){
+        let formIsValid = validateForm() 
+        if (formIsValid){
             let formData = get_form_data(form);
             calculate_score(formData).then(function(recommendation){
                 display_score(recommendation);
@@ -48,8 +46,21 @@ $(document).ready(function(){
         }
         else
         {
-            alert("Please fill out all of the required fields");
+            $("#alert-div").append(
+                `<div class="alert alert-danger alert-dismissible fade show" id="alert" role="alert">
+                    Please fill out all of the required fields
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>`
+            )
+            $("#alert").fadeTo(2000, 500).slideUp(500, function(){
+                $("#alert").slideUp(500);
+                $("#alert").alert('close')
+            });
+            $('html,body').animate({scrollTop:0},'fast')
         }
+        return false
     })
 
     //Show RPs if user has experience
@@ -72,6 +83,46 @@ $(document).ready(function(){
       });
 
 });
+
+function validateForm() {
+    var valid = 1;
+
+    //Find elements based on required attribute
+    var reqFields = $("[required]")
+
+    reqFields.each(function(){
+        //Find name for those elements
+        var name = $(this).attr("name");
+
+        //Find values from those names if name exists, otherwise
+        //directly check value. If value on required question is
+        //undefined, set valid to 0 and display error message.
+        if (name){
+            if ($(`input[name=${name}]:checked`).val() == undefined){
+                valid = 0;
+                $(`[name=${name}]`).addClass("is-invalid")
+            }else{
+                $(`[name=${name}]`).removeClass("is-invalid")
+            }
+         }else{
+            console.log("the value is ", $(this).val())
+            console.log("this is of type", typeof($(this).val()))
+            if($(this).val() != null){
+                console.log(true)
+            }else{
+                console.log(false)
+            }
+            if (!$(this).val()){
+                valid = 0;
+                $(this).addClass("is-invalid")
+            }else{
+                $(this).removeClass("is-invalid")
+            }
+        }
+    });
+
+    return valid;
+}
 
 function display_score(score){
     $("#rpScore").append(

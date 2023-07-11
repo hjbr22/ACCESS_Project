@@ -1,366 +1,274 @@
 
-<head>
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
-
-    <!-- Popper -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-
-    <!-- Bootstrap -->
-    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css'>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha256-CjSoeELFOcH0/uxWu6mC/Vlrc1AARqbm/jiiImDGV3s=" crossorigin="anonymous"></script>
-
-    <!-- jQuery UI -->
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
-    <!-- Tagify-->
-    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css">
-
-    <!-- tagify script file -->
+{% extends "base.html" %}
+{% block scripts %}
+    {{super()}}
     <script type="module" src="../static/js/tags.js"></script>
-
-    <!-- javascript file -->
     <script type="module" src="../static/js/scripts.js"></script>
+{% endblock %}
 
-    <!-- CSS file -->
-    <link rel="stylesheet" type="text/css" href="../static/css/main.css">
-    <link rel="stylesheet" type="text/css" href="../static/css/modal.css">
-
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-</head>
-
-
-<!-- Image and text -->
-<nav class="navbar navbar-light bg-light">
-    <a class="navbar-brand" href="#">
-      <img src="../static/ACCESS_logo.png" width="50" height="50" class="d-inline-block align-top" alt="">
-      ACCESS Recommendation System
-    </a>
-</nav>
-<form class="needs-validation" id="recommendation-form" novalidate>
-<div class="container">
-    <div class="row">
-    <!-- Question 1 -->
-        <!-- HPC USE -->
-    <div class = "col-sm-6">
-        <div style="color:#FF0000;">
-            <label for="" style="font-size: 0.8em;">Required questions are marked with an astrik (*)</label>
-        </div>   
-    <div class="form-group">
-        <label for="">Have you used a supercomputer (HPC) before? *</label>
-        <br>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="hpc-use" id="has-used-hpc" value="1" required>
-            <label class="form-check-label" for="has-used-hpc">Yes</label>
-        </div>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="hpc-use" id="has-not-used-hpc" value="0" required>
-            <label class="form-check-label" for="has-not-used-hpc">No</label>
-        </div>
-    </div>
-        <!-- Familiarity with ACCESS HPCs -->
-    <div class="form-group hide-hpc d-none">
-        <label for=""> Are you familiar with any of the resource providers available to ACCESS?</label>
-        <br>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="access-familiarity" id="is-familiar" value="1">
-            <label class="form-check-label" for="isFamiliar">Yes</label>
-        </div>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="access-familiarity" id="is-not-familiar" value="0">
-            <label class="form-check-label" for="isnotFamiliar">No</label>
-        </div>
-    </div>
-        <!-- Previously used ACCESS HPCs -->
-    <div class="form-group hide-hpc d-none" id="access-rps">
-        <label for="">Select the HPCs you have experience with:</label>
-        {% for rp in rps %}
-        <div class="form-check">
-            <input class="form-check-input used-rps" name="used-hpc" type="checkbox" id="{{rp.name}}-option-rp" value="{{rp.name}}">
-            <label class="form-check-label" for="{{rp.name}}-option-rp">{{rp.name}}</label>
-        </div>
-        {%endfor%}
-    </div>
-        <!-- Experience using HPC -->
-    <div class="form-group hide-hpc d-none">
-        <label for="">How much experience do you have with HPCs?</label>
-        <br>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="hpc-experience" id="one-year" value="0">
-            <label class="form-check-label" for="one-year">I have a small amount of experience using certain HPCs (0-1 year)</label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="hpc-experience" id="three-years" value="1">
-            <label class="form-check-label" for="three-years">I comfortable using any HPC (1-3 years)</label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="hpc-experience" id="four-years" value="2">
-            <label class="form-check-label" for="four-years">I am an expert when it comes to using HPCs (4 or more years)</label>
-        </div>
-    </div>
-    <!-- Question 2 -->
-        <!-- Field of Research -->
-    <div class="form-group">
-        <label for="">What is your field of research?</label>
-        <div class="dropdown" id="field-dropdown">
-            <button type="button" class="btn btn-info dropdown-toggle" id="field-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Select Field
-            </button>
-            <div class="dropdown-menu" id="field-dropdown-options" aria-labelledby="field-button">
-                <input class="form-control" id="field-dropdown-search" type="text">
-                <div class="dropdown-divider"></div>
-                    {% for field in research_fields%}
-                    <div class="form-check dropdown-item">
-                        {%set field_id = field.field_name.replace(" ", "-") %}
-                        <input class="form-check-input" name="research-field" type="checkbox" id="{{field_id}}-option" value="{{field.field_name}}">
-                        <label class="form-check-label" for="{{field_id}}-option">{{field.field_name}}</label> 
-                    </div>
-                    {%endfor%}
-
+{%block page_title %}
+<h4 style="text-align:center;">ACCESS New User Recommendation System</h4>
+{% endblock %}
+{% block app_content %}
+<form class="needs-validation bg-light" id="recommendation-form"  novalidate onsubmit="return false">
+            <!-- HPC USE -->
+            <div style="color:#FF0000;">
+                <label style="font-size: 0.8em;">Required questions are marked with an asterisk (*)</label>
+            </div>   
+        <div class="form-group">
+            <label>Have you used a supercomputer (HPC) before? <span style="color:#FF0000;">*</span></label>
+            <br>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="hpc-use" id="has-used-hpc" value="1" required>
+                <label class="form-check-label" for="has-used-hpc">Yes</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="hpc-use" id="has-not-used-hpc" value="0" required>
+                <label class="form-check-label" for="has-not-used-hpc">No</label>
             </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label for="fields-add-tag">Tag not here? Add yours below.</label>
-        <input id="fields-add-tag" class="form-control" type="text">
-    </div>
-    <!-- Question 3 -->
-        <!-- Type of job -->
+            <!-- Familiarity with ACCESS HPCs -->
+        <div class="form-group hide-hpc d-none">
+            <label > Are you familiar with any of the resource providers available to ACCESS?</label>
+            <br>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="access-familiarity" id="is-familiar" value="1">
+                <label class="form-check-label" for="is-familiar">Yes</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="access-familiarity" id="is-not-familiar" value="0">
+                <label class="form-check-label" for="is-not-familiar">No</label>
+            </div>
+        </div>
+            <!-- Previously used ACCESS HPCs -->
+        <div class="form-group hide-hpc d-none" id="access-rps">
+            <label >Select the HPCs you have experience with:</label>
+            {% for rp in rps %}
+            <div class="form-check">
+                <input class="form-check-input used-rps" name="used-hpc" type="checkbox" id="{{rp.name}}-option-rp" value="{{rp.name}}">
+                <label class="form-check-label" for="{{rp.name}}-option-rp">{{rp.name}}</label>
+            </div>
+            {%endfor%}
+        </div>
+            <!-- Experience using HPC -->
+        <div class="form-group hide-hpc d-none">
+            <label >How much experience do you have with HPCs?</label>
+            <br>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="hpc-experience" id="one-year" value="0">
+                <label class="form-check-label" for="one-year">I have a small amount of experience using certain HPCs (0-1 year)</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="hpc-experience" id="three-years" value="1">
+                <label class="form-check-label" for="three-years">I comfortable using any HPC (1-3 years)</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="hpc-experience" id="four-years" value="2">
+                <label class="form-check-label" for="four-years">I am an expert when it comes to using HPCs (4 or more years)</label>
+            </div>
+        </div>
+            <!-- Field of Research -->
+        <div class="form-group">
+
+            <label >What is your field of research?</label>
+            <div class="dropdown" id="field-dropdown">
+                <button type="button" class="btn btn-info dropdown-toggle" id="field-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Select Field
+                </button>
+                <div class="dropdown-menu" id="field-dropdown-options" aria-labelledby="field-button">
+                    <input class="form-control" id="field-dropdown-search" type="text">
+                    <div class="dropdown-divider"></div>
+                        {% for field in research_fields%}
+                        <div class="form-check dropdown-item">
+                            {%set field_id = field.field_name.replace(" ", "-") %}
+                            <input class="form-check-input" name="research-field" type="checkbox" id="{{field_id}}-option" value="{{field.field_name}}">
+                            <label class="form-check-label" for="{{field_id}}-option">{{field.field_name}}</label> 
+                        </div>
+                        {%endfor%}
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="fields-add-tag">Tag not here? Add yours below.</label>
+            <input id="fields-add-tag" class="form-control" type="text">
+        </div>
+
+            <!-- Class of job -->
         <div class="form-group">
             <label for="">What class of job are you looking to perform on the HPC?</label>
-            <input type="text" id="job-type-text-input">
+            <input class="form-control" type="text" id="job-type-text-input">
         </div>
         <div class="form-group hide-add-job d-none">
             <label for="">Add other job classes: </label>
-            <input id="job-type-add-tag" type="text">
+            <input class="form-control" id="job-type-add-tag" type="text">
         </div>
-    <!-- Question 4 --> 
-        <!-- Data Storage -->
-    <div class="form-group">
-        <label for="">Do you need to store any data on the RP? *</label>
-        <br>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="storage" id="storage-needed" value="1" required>
-            <label class="form-check-label" for="storage-needed">Yes</label>
-            <div class="invalid-feedback">
-                This question is required
+            <!-- Data Storage -->
+        <div class="form-group">
+            <label >Do you need to store any data on the RP? <span style="color:#FF0000;">*</span></label>
+            <br>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="storage" id="storage-needed" value="1" required>
+                <label class="form-check-label" for="storage-needed">Yes</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="storage" id="storage-not-needed" value="0" required>
+                <label class="form-check-label" for="storage-not-needed">No</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="storage" id="storage-unsure" value="2" required>
+                <label class="form-check-label" for="storage-unsure">I don't know</label> 
             </div>
         </div>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="storage" id="storage-not-needed" value="0" required>
-            <label class="form-check-label" for="storage-not-needed">No</label>
+            <!-- File count -->
+        <div class="form-group hide-data d-none">
+            <label for="file-count">How many files?</label>
+            <input class="form-control" type="number" id="file-count" name="num-files" >
         </div>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="storage" id="storage-unsure" value="2" required>
-            <label class="form-check-label" for="storage-unsure">I don't know</label> 
-        </div>
-    </div>
-        <!-- File count -->
-    <div class="form-group hide-data d-none">
-        <label for="file-count">How many files?</label>
-        <input type="number" name="num-files" class="form-control">
-    </div>
-        <!-- Long-Term Storage -->
-    <div class="form-group hide-data d-none">
-        <label for="">Approximately how much long-term storage do you think you will need?</label>
-        <br>
-        <div class="form-check form-check">
-            <input class="form-check-input" type="radio" name="long-term-storage" id="one-tb" value="less-than-1">
-            <label class="form-check-label" for="one-tb">Less than 1 TB</label>
-        </div>
-        <div class="form-check form-check">
-            <input class="form-check-input" type="radio" name="long-term-storage" id="ten-tb" value="1-10">
-            <label class="form-check-label" for="ten-tb">1 TB to 10 TB</label>
-        </div>
-        <div class="form-check form-check">
-            <input class="form-check-input" type="radio" name="long-term-storage" id="more-tb" value="more-than-10">
-            <label class="form-check-label" for="more-tb">More than 10 TB</label>
-        </div>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="long-term-storage" id="unsure-tb" value="unsure">
-            <label class="form-check-label" for="unsure-tb">I don't know</label>
-        </div>
-    </div>
-        <!-- Temp Storage -->
-    <div class="form-group hide-data d-none">
-        <label for="">Approximately how much temporary storage do you think you will need (inputs and outputs)?</label>
-        <br>
-        <div class="form-check form-check">
-            <input class="form-check-input" type="radio" name="temp-storage" id="one-tb-temp" value="less-than-1">
-            <label class="form-check-label" for="one-tb-temp">Less than 1 TB</label>
-        </div>
-        <div class="form-check form-check">
-            <input class="form-check-input" type="radio" name="temp-storage" id="ten-tb-temp" value="1-10">
-            <label class="form-check-label" for="ten-tb-temp">1 TB to 10 TB</label>
-        </div>
-        <div class="form-check form-check">
-            <input class="form-check-input" type="radio" name="temp-storage" id="more-tb-temp" value="more-than-10">
-            <label class="form-check-label" for="more-tb-temp">More than 10 TB</label>
-        </div>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="temp-storage" id="unsure-temp" value="unsure">
-            <label class="form-check-label" for="unsure-temp">I don't know</label>
-        </div>
-    </div>
-    <!-- Question 5 -->
-        <!-- Memory (RAM) -->
-    <div class="form-group">
-        <label for="">Approximately how much memory (RAM) does your job require?</label>
-        <br>
-        <div class="form-check form-check">
-            <input class="form-check-input" type="radio" name="memory" id="sixtyfour-gb" value="less-than-64">
-            <label class="form-check-label" for="sixtyfour-gb">Less than 64 GB</label>
-        </div>
-        <div class="form-check form-check">
-            <input class="form-check-input" type="radio" name="memory" id="five-twelve-gb" value="64-512">
-            <label class="form-check-label" for="five-twelve-gb">64 GB to 512 GB</label>
-        </div>
-        <div class="form-check form-check">
-            <input class="form-check-input" type="radio" name="memory" id="more-gb" value="more-than-512">
-            <label class="form-check-label" for="more-gb">More than 512 GB</label>
-        </div>
-        <div class="form-check form-check">
-            <input class="form-check-input" type="radio" name="memory" id="unsure-gb" value="unsure">
-            <label class="form-check-label" for="unsure-gb">I don't know</label>
-        </div>
-    </div>
-    <!-- Question 6 -->
-        <!-- Software and Libraries -->
-    <div class="form-group">
-        <label for="software-input">Which scientific libraries or software packages do you need for your job?</label>
-        <input type="text" id="software-text-input">
-    </div>
-    <div class="form-group hide-add-software d-none">
-        <label for="software-libraries-add-tag">Add other softwares/packages:</label>
-        <input id="software-libraries-add-tag" type="text">
-    </div>
-    <!-- Question 7 -->
-        <!-- Graphical -->
-    <div class="form-group">
-        <label for="">Is there a graphical component to your jobs (i.e. image generation, simulation, etc)?</label>
-        <br>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="graphics" id="graphical" value="1">
-            <label class="form-check-label" for="graphical">Yes</label>
-        </div>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="graphics" id="not-graphical" value="0">
-            <label class="form-check-label" for="not-graphical">No</label>
-        </div>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="graphics" id="unsure-graphical" value="2">
-            <label class="form-check-label" for="unsure-graphical">I don't know</label>
-        </div>
-    </div>
-    <!-- Question 8 -->
-        <!-- CPU GPU parallel -->
-    <div class="form-group">
-        <label for="">Do you need CPU and GPU nodes running in parallel?</label>
-        <br>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="cpu-gpu-parallel" id="cpu-gpu-parallel-needed" value="1">
-            <label class="form-check-label" for="cpu-gpu-parallel-needed">Yes</label>
-        </div>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="cpu-gpu-parallel" id="cpu-gpu-parallel-not-needed" value="0">
-            <label class="form-check-label" for="cpu-gpu-parallel-not-needed">No</label>
-        </div>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="cpu-gpu-parallel" id="cpu-gpu-parallel-unsure" value="2">
-            <label class="form-check-label" for="cpu-gpu-parallel-unsure">I don't know</label>
-        </div>
-    </div>
-    <!-- Question 9 -->
-        <!-- Always Running -->
-    <div class="form-group">
-        <label for="">Does your job need to be running at all times?</label>
-        <br>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="job-run" id="always-running" value="1">
-            <label class="form-check-label" for="always-running">Yes</label>
-        </div>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="job-run" id="not-always-running" value="0">
-            <label class="form-check-label" for="not-always-running">No</label>
-        </div>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="job-run" id="unsure-running" value="2">
-            <label class="form-check-label" for="unsure-running">I don't know</label>
-        </div>
-    </div>
-    <!-- Question 10 -->
-        <!-- Virtual Machine -->
-    <div class="form-group">
-        <label for="">Does your program need to run on a Virtual machine?</label>
-        <br>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="vm" id="vm-needed" value="1">
-            <label class="form-check-label" for="vm-needed">Yes</label>
-        </div>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="vm" id="vm-not-needed" value="0">
-            <label class="form-check-label" for="vm-not-needed">No</label>
-        </div>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="vm" id="vm-unsure" value="2">
-            <label class="form-check-label" for="vm-unsure">I don't know</label>
-        </div>
-    </div>
-    <!-- Submit Modal-->
-    <div class="modal fade" id="submitModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Recommendations:</h5>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-              </div>
-              
-              <!-- Modal body -->
-              <div class="modal-body">
-                <div class="box" id ="box1">
-                  <div class="box-content">
-                  <h3 class="box-title" id='box1-name'></h3>
-                  <div class="tags-container"></div>
-                  </div>
-                  <span class="caret"><i class="fas fa-caret-down"></i></span>
-                </div>
-                <div class="box" id="box2">
-                  <div class="box-content">
-                  <h3 class="box-title" id='box2-name'></h3>
-                  <div class="tags-container"></div>
-                  </div>
-                  <span class="caret"><i class="fas fa-caret-down"></i></span>
-                  
-                </div>
-                <div class="box" id='box3'>
-                  <div class="box-content">
-                  <h3 class="box-title" id='box3-name'></h3>
-                  <div class="tags-container"></div>
-                  </div>
-                  <span class="caret"><i class="fas fa-caret-down"></i></span>
-                </div>
-          <div class="score-container">
-            <p class="score-title">Score</p>
-              <div class="score-column">
-                <span class="score" id='score1'></span>
-                <span class="score" id="score2"></span>
-                <span class="score" id="score3"></span>
-              </div>
-          </div>
-              
-              <!-- Modal footer -->
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              </div>
+            <!-- Long-Term Storage -->
+        <div class="form-group hide-data d-none">
+            <label >Approximately how much long-term storage do you think you will need?</label>
+            <br>
+            <div class="form-check form-check">
+                <input class="form-check-input" type="radio" name="long-term-storage" id="one-tb" value="less-than-1">
+                <label class="form-check-label" for="one-tb">Less than 1 TB</label>
             </div>
-          </div>
+            <div class="form-check form-check">
+                <input class="form-check-input" type="radio" name="long-term-storage" id="ten-tb" value="1-10">
+                <label class="form-check-label" for="ten-tb">1 TB to 10 TB</label>
+            </div>
+            <div class="form-check form-check">
+                <input class="form-check-input" type="radio" name="long-term-storage" id="more-tb" value="more-than-10">
+                <label class="form-check-label" for="more-tb">More than 10 TB</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="long-term-storage" id="unsure-tb" value="unsure">
+                <label class="form-check-label" for="unsure-tb">I don't know</label>
+            </div>
         </div>
-      </div>
-    <!-- Submit button trigger modal-->
-    <button type="button" class="btn btn-primary" id="submit-form">Submit</button>
+            <!-- Temp Storage -->
+        <div class="form-group hide-data d-none">
+            <label >Approximately how much temporary storage do you think you will need (inputs and outputs)?</label>
+            <br>
+            <div class="form-check form-check">
+                <input class="form-check-input" type="radio" name="temp-storage" id="one-tb-temp" value="less-than-1">
+                <label class="form-check-label" for="one-tb-temp">Less than 1 TB</label>
+            </div>
+            <div class="form-check form-check">
+                <input class="form-check-input" type="radio" name="temp-storage" id="ten-tb-temp" value="1-10">
+                <label class="form-check-label" for="ten-tb-temp">1 TB to 10 TB</label>
+            </div>
+            <div class="form-check form-check">
+                <input class="form-check-input" type="radio" name="temp-storage" id="more-tb-temp" value="more-than-10">
+                <label class="form-check-label" for="more-tb-temp">More than 10 TB</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="temp-storage" id="unsure-temp" value="unsure">
+                <label class="form-check-label" for="unsure-temp">I don't know</label>
+            </div>
+        </div>
+            <!-- Memory (RAM) -->
+        <div class="form-group">
+            <label >Approximately how much memory (RAM) does your job require?</label>
+            <br>
+            <div class="form-check form-check">
+                <input class="form-check-input" type="radio" name="memory" id="sixtyfour-gb" value="less-than-64">
+                <label class="form-check-label" for="sixtyfour-gb">Less than 64 GB</label>
+            </div>
+            <div class="form-check form-check">
+                <input class="form-check-input" type="radio" name="memory" id="five-twelve-gb" value="64-512">
+                <label class="form-check-label" for="five-twelve-gb">64 GB to 512 GB</label>
+            </div>
+            <div class="form-check form-check">
+                <input class="form-check-input" type="radio" name="memory" id="more-gb" value="more-than-512">
+                <label class="form-check-label" for="more-gb">More than 512 GB</label>
+            </div>
+            <div class="form-check form-check">
+                <input class="form-check-input" type="radio" name="memory" id="unsure-gb" value="unsure">
+                <label class="form-check-label" for="unsure-gb">I don't know</label>
+            </div>
+        </div>
+            <!-- Software and Libraries -->
+        <div class="form-group">
+            <label for="software-text-input">Which scientific libraries or software packages do you need for your job?</label>
+            <input class="form-control" type="text" id="software-text-input" name="software">
+        </div>
+        <div class="form-group">
+            <label for="software-libraries-add-tag">Tag not here? Add yours below.</label>
+            <input id="software-libraries-add-tag" class="form-control" type="text">
+        </div>
+            <!-- Graphical -->
+        <div class="form-group">
+            <label >Is there a graphical component to your jobs (i.e. image generation, simulation, etc)?</label>
+            <br>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="graphics" id="graphical" value="1">
+                <label class="form-check-label" for="graphical">Yes</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="graphics" id="not-graphical" value="0">
+                <label class="form-check-label" for="not-graphical">No</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="graphics" id="unsure-graphical" value="2">
+                <label class="form-check-label" for="unsure-graphical">I don't know</label>
+            </div>
+        </div>
+            <!-- CPU GPU parallel -->
+        <div class="form-group">
+            <label >Do you need CPU and GPU nodes running in parallel?</label>
+            <br>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="cpu-gpu-parallel" id="cpu-gpu-parallel-needed" value="1">
+                <label class="form-check-label" for="cpu-gpu-parallel-needed">Yes</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="cpu-gpu-parallel" id="cpu-gpu-parallel-not-needed" value="0">
+                <label class="form-check-label" for="cpu-gpu-parallel-not-needed">No</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="cpu-gpu-parallel" id="cpu-gpu-parallel-unsure" value="2">
+                <label class="form-check-label" for="cpu-gpu-parallel-unsure">I don't know</label>
+            </div>
+        </div>
+            <!-- Always Running -->
+        <div class="form-group">
+            <label >Does your job need to be running at all times?</label>
+            <br>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="job-run" id="always-running" value="1">
+                <label class="form-check-label" for="always-running">Yes</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="job-run" id="not-always-running" value="0">
+                <label class="form-check-label" for="not-always-running">No</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="job-run" id="unsure-running" value="2">
+                <label class="form-check-label" for="unsure-running">I don't know</label>
+            </div>
+        </div>
+            <!-- Virtual Machine -->
+        <div class="form-group">
+            <label >Does your program need to run on a Virtual machine?</label>
+            <br>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="vm" id="vm-needed" value="1">
+                <label class="form-check-label" for="vm-needed">Yes</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="vm" id="vm-not-needed" value="0">
+                <label class="form-check-label" for="vm-not-needed">No</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="vm" id="vm-unsure" value="2">
+                <label class="form-check-label" for="vm-unsure">I don't know</label>
+            </div>
+        </div>
+
+        <!-- Submit button trigger modal-->
+        <button type="submit" class="btn btn-primary" id="submit-form">Submit</button>
+    </div>
 </div>
 </form>
+    {%include 'submitModal.html'%}
+{%endblock%}
