@@ -67,32 +67,15 @@
                 <label class="form-check-label" for="four-years">I am an expert when it comes to using HPCs (4 or more years)</label>
             </div>
         </div>
-            <!-- Field of Research -->
+           <!-- Field of Research -->
         <div class="form-group">
-
-            <label >What is your field of research?</label>
-            <div class="dropdown" id="field-dropdown">
-                <button type="button" class="btn btn-info dropdown-toggle" id="field-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Select Field
-                </button>
-                <div class="dropdown-menu" id="field-dropdown-options" aria-labelledby="field-button">
-                    <input class="form-control" id="field-dropdown-search" type="text">
-                    <div class="dropdown-divider"></div>
-                        {% for field in research_fields%}
-                        <div class="form-check dropdown-item">
-                            {%set field_id = field.field_name.replace(" ", "-") %}
-                            <input class="form-check-input" name="research-field" type="checkbox" id="{{field_id}}-option" value="{{field.field_name}}">
-                            <label class="form-check-label" for="{{field_id}}-option">{{field.field_name}}</label> 
-                        </div>
-                        {%endfor%}
-                </div>
-            </div>
+            <label for="">What is your field of research?</label>
+            <input class="form-control" type="text" id="field-text-input">
         </div>
-        <div class="form-group">
-            <label for="fields-add-tag">Tag not here? Add yours below.</label>
-            <input id="fields-add-tag" class="form-control" type="text">
+        <div class="form-group hide-add-field d-none">
+            <label for="field-add-tag">Add other research fields: </label>
+            <input class="form-control" id="field-add-tag" type="text">
         </div>
-
             <!-- Class of job -->
         <div class="form-group">
             <label for="">What class of job are you looking to perform on the HPC?</label>
