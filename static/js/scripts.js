@@ -41,7 +41,7 @@ $(document).ready(function(){
                     openModal(recommendation);
                     form.reset()
                 }else{
-                    let alertMsg = "No enough information to make recommendation. Please provide a more detailed response"
+                    let alertMsg = "Not enough information to make recommendation. Please provide a more detailed response"
                     showAlert(alertMsg)
                 }
             }).catch(function(error){
@@ -118,13 +118,6 @@ function validateForm() {
                 $(`[name=${name}]`).removeClass("is-invalid")
             }
          }else{
-            console.log("the value is ", $(this).val())
-            console.log("this is of type", typeof($(this).val()))
-            if($(this).val() != null){
-                console.log(true)
-            }else{
-                console.log(false)
-            }
             if (!$(this).val()){
                 valid = 0;
                 $(this).addClass("is-invalid")
@@ -209,7 +202,6 @@ function find_top_three(scores){
     });
 
     topThree = topThree.slice(0, 3);
-    console.log(topThree.length)
     for (let i=0; i<topThree.length; i++){
         $(`#box${i}-name`).text(topThree[i].name);
         $(`#box${i}`).removeClass('d-none').show();
@@ -227,7 +219,6 @@ function openModal() {
 var boxes = document.querySelectorAll('.box');
 boxes.forEach(function(box) {
     box.addEventListener('click', function() {
-      console.log('Box clicked!');
       this.classList.toggle('expand');
   
       // Update the top margin of score2 and 3 based on the "expand" state
