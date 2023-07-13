@@ -32,7 +32,7 @@ if [ ! -d venv ]
 then
   $PYTHON -m venv venv
 fi
-. venv/Scripts/activate
+. venv/bin/activate
 
 echo "Installing Requirements"
 # upgrade pip

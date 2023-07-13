@@ -247,6 +247,7 @@ modules = glob.glob('*.txt')
 software = []
 
 for name in modules:
+    print(name)
     parsed = get_modules_and_versions(name)
     #add modules to db
     for mod in parsed:
@@ -258,6 +259,7 @@ for name in modules:
                             "version":mod[1]})
 
 print("Adding Software")
+print(software)
 Software.insert_many(software).on_conflict_replace().execute()
 
 #associate modules with specific RP
@@ -292,9 +294,5 @@ RpSoftware.insert_many(delta_mod).on_conflict_replace().execute()
 RpSoftware.insert_many(faster_mod).on_conflict_replace().execute()
 RpSoftware.insert_many(jetstream_mod).on_conflict_replace().execute()
 RpSoftware.insert_many(stampede_mod).on_conflict_replace().execute()
-
-
-
-
 
 db.close()
