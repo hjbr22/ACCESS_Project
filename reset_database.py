@@ -264,6 +264,7 @@ Software.insert_many(software).on_conflict_replace().execute()
 
 
 aces_parsed = get_modules_and_versions(modules[0])
+print("aces_parsed: ", aces_parsed)
 anvil_parsed = get_modules_and_versions(modules[1])
 bridges_parsed = get_modules_and_versions(modules[2])
 darwin_parsed = get_modules_and_versions(modules[3])
@@ -274,6 +275,7 @@ stampede_parsed = get_modules_and_versions(modules[7])
 
 stampede_mod = organize_modules(stampede_parsed, "Stampede-2")
 aces_mod = organize_modules(aces_parsed, "ACES")
+print("aces_mode: ", aces_mod)
 anvil_mod = organize_modules(anvil_parsed, "Anvil")
 bridges_mod = organize_modules(bridges_parsed, "Bridges-2")
 darwin_mod= organize_modules(darwin_parsed, "DARWIN")
