@@ -81,15 +81,15 @@
     transition: height 0.3s ease;
   }
   
-  #score1{
+  #score0{
     margin-top: 20px;
     position: absolute;
   }
-  #score2{
+  #score1{
     margin-top: 65px;
     position: absolute;
   }
-  #score3{
+  #score2{
     margin-top: 110px;
     position: absolute;
   }
