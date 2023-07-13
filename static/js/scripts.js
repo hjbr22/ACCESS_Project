@@ -14,6 +14,7 @@ import { jobTagify, softwareTagify, fieldTagify,
 
 
 $(document).ready(function(){ 
+    $('html,body').animate({scrollTop:0},'fast')
 
     fieldTagify.on("dropdown:noMatch", fieldNoMatches)
     .on("add", hideAddField)
@@ -27,29 +28,32 @@ $(document).ready(function(){
     .on("add", hideAddSoftware)
     .on("remove", showAddSoftware);
 
-
-    // show the scores
-    display_score()
-
-
-    // // calculate scores when the form is submitted
+    // calculate scores when the form is submitted
     $("#submit-form").on("click", function(){
         var form = document.getElementById("recommendation-form")
-        if (1){
+        let formIsValid = validateForm() 
+        if (formIsValid){
             let formData = get_form_data(form);
             calculate_score(formData).then(function(recommendation){
-                display_score(recommendation);
-                find_top_three(recommendation);
-                openModal(recommendation);
+                if (!(recommendation === "{}")){
+                    display_score(recommendation);
+                    find_top_three(recommendation);
+                    openModal(recommendation);
+                    form.reset()
+                }else{
+                    let alertMsg = "Not enough information to make recommendation. Please provide a more detailed response"
+                    showAlert(alertMsg)
+                }
             }).catch(function(error){
                 console.log("error when calculating score: ", error)
             })
-            form.reset()
         }
         else
         {
-            alert("Please fill out all of the required fields");
+            let alertMsg = "Please fill out all of the required fields"
+            showAlert(alertMsg)
         }
+        return false
     })
 
     //Show RPs if user has experience
@@ -71,7 +75,60 @@ $(document).ready(function(){
         }
       });
 
+    $("#submitModal").on('hidden.bs.modal',function(e){
+        location.reload();
+    })
+
 });
+
+function showAlert(alertMsg){
+    $("#alert-div").append(
+        `<div class="alert alert-danger alert-dismissible fade show" id="alert" role="alert">
+            ${alertMsg}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>`
+    )
+    $("#alert").fadeTo(2000, 500).slideUp(1000, function(){
+        $("#alert").slideUp(1000);
+        $("#alert").alert('close')
+    });
+    $('html,body').animate({scrollTop:0},'fast')
+}
+
+function validateForm() {
+    var valid = 1;
+
+    //Find elements based on required attribute
+    var reqFields = $("[required]")
+
+    reqFields.each(function(){
+        //Find name for those elements
+        var name = $(this).attr("name");
+
+        //Find values from those names if name exists, otherwise
+        //directly check value. If value on required question is
+        //undefined, set valid to 0 and display error message.
+        if (name){
+            if ($(`input[name=${name}]:checked`).val() == undefined){
+                valid = 0;
+                $(`[name=${name}]`).addClass("is-invalid")
+            }else{
+                $(`[name=${name}]`).removeClass("is-invalid")
+            }
+         }else{
+            if (!$(this).val()){
+                valid = 0;
+                $(this).addClass("is-invalid")
+            }else{
+                $(this).removeClass("is-invalid")
+            }
+        }
+    });
+
+    return valid;
+}
 
 function display_score(score){
     $("#rpScore").append(
@@ -134,26 +191,24 @@ function find_top_three(scores){
     var parsedScores =JSON.parse(scores);
     var topThree=[];
     for (var rp in parsedScores) {
-    if (parsedScores.hasOwnProperty(rp)) {
-        var score = parsedScores[rp];
-        topThree.push({ name: rp, score: score });
-    }
+        if (parsedScores.hasOwnProperty(rp)) {
+            var score = parsedScores[rp];
+            topThree.push({ name: rp, score: score });
+        }
     }
 
     topThree.sort(function(a, b) {
-    return b.score - a.score;
+        return b.score - a.score;
     });
 
     topThree = topThree.slice(0, 3);
-    $('#box1-name').text(topThree[0].name);
-    $('#score1').text(topThree[0].score);
-  
-    $('#box2-name').text(topThree[1].name);
-    $('#score2').text(topThree[1].score);
-  
-    $('#box3-name').text(topThree[2].name);
-    $('#score3').text(topThree[2].score);
-    console.log('Text set')
+    for (let i=0; i<topThree.length; i++){
+        $(`#box${i}-name`).text(topThree[i].name);
+        $(`#box${i}`).removeClass('d-none').show();
+        $(`#score${i}`).text(topThree[i].score);
+        $()
+    }
+
 }
 //function to show modal upon clicking submit button
 function openModal() {
@@ -164,7 +219,6 @@ function openModal() {
 var boxes = document.querySelectorAll('.box');
 boxes.forEach(function(box) {
     box.addEventListener('click', function() {
-      console.log('Box clicked!');
       this.classList.toggle('expand');
   
       // Update the top margin of score2 and 3 based on the "expand" state

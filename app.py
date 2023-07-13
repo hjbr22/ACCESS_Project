@@ -32,7 +32,7 @@ def recommender_page():
                            research_fields = research_fields)
 
 @app.route("/get_research_fields")
-def get_resarch_fields():
+def get_research_fields():
     research_fields = ResearchFields.select().order_by(ResearchFields.field_name)
     return([field.field_name for field in research_fields])
 
