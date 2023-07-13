@@ -1,71 +1,116 @@
-arpack-ng
-blis
-boost
-eigen
-fftw
-gmp
-gsl
-hdf5
-hdf
-intel-mkl
-intel-oneapi-mkl
-intel-oneapi-tbb
-libfabric, libflame
-libiconv
-libmesh
-libszip
-libtiff
-libv8
-libx11
-libxml2
-mpfr
-netcdf-c
-netcdf-cxx4
-netcdf-fortran
-netcdf
-netlib-lapack
-openblas
-parallel-netcdf
-petsc
-rocm
-sqlite
-swig
-ucx
-udunits2
-udunits
-zlib
-zstd
 
-anaconda
-aws-cli
-bbftp
-bzip2
-cmake
-curl
-emacs
-gdb
-gpaw
-hadoop
-hpctoolkit
-hspice
-hwloc
-jupyterhub
-jupyter
-launcher
-monitor
-mpc
-ncview
-numactl
-openjdk
-panoply
-papi
-parafly
-protobuf
-qemu
-qt
-subversion
-texinfo
-texlive
-tk
-totalview
-valgrind
+-------------------- Applications built with OpenMPI 4.0.6 ---------------------
+   amber/20                     netcdf-c/4.7.4         (D)
+   arpack-ng/3.8.0              netcdf-cxx4/4.3.1      (D)
+   boost/1.74.0          (D)    netcdf-fortran/4.5.3   (D)
+   cp2k/8.2                     nwchem/7.0.2
+   fftw/2.1.5                   openfoam/8-20210316
+   fftw/3.3.8            (D)    parallel-netcdf/1.11.2
+   gpaw/21.1.0                  paraview/5.9.1
+   gromacs/2019.6               paraview/5.10.1        (D)
+   gromacs/2021.2        (D)    petsc/3.15.3
+   hdf5/1.10.7           (D)    py-mpi4py/3.0.3
+   hpctoolkit/2021.03.01 (D)    quantum-espresso/6.7
+   lammps/20210310              vasp/5.4.4.pl2
+   libmesh/1.6.2                vasp/6.3.0             (D)
+   meep/1.20.0                  visit/3.1.4
+   mrbayes/3.2.7a               wannier90/3.1.0
+   namd/2.14
+
+---------------------- Applications built with GCC 11.2.0 ----------------------
+   bamtools/2.5.2                mpfr/4.0.2            (L,D)
+   beagle/5.1                    mvapich2/2.3.6
+   beast2/2.6.4                  netcdf-c/4.7.4
+   bismark/0.23.0                netcdf-cxx4/4.3.1
+   blast-plus/2.12.0             netcdf-fortran/4.5.3
+   blis/0.8.1           (D)      netlib-lapack/3.8.0   (D)
+   boost/1.74.0                  numactl/2.0.14        (L,D)
+   bowtie2/2.4.2                 openblas/0.3.17       (D)
+   bwa/0.7.17                    openjdk/1.8.0_265-b01
+   cmake/3.20.0         (D)      openjdk/11.0.8_10     (D)
+   cufflinks/2.2.1               openmpi/3.1.6
+   cutadapt/2.10                 openmpi/4.0.6         (L,D)
+   fastqc/0.11.9                 perl-bioperl/1.7.6
+   fasttree/2.1.10               picard/2.25.7
+   fastx-toolkit/0.0.14          protobuf/3.11.4       (D)
+   fftw/2.1.5                    python/3.9.5          (D)
+   fftw/3.3.8                    qt/5.15.2             (D)
+   gatk/4.1.8.1                  samtools/1.12
+   gmp/6.2.1            (L,D)    sratoolkit/2.10.9
+   hdf/4.2.15           (D)      swig/4.0.2            (D)
+   hdf5/1.10.7                   tcl/8.6.11            (D)
+   htseq/0.11.2                  texlive/20200406      (D)
+   intel-mkl/2019.5.281 (D)      tk/8.6.11             (D)
+   libflame/5.2.0       (D)      tophat/2.1.2
+   libiconv/1.16        (D)      trimmomatic/0.39
+   libszip/2.1.1        (D)      valgrind/3.15.0
+   libtiff/4.1.0        (D)      vcftools/0.1.14
+   libxml2/2.9.10       (D)      zlib/1.2.11           (L,D)
+
+------------------------------ Core Applications -------------------------------
+   anaconda/2021.05-py38                    libx11/1.7.0
+   aocc/3.1.0                               libxml2/2.9.10
+   aws-cli/2.4.15                           matlab/R2020b         (D)
+   biocontainers/default                    matlab/R2021b
+   blis/0.8.1                               matlab/R2022a
+   boost/1.74.0                             matlab/R2023a
+   cdo/1.9.9                                modtree/cpu           (L)
+   cmake/3.20.0                             modtree/gpu           (D)
+   cue-login-env/1.1                        monitor/2.3.1
+   curl/7.76.1                              mpc/1.1.0             (L)
+   datasets                                 mpfr/4.0.2
+   eigen/3.3.9                              ncl/6.4.0
+   emacs/27.2                               nco/4.9.3
+   ffmpeg/4.2.2                             ncview/2.1.8
+   fftw/2.1.5                               netcdf-c/4.7.4
+   fftw/3.3.8                               netcdf-cxx4/4.3.1
+   gcc/8.4.1                                netcdf-fortran/4.5.3
+   gcc/10.2.0                               netlib-lapack/3.8.0
+   gcc/11.2.0                      (L,D)    nextflow/22.10.1
+   gdal/2.4.4                               nf-core/2.7.2
+   gdal/3.2.0                      (D)      nf-core/2.8           (D)
+   gdb/11.1                                 numactl/2.0.14
+   geos/3.8.1                               octave/6.3.0
+   geos/3.9.1                      (D)      openblas/0.3.17
+   gmp/6.2.1                                openjdk/1.8.0_265-b01
+   gmt/6.1.0                                openjdk/11.0.8_10
+   gnuplot/5.4.2                            papi/6.0.0.1
+   grads/2.2.1                              parafly/r2013
+   gsl/2.4                                  parallel/20200822
+   gurobi/9.5.1                             proj/5.2.0
+   hadoop/3.3.0                             proj/6.2.0            (D)
+   hdf/4.2.15                               protobuf/3.11.4
+   hdf5/1.10.7                              python/3.9.5
+   hpctoolkit/2021.03.01                    qemu/4.1.1
+   hwloc/1.11.13                            qt/5.15.2
+   hyper-shell/2.0.2                        r/4.0.5
+   hyper-shell/2.2.0                        r/4.1.0               (D)
+   hyper-shell/2.4.0               (D)      rstudio/2021.09.0
+   intel-mkl/2019.5.281                     spark/3.1.1
+   intel/19.0.5.281                         swig/4.0.2
+   julia/1.6.2                              tcl/8.6.11
+   jupyter/2.0.0                            texlive/20200406
+   launcher/3.9                             tk/8.6.11
+   learning/conda-2021.05-py38-cpu          totalview/2020.2.6
+   libfabric/1.12.0                (L)      vlc/3.0.9.2
+   libflame/5.2.0                           vmd/1.9.3
+   libiconv/1.16                            vscode/1.61.2
+   libszip/2.1.1                            xalt/2.10.45          (S,L)
+   libtiff/4.1.0                            zlib/1.2.11
+   libv8/6.7.17
+
+  Where:
+   D:  Default Module
+   L:  Module is loaded
+   S:  Module is Sticky, requires --force to unload or purge
+
+If the avail list is too long consider trying:
+
+"module --default avail" or "ml -d av" to just list the default modules.
+"module overview" or "ml ov" to display the number of modules for each name.
+
+Use "module spider" to find all possible modules and extensions.
+Use "module keyword key1 key2 ..." to search for all possible modules matching
+any of the "keys".
+
+

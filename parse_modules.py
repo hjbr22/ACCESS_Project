@@ -16,7 +16,7 @@ def get_modules_and_versions(filename):
         moduleVRS = {}
         for mod in mods.split():
             # Ignore all characters used for separations or descriptions
-            if ("----" in mod) or ("/opt" in mod) or ("(L" in mod) or ("D)" in mod):
+            if ("----" in mod) or ("/opt" in mod) or ("(L" in mod) or (",L" in mod) or ("D)" in mod) or ("(c" in mod) or ("(g" in mod) or ("(e" in mod):
                 pass
             else:
                 if "/" in mod:

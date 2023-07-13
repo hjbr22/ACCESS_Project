@@ -1,74 +1,38 @@
-armadillo/10.5.0
-gromacs/2021.4
-hdf5/1.13.1
-netcdf-fortran/4.5.3
-parmetis/4.0.3
-plumed/2.8.
-fftw/3.3.10
-gromacs/2022.1
-kokkos/3.7.01
-osu-micro-benchmarks/5.7.1
-petsc/3.12.4
-gromacs/2020.6
-gromacs/2022.3
-netcdf-c/4.8.1
-parallel-netcdf/1.12.2
-petsc/3.17.3
-AMDuProf/3.5
-anaconda3_cpu/23.3.1
-default
-namd3/2022.07.multicore_cuda
-slurm-env/0.1
-AMDuProf/3.6
-anaconda3_gpu/4.13.0
-lammps/2022.06.cpu
-namd3/2022.07.multinode_cuda
-visit/3.2.2
-AMDuProf/4.0
-anaconda3_gpu/23.3.1
-lammps/2022.06.gpu_cuda
-nvhpc_latest/22.11
-westpa/2022.03
-ImageMagick/7.1.0
-anaconda3_mi100/4.14.0
-llvm/15.0.0
-openmpi-5.0_beta/5.0.0rc8
-Intel_AI_toolkit/2023.1
-cudnn/8.4.1.50
-matlab_unlicensed/2021b
-openmpi-5.0_beta/5.0.0rc9
-anaconda3_Rcpu/22.9.0
-cudnn/8.9.0.131
-mvapich-3.0b_s11/3.0b
-paraview/5.10.1
-anaconda3_cpu/4.13.0
-cue-login-env/1.0
-mvapich2-3.0a_s11/3.0a
-posix2ime/2020.1
-accessusage/1.5.2
-cuda/11.6.1
-htop/3.2.0
-libffi/3.4.2
-nvhpc/22.2
-subversion/1.13.0
-aocc/3.2.0
-cuda/11.7.0
-intel-oneapi-advisor/2022.0.0
-libtirpc/1.2.6
-nvhpc/22.5
-xclock/1.0.7
-banner/1.3.5
-dos2unix/7.4.2
-intel-oneapi-compilers/2022.0.2
-modtree/cpu
-nvtop/2.0.2
-cmake/3.18.2
-gcc/11.2.0
-intel-oneapi-mkl/2022.0.2
-modtree/gpu
-parallel/20220522
-cmake/3.23.1
-git/2.31.1
-libfabric/1.14.0
-mpich/4.0.2
-python/2.7.18
+
+----------------------------------------------------------------------------------------------------------- /sw/spack/delta-2022-03/modules/lmod/openmpi/4.1.2-37px7gc/gcc/11.2.0 ------------------------------------------------------------------------------------------------------------
+   armadillo/10.5.0    gromacs/2020.6    gromacs/2022.1        hdf5/1.13.1   (D)    netcdf-c/4.8.1          osu-micro-benchmarks/5.7.1    parmetis/4.0.3    petsc/3.17.3 (D)
+   fftw/3.3.10         gromacs/2021.4    gromacs/2022.3 (D)    kokkos/3.7.01        netcdf-fortran/4.5.3    parallel-netcdf/1.12.2        petsc/3.12.4      plumed/2.8.0
+
+---------------------------------------------------------------------------------------------------------------------- /sw/spack/delta-2022-03/modules/lmod/gcc/11.2.0 -----------------------------------------------------------------------------------------------------------------------
+   anaconda3/2021.05        cuda/11.3.0          cutensor/1.5.0.3    hdf5/1.8.12          libxcb/1.14           magma/2.6.1      ncurses/6.2              openjdk/11.0.14.1_1 (D)      python/3.6.8             time/1.9                      wayland/1.18.0
+   boost/1.79.0             cuda/11.5.1          freeglut/3.2.2      libaio/0.3.110       libxkbcommon/0.8.2    mesa/21.3.1      openblas/0.3.20          openmpi/4.1.2       (L,D)    python/3.10.4     (D)    ucx/1.11.2             (L)
+   boost/1.80.0      (D)    cuda/11.6.1 (L,D)    gnuplot/5.4.3       libjpeg/9e           libxshmfence/1.3      metis/5.1.0      openexr/3.1.5            openmpi/4.1.4                readline/8.1             ucx/1.12.1             (D)
+   cuda/10.2.89             cuda/11.7.0          gsl/2.7             libsndfile/1.0.28    libxxf86vm/1.1.4      nccl/2.11.4-1    openjdk/1.8.0_322-b06    perl/5.35.0                  subversion/1.13.0 (D)    wayland-protocols/1.20
+
+-------------------------------------------------------------------------------------------------------------------------------------- /sw/user/modules --------------------------------------------------------------------------------------------------------------------------------------
+   AMDuProf/3.5             Intel_AI_toolkit/2023.1        anaconda3_gpu/4.13.0   (D)    cudnn/8.9.0.131          lammps/2022.06.cpu             mvapich-3.0b_s11/3.0b               nvhpc_latest/22.11                           paraview/5.10.1     westpa/2022.03
+   AMDuProf/3.6             anaconda3_Rcpu/22.9.0          anaconda3_gpu/23.3.1          cue-login-env/1.0 (L)    lammps/2022.06.gpu_cuda (D)    mvapich2-3.0a_s11/3.0a              openmpi-5.0_beta/5.0.0rc8             (D)    posix2ime/2020.1
+   AMDuProf/4.0      (D)    anaconda3_cpu/4.13.0    (D)    anaconda3_mi100/4.14.0        default           (L)    llvm/15.0.0                    namd3/2022.07.multicore_cuda        openmpi-5.0_beta/5.0.0rc9                    slurm-env/0.1
+   ImageMagick/7.1.0        anaconda3_cpu/23.3.1           cudnn/8.4.1.50         (D)    julia/1.9.0              matlab_unlicensed/2021b        namd3/2022.07.multinode_cuda (D)    openmpi-v5.0.x-202305240344_s11/5.0.x        visit/3.2.2
+
+------------------------------------------------------------------------------------------------------------------------- /sw/spack/delta-2022-03/modules/lmod/Core --------------------------------------------------------------------------------------------------------------------------
+   accessusage/1.5.2    cmake/3.18.2        cuda/11.7.0           git/2.31.1                       intel-oneapi-compilers/2022.0.2    libffi/3.4.2      modtree/gpu (L,D)    nvhpc/22.2  (D)    parallel/20220522    xclock/1.0.7
+   aocc/3.2.0           cmake/3.23.1 (D)    dos2unix/7.4.2        htop/3.2.0                       intel-oneapi-mkl/2022.0.2          libtirpc/1.2.6    mpich/4.0.2          nvhpc/22.5         python/2.7.18
+   banner/1.3.5         cuda/11.6.1         gcc/11.2.0     (L)    intel-oneapi-advisor/2022.0.0    libfabric/1.14.0                   modtree/cpu       ndiff/2.00           nvtop/2.0.2        subversion/1.13.0
+
+--------------------------------------------------------------------------------------------------------------------------- /usr/share/lmod/lmod/modulefiles/Core ----------------------------------------------------------------------------------------------------------------------------
+   lmod    settarg
+
+  Where:
+   D:  Default Module
+   L:  Module is loaded
+
+If the avail list is too long consider trying:
+
+"module --default avail" or "ml -d av" to just list the default modules.
+"module overview" or "ml ov" to display the number of modules for each name.
+
+Use "module spider" to find all possible modules and extensions.
+Use "module keyword key1 key2 ..." to search for all possible modules matching any of the "keys".
+
+
