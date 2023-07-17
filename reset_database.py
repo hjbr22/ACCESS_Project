@@ -8,8 +8,7 @@ from models.software import Software
 from models.rpSoftware import RpSoftware
 from models.gui import GUI
 from models.rpGUI import RpGUI
-from parse_modules import get_modules_and_versions
-from rp_modules import organize_modules
+from rp_modules import get_modules_and_versions
 import glob #for reading the text files
 import os
 
@@ -244,55 +243,24 @@ RpGUI.insert_many(rpGui).on_conflict_replace().execute()
 os.chdir('softwares')
 
 modules = glob.glob('*.txt')
-software = []
-
+rpSftw = {}
+modulesAndVersions = {}
 for name in modules:
-    print(name)
-    parsed = get_modules_and_versions(name)
-    #add modules to db
-    for mod in parsed:
-        #Ignoring duplicates in the software table
-        if Software.select().where(Software.software_name == mod[0]).exists():
-            pass
-        else:
-            software.append({"software_name":mod[0],
-                            "version":mod[1]})
+    rpName = name.split("_")[0]
+    modulesAndVersions,mods = get_modules_and_versions(name,modulesAndVersions)
+    rpSftw[rpName] = mods
 
-print("Adding Software")
-print(software)
-Software.insert_many(software).on_conflict_replace().execute()
+print("Adding data to Software")
+Software.insert_many(modulesAndVersions.items(), fields=[Software.software_name,Software.version]).on_conflict_replace().execute()
 
 #associate modules with specific RP
+rpSoftware = []
+for item in rpSftw.items():
+    rp = item[0]
+    rpSoftware.extend([(rp,Software.get(Software.software_name==software),1) for software in item[1]])
 
 
-aces_parsed = get_modules_and_versions(modules[0])
-print("aces_parsed: ", aces_parsed)
-anvil_parsed = get_modules_and_versions(modules[1])
-bridges_parsed = get_modules_and_versions(modules[2])
-darwin_parsed = get_modules_and_versions(modules[3])
-delta_parsed = get_modules_and_versions(modules[4])
-faster_parsed = get_modules_and_versions(modules[5])
-jetstream_parsed = get_modules_and_versions(modules[6])
-stampede_parsed = get_modules_and_versions(modules[7])
-
-stampede_mod = organize_modules(stampede_parsed, "Stampede-2")
-aces_mod = organize_modules(aces_parsed, "ACES")
-print("aces_mode: ", aces_mod)
-anvil_mod = organize_modules(anvil_parsed, "Anvil")
-bridges_mod = organize_modules(bridges_parsed, "Bridges-2")
-darwin_mod= organize_modules(darwin_parsed, "DARWIN")
-delta_mod = organize_modules(delta_parsed, "Delta")
-faster_mod= organize_modules(faster_parsed, "FASTER")
-jetstream_mod = organize_modules(jetstream_parsed, "Jetstream2")
-
-print("Adding Software to RP")
-RpSoftware.insert_many(aces_mod).on_conflict_replace().execute()
-RpSoftware.insert_many(anvil_mod).on_conflict_replace().execute()
-RpSoftware.insert_many(bridges_mod).on_conflict_replace().execute()
-RpSoftware.insert_many(darwin_mod).on_conflict_replace().execute()
-RpSoftware.insert_many(delta_mod).on_conflict_replace().execute()
-RpSoftware.insert_many(faster_mod).on_conflict_replace().execute()
-RpSoftware.insert_many(jetstream_mod).on_conflict_replace().execute()
-RpSoftware.insert_many(stampede_mod).on_conflict_replace().execute()
+print("Adding data to RpSoftware")
+RpSoftware.insert_many(rpSoftware,fields=[RpSoftware.rp,RpSoftware.software,RpSoftware.suitability]).on_conflict_replace().execute()
 
 db.close()
