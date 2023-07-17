@@ -8,6 +8,20 @@ from models.software import Software
 from models.rpSoftware import RpSoftware
 import operator
 from functools import reduce
+import logging
+
+#Initialize query logger
+query_logger = logging.getLogger(__name__)
+
+#Override default logging level
+query_logger.setLevel('INFO')
+
+#Handler/Formatter for query logs. Send to query.logs
+query_handler = logging.FileHandler("formInfo.log", mode='a')
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+query_handler.setFormatter(formatter)
+query_logger.addHandler(query_handler)
+
 
 def calculate_points(currentPoints, suitability=1):
     """
@@ -39,7 +53,7 @@ def calculate_score_rf(researchFieldList,scoreBoard):
     rpWithFieldTable = (RpResearchField.select()
                                        .join(ResearchFields, on=(RpResearchField.research_field==ResearchFields.id))
                                        .where(reduce(operator.or_,filter))).select()
-
+    query_logger.info("SQLite Query - Research Fields:\n%s", rpWithFieldTable)
     for row in rpWithFieldTable:
         rp = row.rp.name
         suitability = row.suitability
@@ -67,7 +81,7 @@ def calculate_score_jc(jobClassList,scoreBoard):
     rpWithJobClass = (RpJobClass.select()
                                 .join(JobClass, on=(RpJobClass.job_class==JobClass.id))
                                 .where(reduce(operator.or_,filter))).select()
-
+    query_logger.info("SQLite Query - Job Classes:\n%s", rpWithJobClass)
     for row in rpWithJobClass:
         rp = row.rp.name
         suitability = row.suitability
@@ -96,7 +110,7 @@ def calculate_score_software(softwareList,scoreBoard):
     rpWithSoftware = (RpSoftware.select()
                                 .join(Software, on=(RpSoftware.software==Software.id))
                                 .where(reduce(operator.or_,filter))).select()
-
+    query_logger.info("SQLite Query - Softwares:\n%s", rpWithSoftware)
     for row in rpWithSoftware:
         rp = row.rp.name
         suitability = row.suitability
@@ -163,6 +177,7 @@ def get_recommendations(formData):
     # Research Field
     researchFields = formData.get("research-field")
     researchFieldList = researchFields.split(",")
+
     if researchFieldList:
         scoreBoard = calculate_score_rf(researchFieldList,scoreBoard)
     
@@ -175,9 +190,9 @@ def get_recommendations(formData):
     # Storage
     storageNeeded = formData.get("storage")
     if storageNeeded:
-
         ## TODO: Need to get data for i-nodes and calculates scores accordingly here:
         numFiles = formData.get("num-files")
+        
         longTermStorageNeeded = formData.get("long-term-storage")
         scratchStorageNeeded = formData.get("temp-storage")
 
@@ -190,7 +205,7 @@ def get_recommendations(formData):
                 else:
                     scoreBoard[rp] = 1
 
-        if (longTermStorageNeeded and scratchStorageNeeded != "unsure"):
+        if (scratchStorageNeeded and scratchStorageNeeded != "unsure"):
             storageType = "scratch"
             classifiedRpsScratch = classify_rp_storage(storageType)
             for rp in classifiedRpsScratch[scratchStorageNeeded]:
@@ -198,7 +213,6 @@ def get_recommendations(formData):
                     scoreBoard[rp] = calculate_points(scoreBoard[rp])
                 else:
                     scoreBoard[rp] = 1
-    
     # Memory (RAM)
     memoryNeeded = formData.get("memory")
     # TODO: add scoring system after the memory data has been added to the db
@@ -228,7 +242,7 @@ def get_recommendations(formData):
     if (CpuGpuParallelNeeded and int(CpuGpuParallelNeeded) != 0):
         parallelRPs = RPS.select().where(RPS.parallel > 0)
         parallelRpNames = [rp.name for rp in parallelRPs]
-
+        
         for rp in parallelRpNames:
             if rp in scoreBoard:
                 scoreBoard[rp] = calculate_points(scoreBoard[rp])
@@ -238,7 +252,7 @@ def get_recommendations(formData):
 
     # Job needs to be running always
     # TODO: add scoring after relevant data has been added to the db
-    alwaysRunningNeeded = formData.get("always-running")
+    alwaysRunningNeeded = formData.get("job-run")
     if alwaysRunningNeeded == yes:
         arRps = RPS.select().where(RPS.always_running > 0)
         arRpsNames = [rp.name for rp in arRps]
@@ -259,6 +273,6 @@ def get_recommendations(formData):
                 scoreBoard[rp.name] = calculate_points(scoreBoard[rp.name], suitability)
             else:
                 scoreBoard[rp.name] = 1 * suitability
-
+    query_logger.info('Recommendation Scoreboard:\n%s', scoreBoard)
     return scoreBoard
 

@@ -4,6 +4,7 @@ from models.rps import RPS
 from models.researchField import ResearchFields
 from models.jobClass import JobClass
 from models.software import Software
+from logic.form_logging import log_form_data
 from logic.recommendation import get_recommendations
 
 app = Flask(__name__)
@@ -37,6 +38,7 @@ def get_software():
 @app.route("/get_score", methods=['POST'])
 def get_score():
     data = request.get_json()
+    log_form_data(data)
     recommendations = get_recommendations(data)
     return json.dumps(recommendations)
     # return redirect(url_for('recommender_page',recommendations=recommendations))
