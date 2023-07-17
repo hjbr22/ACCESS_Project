@@ -1,5 +1,5 @@
 //Declare tagify variables
-export var fieldTagify, jobTagify, softwareTagify;
+export var fieldTagify, addFieldTagify, jobTagify,  addJobTagify, softwareTagify, addSoftwareTagify;
 
 /* #################################
 !!! DO NOT USE JQUERY WITH TAGIFY !!! 
@@ -30,7 +30,7 @@ fieldTagify = new Tagify (fieldInput, {
 
 //Create tagify input for "add research fields" question
 var addFieldInput = document.querySelector("input[id=field-add-tag");
-var addFieldTagify = new Tagify(addFieldInput, {
+addFieldTagify = new Tagify(addFieldInput, {
     blacklist: fieldWhitelist
 });
 
@@ -49,7 +49,7 @@ jobTagify = new Tagify (jobInput, {
 
 //Create tagify input for "add job classes" question
 var addJobInput = document.querySelector("input[id=job-type-add-tag]");
-var addJobTagify = new Tagify(addJobInput, {
+addJobTagify = new Tagify(addJobInput, {
     blacklist: jobWhitelist
 });
 
@@ -68,7 +68,7 @@ softwareTagify = new Tagify (softwareInput, {
 
 //Create tagify input for "add software/packages" question
 var addSoftwareInput = document.querySelector("input[id=software-libraries-add-tag]");
-var addSoftwareTagify = new Tagify(addSoftwareInput, {
+addSoftwareTagify = new Tagify(addSoftwareInput, {
     blacklist: softwareWhitelist
 });
 

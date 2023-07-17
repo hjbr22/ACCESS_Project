@@ -7,10 +7,11 @@ const RPmemory = {'less-than-64':['ACES', 'Anvil', 'Bridges-2', 'DARWIN', 'Delta
 
 //Import tagify objects for event listeners     
 import { jobTagify, softwareTagify, fieldTagify,
-     fieldNoMatches, jobNoMatches, softwareNoMatches,
-     hideAddField, showAddField,
-     hideAddJob, showAddJob,
-    hideAddSoftware, showAddSoftware } from "./tags.js";
+        addFieldTagify, addJobTagify, addSoftwareTagify,
+        fieldNoMatches, jobNoMatches, softwareNoMatches,
+        hideAddField, showAddField,
+        hideAddJob, showAddJob,
+        hideAddSoftware, showAddSoftware } from "./tags.js";
 
 
 $(document).ready(function(){ 
@@ -142,12 +143,24 @@ function display_score(score){
 
 function get_form_data(form){
     let formData = new FormData(form)
+
+    //Set research field tags and added tags
     let fieldTagValues = fieldTagify.value.map(tag => tag.value)
     formData.set('research-field', fieldTagValues)
+    let fieldAddTags = addFieldTagify.value.map(tag => tag.value)
+    formData.set('add-field-tags', fieldAddTags)
+
+    //Set software tags and added tags
     let softwareTagValues = softwareTagify.value.map(tag => tag.value)
     formData.set('software', softwareTagValues)
+    let softwareAddTags = addSoftwareTagify.value.map(tag => tag.value)
+    formData.set('add-software-tags', softwareAddTags)
+
+    //Set job class tags and added tags
     let jobTagValues = jobTagify.value.map(tag=>tag.value)
     formData.set('job-class',jobTagValues)
+    let jobAddTags = addJobTagify.value.map(tag => tag.value)
+    formData.set('add-job-tags', jobAddTags)
 
     return formData
 }
