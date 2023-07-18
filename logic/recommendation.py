@@ -160,7 +160,7 @@ def get_recommendations(formData):
     # If user has not used an hpc before
     if formData.get("hpc-use") == '0':
         rpsWithGui = RpGUI.select()
-        rpNames = [rp.rp.name for rp in rpsWithGui]
+        rpNames = list({rp.rp.name for rp in rpsWithGui})
         # increase score for all rps with a GUI
         for rp in rpNames:
             if rp in scoreBoard:
