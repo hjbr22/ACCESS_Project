@@ -1,0 +1,7 @@
+.env
+__pycache__/
+logic/__pycache__/
+models/__pycache__/
+sqlite_db.db
+venv/
+.DS_Store
