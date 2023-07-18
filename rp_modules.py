@@ -13,6 +13,7 @@ def get_modules_and_versions(filename,modulesAndVersions={}):
         mods = content.split("Where:")[0]
         # moduleAndVersion = []
         modules = []
+        # print(mods.split("\n"))
         for mod in mods.split("\n"):
             # Ignore all characters used for separations or descriptions
             if ("----" in mod) or ("/opt" in mod) or ("(L" in mod) or ("D)" in mod):
@@ -22,15 +23,24 @@ def get_modules_and_versions(filename,modulesAndVersions={}):
                     moduleName, moduleVersion = mod.split("/", 1)
                     moduleName = moduleName.strip()
                     if moduleName not in modules:
+                        # print("module: ", moduleName)
                         modules.append(moduleName)
                     if (moduleName in modulesAndVersions) and (moduleVersion not in modulesAndVersions[moduleName]):
-                        modulesAndVersions[moduleName] += f", {moduleVersion}"
+                        # print("module: ", moduleVersion.strip())
+                        if moduleVersion:
+                            modulesAndVersions[moduleName] += f",{moduleVersion.strip()}"
+                            # print(modulesAndVersions[moduleName])
                     else:
-                        modulesAndVersions[moduleName] = moduleVersion
+                        modulesAndVersions[moduleName] = moduleVersion.strip()
                 else:
+                    # print(mod.strip())
                     # If the app has no version
                     if mod not in modules:
-                        modules.append(mod)
+                        modules.append(mod.strip())
                     if (mod not in modulesAndVersions):
-                        modulesAndVersions[mod] = ''
+                        # print(modulesAndVersions)
+                        # print(modulesAndVersions.items())
+                        modulesAndVersions[mod.strip()] = ''
     return(modulesAndVersions, modules)
+
+# get_modules_and_versions('./softwares/stampede-2_modules.txt')

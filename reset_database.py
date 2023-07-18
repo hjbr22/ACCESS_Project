@@ -253,6 +253,7 @@ for name in modules:
 print("Adding data to Software")
 Software.insert_many(modulesAndVersions.items(), fields=[Software.software_name,Software.version]).on_conflict_replace().execute()
 
+
 #associate modules with specific RP
 rpSoftware = []
 for item in rpSftw.items():
