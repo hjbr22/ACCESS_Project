@@ -1,8 +1,10 @@
 Abinit
 ABySS
 AI/ML/BD environments
-AMBER, Anaconda
-ANSYS, AOCL
+AMBER
+Anaconda
+ANSYS
+AOCL
 Arriba
 asciinema
 AUGUSTUS
