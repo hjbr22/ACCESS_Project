@@ -256,7 +256,7 @@ Software.insert_many(modulesAndVersions.items(), fields=[Software.software_name,
 #associate modules with specific RP
 rpSoftware = []
 for item in rpSftw.items():
-    rp = item[0]
+    rp = RPS.get(RPS.name == item[0])
     rpSoftware.extend([(rp,Software.get(Software.software_name==software),1) for software in item[1]])
 
 

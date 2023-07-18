@@ -221,9 +221,10 @@ def get_recommendations(formData):
 
     # Software
     softwares = formData.get("software")
-    softwareList = softwares.split(",")
-    if softwareList:
-        scoreBoard = calculate_score_software(softwareList, scoreBoard)
+    if softwares:
+        softwareList = softwares.split(",")
+        if softwareList:
+            scoreBoard = calculate_score_software(softwareList, scoreBoard)
 
     # Graphics
     graphicsNeeded = formData.get("graphics")

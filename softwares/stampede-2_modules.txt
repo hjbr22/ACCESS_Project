@@ -25,7 +25,6 @@
    petsc/3.10-i64                         
    slepc/3.8-debug
    caffe/1.1.4                           
-
    petsc/3.10-nohdf5                      
    slepc/3.8-i64debug
    dakota/6.8.0                           
@@ -42,7 +41,6 @@
    slepc/3.8-unidebug
    dealii/9.1.1                           
    petsc/3.11-complex                    
-
    slepc/3.8
    dealii/9.2.0-complex                   
    petsc/3.11-complexdebug                
@@ -237,7 +235,6 @@
    petsc/3.15-i64debug                    
    suitesparse/4.4.3
    opensees/3.2.0                         
-
    petsc/3.15-i64                         
    suitesparse/5.8.1                 (D)
    opensees/3.3.0                  (D)    
@@ -386,7 +383,6 @@
    zoltan/3.83                       (D)
    petsc/3.10-cxxcomplex                  
    slepc/3.8-complex
-
 ---------------------------------------------------- /opt/apps/intel18/modulefiles -----------------------------------------------------
    basemap/1.1.0           
    gmt/6.0.0            
@@ -422,7 +418,6 @@
    impi/18.0.2 (L,D)    
    netcdf/4.3.3.1              
    python3/3.7.0
-
 -------------------------------------------------------- /opt/apps/modulefiles ---------------------------------------------------------
    Rstudio/1.0.153                      
    gcc/9.1.0                        
@@ -544,7 +539,6 @@
    mathematica/12.0                 
    ospray/1.8.0              
    xalt/2.10.37           (L)
-
   Where:
    D:  Default Module
    L:  Module is loaded
