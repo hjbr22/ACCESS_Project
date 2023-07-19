@@ -32,14 +32,14 @@ if [ ! -d venv ]
 then
   $PYTHON -m venv venv
 fi
-. venv/Scripts/activate
+source ./venv/Scripts/activate
 
 echo "Installing Requirements"
 # upgrade pip
-$PYTHON -m pip install --upgrade pip
+pip install --upgrade pip
 
 # install requirements
-$PYTHON -m pip install -r requirements.txt
+pip install -r requirements.txt
 # To generate a new requirements.txt file, run "pip freeze > requirements.txt"
 
 

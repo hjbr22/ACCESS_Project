@@ -7,13 +7,15 @@ const RPmemory = {'less-than-64':['ACES', 'Anvil', 'Bridges-2', 'DARWIN', 'Delta
 
 //Import tagify objects for event listeners     
 import { jobTagify, softwareTagify, fieldTagify,
-     fieldNoMatches, jobNoMatches, softwareNoMatches,
-     hideAddField, showAddField,
-     hideAddJob, showAddJob,
-    hideAddSoftware, showAddSoftware } from "./tags.js";
+        addFieldTagify, addJobTagify, addSoftwareTagify,
+        fieldNoMatches, jobNoMatches, softwareNoMatches,
+        hideAddField, showAddField,
+        hideAddJob, showAddJob,
+        hideAddSoftware, showAddSoftware } from "./tags.js";
 
 
 $(document).ready(function(){ 
+    $('html,body').animate({scrollTop:0},'fast')
 
     fieldTagify.on("dropdown:noMatch", fieldNoMatches)
     .on("add", hideAddField)
@@ -27,38 +29,30 @@ $(document).ready(function(){
     .on("add", hideAddSoftware)
     .on("remove", showAddSoftware);
 
-
-    // // calculate scores when the form is submitted
-    
+    // calculate scores when the form is submitted
     $("#submit-form").on("click", function(){
         var form = document.getElementById("recommendation-form")
         let formIsValid = validateForm() 
         if (formIsValid){
             let formData = get_form_data(form);
             calculate_score(formData).then(function(recommendation){
-                display_score(recommendation);
-                find_top_three(recommendation);
-                openModal(recommendation);
+                if (!(recommendation === "{}")){
+                    display_score(recommendation);
+                    find_top_three(recommendation);
+                    openModal(recommendation);
+                    form.reset()
+                }else{
+                    let alertMsg = "Not enough information to make recommendation. Please provide a more detailed response"
+                    showAlert(alertMsg)
+                }
             }).catch(function(error){
                 console.log("error when calculating score: ", error)
             })
-            form.reset()
         }
         else
         {
-            $("#alert-div").append(
-                `<div class="alert alert-danger alert-dismissible fade show" id="alert" role="alert">
-                    Please fill out all of the required fields
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>`
-            )
-            $("#alert").fadeTo(2000, 500).slideUp(500, function(){
-                $("#alert").slideUp(500);
-                $("#alert").alert('close')
-            });
-            $('html,body').animate({scrollTop:0},'fast')
+            let alertMsg = "Please fill out all of the required fields"
+            showAlert(alertMsg)
         }
         return false
     })
@@ -82,7 +76,27 @@ $(document).ready(function(){
         }
       });
 
+    $("#submitModal").on('hidden.bs.modal',function(e){
+        location.reload();
+    })
+
 });
+
+function showAlert(alertMsg){
+    $("#alert-div").append(
+        `<div class="alert alert-danger alert-dismissible fade show" id="alert" role="alert">
+            ${alertMsg}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>`
+    )
+    $("#alert").fadeTo(2000, 500).slideUp(1000, function(){
+        $("#alert").slideUp(1000);
+        $("#alert").alert('close')
+    });
+    $('html,body').animate({scrollTop:0},'fast')
+}
 
 function validateForm() {
     var valid = 1;
@@ -105,13 +119,6 @@ function validateForm() {
                 $(`[name=${name}]`).removeClass("is-invalid")
             }
          }else{
-            console.log("the value is ", $(this).val())
-            console.log("this is of type", typeof($(this).val()))
-            if($(this).val() != null){
-                console.log(true)
-            }else{
-                console.log(false)
-            }
             if (!$(this).val()){
                 valid = 0;
                 $(this).addClass("is-invalid")
@@ -136,12 +143,24 @@ function display_score(score){
 
 function get_form_data(form){
     let formData = new FormData(form)
+
+    //Set research field tags and added tags
     let fieldTagValues = fieldTagify.value.map(tag => tag.value)
     formData.set('research-field', fieldTagValues)
+    let fieldAddTags = addFieldTagify.value.map(tag => tag.value)
+    formData.set('add-field-tags', fieldAddTags)
+
+    //Set software tags and added tags
     let softwareTagValues = softwareTagify.value.map(tag => tag.value)
     formData.set('software', softwareTagValues)
+    let softwareAddTags = addSoftwareTagify.value.map(tag => tag.value)
+    formData.set('add-software-tags', softwareAddTags)
+
+    //Set job class tags and added tags
     let jobTagValues = jobTagify.value.map(tag=>tag.value)
     formData.set('job-class',jobTagValues)
+    let jobAddTags = addJobTagify.value.map(tag => tag.value)
+    formData.set('add-job-tags', jobAddTags)
 
     return formData
 }
@@ -182,29 +201,40 @@ function calculate_score(formData){
 
 //function to parse JSON data a create a list of top three recommendations
 function find_top_three(scores){
-    var parsedScores =JSON.parse(scores);
+    var parsedScores = JSON.parse(scores);
     var topThree=[];
     for (var rp in parsedScores) {
-    if (parsedScores.hasOwnProperty(rp)) {
-        var score = parsedScores[rp];
-        topThree.push({ name: rp, score: score });
+        if (parsedScores.hasOwnProperty(rp)) {
+            var score = parsedScores[rp]['score'];
+            var reasons = parsedScores[rp]['reasons'];
+            topThree.push({ name: rp, score: score, reasons: reasons });
+        }
     }
-    }
+    console.log(topThree);
 
     topThree.sort(function(a, b) {
-    return b.score - a.score;
+        return b.score - a.score;
     });
 
     topThree = topThree.slice(0, 3);
-    $('#box1-name').text(topThree[0].name);
-    $('#score1').text(topThree[0].score);
-  
-    $('#box2-name').text(topThree[1].name);
-    $('#score2').text(topThree[1].score);
-  
-    $('#box3-name').text(topThree[2].name);
-    $('#score3').text(topThree[2].score);
-    console.log('Text set')
+    for (let i=0; i<topThree.length; i++){
+        $(`#box${i}-name`).text(topThree[i].name);
+        $(`#box${i}`).removeClass('d-none').show();
+        var tagsContainer = document.getElementById(`box${i}-suitability`);
+        if (tagsContainer) {
+            tagsContainer.innerHTML = ''; // Clear existing tags
+            var tags = topThree[i].reasons;
+            console.log(tags);
+            if (tags) {
+                tags.forEach(function(tag) {
+                var tagElement = document.createElement('div');
+                tagElement.classList.add('tag');
+                tagElement.textContent = tag;
+                tagsContainer.appendChild(tagElement);
+                });
+            }
+        }
+    }
 }
 //function to show modal upon clicking submit button
 function openModal() {
@@ -215,24 +245,6 @@ function openModal() {
 var boxes = document.querySelectorAll('.box');
 boxes.forEach(function(box) {
     box.addEventListener('click', function() {
-      console.log('Box clicked!');
       this.classList.toggle('expand');
-  
-      // Update the top margin of score2 and 3 based on the "expand" state
-      if (box.id === 'box1') {
-        document.getElementById('score2').style.marginTop = this.classList.contains('expand') ? '180px' : '65px';
-        document.getElementById('score3').style.marginTop = this.classList.contains('expand') ? '225px' : '110px';
-        if (document.getElementById('box2').classList.contains('expand')){
-          document.getElementById('score3').style.marginTop = this.classList.contains('expand') ? '340px' : '225px';
-        }
-      }
-      else if (box.id ==='box2'){
-        if (document.getElementById('box1').classList.contains('expand')){
-          document.getElementById('score3').style.marginTop = this.classList.contains('expand') ? '340px' : '225px';
-        }
-        else{
-          document.getElementById('score3').style.marginTop = this.classList.contains('expand') ? '225px' : '110px';
-        }
-      }
       });
     });
