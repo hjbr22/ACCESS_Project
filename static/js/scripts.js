@@ -201,14 +201,16 @@ function calculate_score(formData){
 
 //function to parse JSON data a create a list of top three recommendations
 function find_top_three(scores){
-    var parsedScores =JSON.parse(scores);
+    var parsedScores = JSON.parse(scores);
     var topThree=[];
     for (var rp in parsedScores) {
         if (parsedScores.hasOwnProperty(rp)) {
-            var score = parsedScores[rp];
-            topThree.push({ name: rp, score: score });
+            var score = parsedScores[rp]['score'];
+            var reasons = parsedScores[rp]['reasons'];
+            topThree.push({ name: rp, score: score, reasons: reasons });
         }
     }
+    console.log(topThree);
 
     topThree.sort(function(a, b) {
         return b.score - a.score;
@@ -218,10 +220,21 @@ function find_top_three(scores){
     for (let i=0; i<topThree.length; i++){
         $(`#box${i}-name`).text(topThree[i].name);
         $(`#box${i}`).removeClass('d-none').show();
-        $(`#score${i}`).text(topThree[i].score);
-        $()
+        var tagsContainer = document.getElementById(`box${i}-suitability`);
+        if (tagsContainer) {
+            tagsContainer.innerHTML = ''; // Clear existing tags
+            var tags = topThree[i].reasons;
+            console.log(tags);
+            if (tags) {
+                tags.forEach(function(tag) {
+                var tagElement = document.createElement('div');
+                tagElement.classList.add('tag');
+                tagElement.textContent = tag;
+                tagsContainer.appendChild(tagElement);
+                });
+            }
+        }
     }
-
 }
 //function to show modal upon clicking submit button
 function openModal() {
@@ -233,22 +246,5 @@ var boxes = document.querySelectorAll('.box');
 boxes.forEach(function(box) {
     box.addEventListener('click', function() {
       this.classList.toggle('expand');
-  
-      // Update the top margin of score2 and 3 based on the "expand" state
-      if (box.id === 'box1') {
-        document.getElementById('score2').style.marginTop = this.classList.contains('expand') ? '180px' : '65px';
-        document.getElementById('score3').style.marginTop = this.classList.contains('expand') ? '225px' : '110px';
-        if (document.getElementById('box2').classList.contains('expand')){
-          document.getElementById('score3').style.marginTop = this.classList.contains('expand') ? '340px' : '225px';
-        }
-      }
-      else if (box.id ==='box2'){
-        if (document.getElementById('box1').classList.contains('expand')){
-          document.getElementById('score3').style.marginTop = this.classList.contains('expand') ? '340px' : '225px';
-        }
-        else{
-          document.getElementById('score3').style.marginTop = this.classList.contains('expand') ? '225px' : '110px';
-        }
-      }
       });
     });
