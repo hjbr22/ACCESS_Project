@@ -8,7 +8,7 @@ from models.software import Software
 from models.rpSoftware import RpSoftware
 from models.gui import GUI
 from models.rpGUI import RpGUI
-from rp_modules import get_modules_and_versions
+from logic.rp_modules import get_modules_and_versions
 import glob #for reading the text files
 import os
 
