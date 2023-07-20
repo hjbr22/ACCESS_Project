@@ -1,4 +1,6 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request
+import os
+from dotenv import load_dotenv
 import json
 from models.rps import RPS
 from models.researchField import ResearchFields
@@ -46,4 +48,5 @@ def get_score():
     # return redirect(url_for('recommender_page',recommendations=recommendations))
 
 if __name__ == '__main__':
+    load_dotenv()
     app.run(debug=True, host='0.0.0.0', port=8080)

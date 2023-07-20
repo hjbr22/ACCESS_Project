@@ -30,7 +30,7 @@ fi
 # Create a virtual environment for dependencies
 if [ ! -d venv ]
 then
-  $PYTHON -m venv venv
+  $PYTHON -m venv env
 fi
 source ./venv/Scripts/activate
 
