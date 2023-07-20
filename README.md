@@ -33,7 +33,7 @@
     `atlassian_username = ""`
     `confluence_token = ""`
     Replace the empty strings with the appropriate information
-- That's it you're done!
+- That's it you're done! (The relevant code is in the `confluenceAPI.py` file. Run that file to see the results)
 
 ## Getting Modules
 - To get a list of the available modules on an HPC run `module avail`
