@@ -1,33 +1,33 @@
-import requests
-from requests.auth import HTTPBasicAuth
-import json
 import os
 from dotenv import load_dotenv
-from bs4 import BeautifulSoup as bs
+from atlassian import Confluence
+import pandas as pd
 
 def load_api():
    load_dotenv()
 
 load_api()
+
+altas_user = os.getenv("atlassian_username")
+conf_token = os.getenv("confluence_token")
+page_id = '255754279'
+
 # The URL endpoint
-pageid = '255754279'
-url = f'https://access-ci.atlassian.net/wiki/rest/api/content/{pageid}'
-params = {'expand': 'body.view'}
+url = 'https://access-ci.atlassian.net'
+conf = Confluence(url=url, username=altas_user, password=conf_token)
+page = conf.get_page_by_id(page_id, expand='body.view')
+page_content = page['body']['view']['value'] 
 
-auth = HTTPBasicAuth(os.getenv("atlassian_username"),os.getenv("confluence_token"))
-headers = {
-   'Accept': "application/json"
-}
-response = requests.request("GET",url,headers=headers,auth=auth,params=params)
+table = pd.read_html(page_content)
 
-# Check for HTTP codes other than 200
-if response.status_code != 200:
-   print('Status:', response.status_code, 'Problem with the request. Exiting.')
-   exit()
+print('\n Number of tables:', len(table))
+#get the first table with index 0
+First_table = table[0]
 
-data = json.loads(response.text)
-pageContent = bs(data['body']['view']['value'])
-print(pageContent.prettify())
-with open('confluencePage.html', 'w') as cp:
-   print(type(pageContent.prettify()))
-   cp.write(pageContent.prettify())
+#get the second table with index 1
+Second_table = table[1]
+
+print('\n Table 1\n')
+print(First_table)
+print('\n Table 2\n')
+print(Second_table)
