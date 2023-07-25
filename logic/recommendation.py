@@ -233,13 +233,14 @@ def get_recommendations(formData):
         for rp in graphicalRps:
             suitability = rp.graphical
             if rp.name in scoreBoard:
-                scoreBoard[rp.name] = calculate_points(scoreBoard[rp.name], suitability)
+                scoreBoard[rp.name]['score'] = calculate_points(scoreBoard[rp.name]['score'], suitability)
+                scoreBoard[rp.name]['reasons'].append("Graphics")
             else:
                 scoreBoard[rp.name] = 1 * suitability
 
     # CPU and GPU in parallel
     CpuGpuParallelNeeded = formData.get("cpu-gpu-parallel")
-    if (CpuGpuParallelNeeded and int(CpuGpuParallelNeeded) != 0):
+    if (CpuGpuParallelNeeded and int(CpuGpuParallelNeeded) == yes):
         parallelRPs = RPS.select().where(RPS.parallel > 0)
         parallelRpNames = [rp.name for rp in parallelRPs]
         
