@@ -58,9 +58,10 @@ def calculate_score_rf(researchFieldList,scoreBoard):
         rp = row.rp.name
         suitability = row.suitability
         if rp in scoreBoard:
-            scoreBoard[rp] = calculate_points(scoreBoard[rp],suitability)
+            scoreBoard[rp]['score'] = calculate_points(scoreBoard[rp]['score'],suitability)
+            scoreBoard[rp]['reasons'].append(row.research_field.field_name)
         else:
-            scoreBoard[rp] = 1
+            scoreBoard[rp] = {'score': 1, 'reasons': [row.research_field.field_name]}
     return scoreBoard
 
 def calculate_score_jc(jobClassList,scoreBoard):
@@ -86,9 +87,10 @@ def calculate_score_jc(jobClassList,scoreBoard):
         rp = row.rp.name
         suitability = row.suitability
         if rp in scoreBoard:
-            scoreBoard[rp] = calculate_points(scoreBoard[rp],suitability)
+            scoreBoard[rp]['score'] = calculate_points(scoreBoard[rp]['score'],suitability)
+            scoreBoard[rp]['reasons'].append(row.job_class.class_name)
         else:
-            scoreBoard[rp] = 1
+            scoreBoard[rp] = {'score': 1, 'reasons': [row.job_class.class_name]}
     
     return(scoreBoard)
 
@@ -115,9 +117,10 @@ def calculate_score_software(softwareList,scoreBoard):
         rp = row.rp.name
         suitability = row.suitability
         if rp in scoreBoard:
-            scoreBoard[rp] = calculate_points(scoreBoard[rp],suitability)
+            scoreBoard[rp]['score'] = calculate_points(scoreBoard[rp]['score'],suitability)
+            scoreBoard[rp]['reasons'].append(row.software.software_name)
         else:
-            scoreBoard[rp] = 1
+            scoreBoard[rp] = {'score': 1, 'reasons': [row.software.software_name]}
 
     return(scoreBoard)
 
@@ -157,22 +160,24 @@ def get_recommendations(formData):
     # If user has not used an hpc before
     if formData.get("hpc-use") == '0':
         rpsWithGui = RpGUI.select()
-        rpNames = [rp.rp.name for rp in rpsWithGui]
+        rpNames = list({rp.rp.name for rp in rpsWithGui})
         # increase score for all rps with a GUI
         for rp in rpNames:
             if rp in scoreBoard:
-                scoreBoard[rp] = calculate_points(scoreBoard[rp])
+                scoreBoard[rp]['score'] = calculate_points(scoreBoard[rp]['score'])
+                scoreBoard[rp]['reasons'].append("GUI")
             else:
-                scoreBoard[rp] = 1  
+                scoreBoard[rp] = {'score': 1, 'reasons': ["GUI"]}
 
     # If user has used ACCESS hpc
     elif formData.get("used-hpc"):
         # increase score for all ACCESS RPs user has experience with
         for rp in formData.get("used-hpc"):
             if rp in scoreBoard:
-                scoreBoard[rp] += 1
+                scoreBoard[rp]['score'] += 1
+                scoreBoard[rp]['reasons'].append("User Experience")
             else:
-                scoreBoard[rp] = 1
+                scoreBoard[rp] = {'score': 1, 'reasons': ["User Experience"]}
     
     # Research Field
     researchFields = formData.get("research-field")
@@ -201,18 +206,20 @@ def get_recommendations(formData):
             classifiedRpsLt = classify_rp_storage(storageType)
             for rp in classifiedRpsLt[longTermStorageNeeded]:
                 if rp in scoreBoard:
-                    scoreBoard[rp] = calculate_points(scoreBoard[rp])
+                    scoreBoard[rp]['score'] = calculate_points(scoreBoard[rp]['score'])
+                    scoreBoard[rp]['reasons'].append("Long Term Storage")
                 else:
-                    scoreBoard[rp] = 1
+                    scoreBoard[rp] = {'score': 1, 'reasons': ["Long Term Storage"]}
 
         if (scratchStorageNeeded and scratchStorageNeeded != "unsure"):
             storageType = "scratch"
             classifiedRpsScratch = classify_rp_storage(storageType)
             for rp in classifiedRpsScratch[scratchStorageNeeded]:
                 if rp in scoreBoard:
-                    scoreBoard[rp] = calculate_points(scoreBoard[rp])
+                    scoreBoard[rp]['score'] = calculate_points(scoreBoard[rp]['score'])
+                    scoreBoard[rp]['reasons'].append("Scratch Storage")
                 else:
-                    scoreBoard[rp] = 1
+                    scoreBoard[rp] = {'score': 1, 'reasons': ["Scratch Storage"]}
     # Memory (RAM)
     memoryNeeded = formData.get("memory")
     # TODO: add scoring system after the memory data has been added to the db
@@ -221,9 +228,10 @@ def get_recommendations(formData):
 
     # Software
     softwares = formData.get("software")
-    softwareList = softwares.split(",")
-    if softwareList:
-        scoreBoard = calculate_score_software(softwareList, scoreBoard)
+    if softwares:
+        softwareList = softwares.split(",")
+        if softwareList:
+            scoreBoard = calculate_score_software(softwareList, scoreBoard)
 
     # Graphics
     graphicsNeeded = formData.get("graphics")
@@ -233,10 +241,10 @@ def get_recommendations(formData):
         for rp in graphicalRps:
             suitability = rp.graphical
             if rp.name in scoreBoard:
-                scoreBoard[rp.name]['score'] = calculate_points(scoreBoard[rp.name]['score'], suitability)
+                scoreBoard[rp.name]['score['] = calculate_points(scoreBoard[rp.name]['score'], suitability)
                 scoreBoard[rp.name]['reasons'].append("Graphics")
             else:
-                scoreBoard[rp.name] = 1 * suitability
+                scoreBoard[rp.name] = {'score': 1 * suitability, 'reasons': ["Graphics"]}
 
     # CPU and GPU in parallel
     CpuGpuParallelNeeded = formData.get("cpu-gpu-parallel")
@@ -246,34 +254,35 @@ def get_recommendations(formData):
         
         for rp in parallelRpNames:
             if rp in scoreBoard:
-                scoreBoard[rp] = calculate_points(scoreBoard[rp])
+                scoreBoard[rp]['score'] = calculate_points(scoreBoard[rp]['score'])
+                scoreBoard[rp]['reasons'].append("CPU/GPU Parallel Processing")
             else:
-                scoreBoard[rp] = 1  
+                scoreBoard[rp] = {'score': 1, 'reasons': ["CPU/GPU Parallel Processing"]} 
 
 
     # Job needs to be running always
-    # TODO: add scoring after relevant data has been added to the db
     alwaysRunningNeeded = formData.get("job-run")
     if alwaysRunningNeeded == yes:
         arRps = RPS.select().where(RPS.always_running > 0)
-        arRpsNames = [rp.name for rp in arRps]
-        for rp in arRpsNames:
-            if rp in scoreBoard:
-                scoreBoard[rp] = calculate_points(scoreBoard[rp])
+        for rp in arRps:
+            suitability = rp.always_running * 4
+            if rp.name in scoreBoard:
+                scoreBoard[rp.name]['score'] = calculate_points(scoreBoard[rp.name]['score'],suitability)
+                scoreBoard[rp.name]['reasons'].append("Always Running")
             else:
-                scoreBoard[rp] = 1  
+                scoreBoard[rp.name] = {'score': 1*suitability, 'reasons': ["Always Running"]}
 
     # Virtual machine
-    # TODO: add scoring after relevant data has been added to the db
     VmNeeded = formData.get("vm")
     if VmNeeded == yes:
         vmRps = RPS.select().where(RPS.virtual_machine > 0)
         for rp in vmRps:
-            suitability = rp.virtual_machine
+            suitability = rp.virtual_machine * 4
             if rp.name in scoreBoard:
-                scoreBoard[rp.name] = calculate_points(scoreBoard[rp.name], suitability)
+                scoreBoard[rp.name]['score'] = calculate_points(scoreBoard[rp.name]['score'],suitability)
+                scoreBoard[rp.name]['reasons'].append("Virtual Machine")
             else:
-                scoreBoard[rp.name] = 1 * suitability
+                scoreBoard[rp.name] = {'score': 1*suitability, 'reasons': ["Virtual Machine"]}
     query_logger.info('Recommendation Scoreboard:\n%s', scoreBoard)
     return scoreBoard
 
