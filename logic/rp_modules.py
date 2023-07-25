@@ -18,7 +18,9 @@ def get_modules_and_versions(file,allModulesAndVersions={}):
     if 'Where:' in mods:
         desc = mods.index('Where:')
         mods = mods[:desc]
-    stringsToRemove = ['(D)','(L)','(L,D)','(D,L)','---','/opt', '(c)', '(c,L,D)', '(g,D)', '(g)', '(e)', '(e,D)', '(1.8)', '(S,L)', '(11)', '(13)']
+    stringsToRemove = ['(D)','(L)','(L,D)','(D,L)','---','/opt', '(c)', '(C)', '(c,L,D)', '(g,D)', '(g)', '(e)', '(e,D)', '(1.8)', '(S,L)', '(11)', 
+                       '(13)', '(g,Y,E)', '(k,E)', '(S,O,D)', '(S,O)', '(C,Pc,E)', '(C,Pc,E,D)', '(C,B)', '(S,O,E)', '(S,G,E)', '(C,E,D)', '(S)', '(Y,E)', '(O,E)', '(E,D)', '(g,C,E,D)', '(C,D)'
+                       , '(C,O,E,D)', '(g,C,E)', '(C,B,D)', '(O)', '(g,S)', '(S,D)', '(C,O,E)', '(E)', '(C,E)', '(C,O)', '(g,C,O,E,D)', '(g,C,O,E)', '(R)']
     mods = [mod for mod in mods if not any(string in mod for string in stringsToRemove)]
     currentModules = []
     for mod in mods:
