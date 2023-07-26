@@ -22,7 +22,6 @@ formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(messag
 query_handler.setFormatter(formatter)
 query_logger.addHandler(query_handler)
 
-
 def calculate_points(currentPoints, suitability=1):
     """
     Calculates how many points should be given based on suitability
