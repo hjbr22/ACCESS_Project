@@ -22,7 +22,6 @@ formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(messag
 query_handler.setFormatter(formatter)
 query_logger.addHandler(query_handler)
 
-
 def calculate_points(currentPoints, suitability=1):
     """
     Calculates how many points should be given based on suitability
@@ -248,7 +247,7 @@ def get_recommendations(formData):
 
     # CPU and GPU in parallel
     CpuGpuParallelNeeded = formData.get("cpu-gpu-parallel")
-    if (CpuGpuParallelNeeded and int(CpuGpuParallelNeeded) != 0):
+    if (CpuGpuParallelNeeded and int(CpuGpuParallelNeeded) == yes):
         parallelRPs = RPS.select().where(RPS.parallel > 0)
         parallelRpNames = [rp.name for rp in parallelRPs]
         
