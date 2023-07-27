@@ -1,9 +1,3 @@
-*** RockFish Software ***
-Use "module spider <name>" to search all software.
-The available software depends on the compiler, MPI,
-Python, and R modules you have already loaded.
-https://lmod.readthedocs.io/en/latest/010_user.html
-
 ---------------------------------------------- gcc (9.3) + openmpi (3.1) -----------------------------------------------   boost/1.74.0             hdf5/1.10.7          (D)    openfoam-org/7            remora/1.8.5
    fftw/3.3.8               hypre/2.20.0                openmm/7.4.1              superlu-dist/6.3.0
    gromacs/2019.4-plumed    lammps/20200721             parallel-netcdf/1.12.1    trilinos/13.0.0
