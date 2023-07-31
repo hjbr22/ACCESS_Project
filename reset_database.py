@@ -13,7 +13,15 @@ from logic.rp_modules import get_modules_and_versions
 import glob #for reading the text files
 import os
 
+
 db.connect()
+
+with db.atomic() as transaction:
+    try:
+        #Put validate data file here when Aiden makes it
+    except Exception as e: #e will be a place holder until Aiden completes the validation function
+        print(e)
+        transaction.rollback() 
 tables = db.get_tables()
 print(f"the tables: {tables}")
 
