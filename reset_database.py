@@ -8,6 +8,7 @@ from models.software import Software
 from models.rpSoftware import RpSoftware
 from models.gui import GUI
 from models.rpGUI import RpGUI
+from models.rpMemory import RpMemory
 from logic.rp_modules import get_modules_and_versions
 import glob #for reading the text files
 import os
@@ -17,8 +18,8 @@ tables = db.get_tables()
 print(f"the tables: {tables}")
 
 # delete all data and create blank tables
-db.drop_tables([RPS,JobClass,RpJobClass,ResearchFields,RpResearchField,Software,RpSoftware,GUI,RpGUI])
-db.create_tables([RPS,JobClass,RpJobClass,ResearchFields,RpResearchField,Software,RpSoftware,GUI,RpGUI])
+db.drop_tables([RPS,JobClass,RpJobClass,ResearchFields,RpResearchField,Software,RpSoftware,GUI,RpGUI,RpMemory])
+db.create_tables([RPS,JobClass,RpJobClass,ResearchFields,RpResearchField,Software,RpSoftware,GUI,RpGUI,RpMemory])
 
 rps = [
     {"name":"ACES", "scratch_tb":1, "longterm_tb":100, "graphical":2},
@@ -262,5 +263,49 @@ for item in rpSftw.items():
 
 print("Adding data to RpSoftware")
 RpSoftware.insert_many(rpSoftware,fields=[RpSoftware.rp,RpSoftware.software,RpSoftware.suitability]).on_conflict_replace().execute()
+
+#per node memory
+per_node_memory = [{'rp':RPS.get(RPS.name == 'aces'),
+                    'node_type':'Standard','per_node_memory':512},
+                   {'rp':RPS.get(RPS.name == 'anvil'),
+                    'node_type':'Standard','per_node_memory':256},
+                   {'rp':RPS.get(RPS.name == 'anvil'), 
+                    'node_type':'Large Memory', 'per_node_memory':1000},
+                   {'rp':RPS.get(RPS.name == 'bridges-2'),
+                    'node_type':'Standard','per_node_memory':256},
+                   {'rp':RPS.get(RPS.name == 'bridges-2'),
+                    'node_type':'Large Memory','per_node_memory':512},
+                   {'rp':RPS.get(RPS.name == 'darwin'),
+                    'node_type':'Standard','per_node_memory':512},
+                   {'rp':RPS.get(RPS.name == 'darwin'),
+                    'node_type':'Large Memory','per_node_memory':1024},
+                   {'rp':RPS.get(RPS.name == 'darwin'),
+                    'node_type':'Extra-Large Memory','per_node_memory':2048},
+                   {'rp':RPS.get(RPS.name == 'delta'),
+                    'node_type':'Standard','per_node_memory':256},
+                   {'rp':RPS.get(RPS.name == 'delta'),
+                    'node_type':'Large Memory','per_node_memory':2000},
+                   {'rp':RPS.get(RPS.name == 'expanse'),
+                    'node_type':'Standard','per_node_memory':256},
+                   {'rp':RPS.get(RPS.name == 'expanse'),
+                    'node_type':'Large Memory','per_node_memory':2000},
+                   {'rp':RPS.get(RPS.name == 'faster'),
+                    'node_type':'Standard','per_node_memory':256},
+                   {'rp':RPS.get(RPS.name == 'jetstream2'),
+                    'node_type':'Standard','per_node_memory':512},
+                   {'rp':RPS.get(RPS.name == 'jetstream2'),
+                    'node_type':'Large Memory','per_node_memory':1024},
+                   {'rp':RPS.get(RPS.name == 'ookami'),
+                    'node_type':'Standard','per_node_memory':32},
+                   {'rp':RPS.get(RPS.name == 'kyric'),
+                    'node_type':'Large Memory','per_node_memory':3000},
+                   {'rp':RPS.get(RPS.name == 'rockfish'),
+                    'node_type':'Standard','per_node_memory':192},
+                   {'rp':RPS.get(RPS.name == 'rockfish'),
+                    'node_type':'Standard','per_node_memory':1500},
+                   {'rp':RPS.get(RPS.name == 'stampede-2'),
+                    'node_type':'Standard','per_node_memory':96}]
+print('Adding data to RpMemory')
+RpMemory.insert_many(per_node_memory,fields=[RpMemory.rp,RpMemory.node_type,RpMemory.per_node_memory]).on_conflict_replace().execute()
 
 db.close()
