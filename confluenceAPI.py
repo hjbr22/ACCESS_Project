@@ -20,10 +20,12 @@ page_content = page['body']['view']['value']
 
 table = pd.read_html(page_content)
 
-print('\n Number of tables:', len(table))
 tot_tables = len(table)
+print('\n Number of tables:', tot_tables)
+
 
 #Printing the contents of all the tables from the API call
-for i in tot_tables:
-   print(table[i])
-   print('\n')
+print('\n')
+print(table[0])
+print('\n')
+print(table[1])

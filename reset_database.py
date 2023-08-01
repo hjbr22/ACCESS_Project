@@ -37,6 +37,13 @@ db.create_tables([RPS,JobClass,RpJobClass,ResearchFields,RpResearchField,Softwar
 rps = []
 
 for rp_names in api_table:
+    rp_name = rp_names[]
+    scratch_tb = rp_names['scratch_tb']
+    longterm_tb = rp_names['longterm_tb']
+    graphical = rp_names['graphical']
+    parallel = rp_names['parallel']
+    virtual_machine = rp_names['virtual_machine']
+    rps.append({"name":rp_name, "scratch_tb":scratch_tb, "longterm_tb":longterm_tb, "graphical":graphical})
     
 #[
    # {"name":"ACES", "scratch_tb":1, "longterm_tb":100, "graphical":2},
