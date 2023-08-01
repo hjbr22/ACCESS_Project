@@ -208,12 +208,12 @@ print("Adding RPJobClass data")
 RpJobClass.insert_many(rpJobClass).on_conflict_replace().execute()
 
 Gui = [
-    {"gui":"OpenOnDemand"},
-    {"gui":"RStudio"},
-    {"gui":"JupyterLab"},
-    {"gui":"Exosphere"},
-    {"gui":"Horizon"},
-    {"gui":"CACAO"},
+    {"gui_name":"OpenOnDemand"},
+    {"gui_name":"RStudio"},
+    {"gui_name":"JupyterLab"},
+    {"gui_name":"Exosphere"},
+    {"gui_name":"Horizon"},
+    {"gui_name":"CACAO"},
     ]
 
 print("Adding GUI data")
@@ -233,7 +233,7 @@ rpGui = []
 for gui in list(rpGUI_together.keys()):
     for rp in rpGUI_together[gui]:
         rpGui.append({"rp": RPS.get(RPS.name == rp),
-        "rp_gui": GUI.get(GUI.gui == gui)})
+        "gui": GUI.get(GUI.gui_name == gui)})
 
 print("Adding the GUI to the RP list")
 RpGUI.insert_many(rpGui).on_conflict_replace().execute()
