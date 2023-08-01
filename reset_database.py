@@ -12,9 +12,14 @@ from models.rpMemory import RpMemory
 from logic.rp_modules import get_modules_and_versions
 import glob #for reading the text files
 import os
-
+import confluenceAPI
 
 db.connect()
+
+
+#Creating the variables from the api call in confluenceAPI
+
+api_table = confluenceAPI.table
 
 with db.atomic() as transaction:
     try:
@@ -29,23 +34,30 @@ print(f"the tables: {tables}")
 db.drop_tables([RPS,JobClass,RpJobClass,ResearchFields,RpResearchField,Software,RpSoftware,GUI,RpGUI,RpMemory])
 db.create_tables([RPS,JobClass,RpJobClass,ResearchFields,RpResearchField,Software,RpSoftware,GUI,RpGUI,RpMemory])
 
-rps = [
-    {"name":"ACES", "scratch_tb":1, "longterm_tb":100, "graphical":2},
-    {"name":"Anvil", "scratch_tb":100, "longterm_tb":50},
-    {"name":"Bridges-2", "scratch_tb":0, "longterm_tb":0, "parallel": 1, "graphical":2},
-    {"name":"DARWIN", "scratch_tb":2, "longterm_tb":10, "parallel": 1, "graphical":2},
-    {"name":"Delta", "scratch_tb":1.5, "longterm_tb":0.5, "parallel": 1, "graphical":2},
-    {"name":"Expanse", "scratch_tb":7000, "longterm_tb":12000, "parallel": 1, "graphical":2},
-    {"name":"FASTER", "scratch_tb":1, "longterm_tb":50, "graphical":2},
-    {"name":"Jetstream2", "scratch_tb":0, "longterm_tb":0, "virtual_machine":2, "always_running":2},
-    {"name":"OOKAMI", "scratch_tb":30, "longterm_tb":80},
-    {"name":"KyRIC", "scratch_tb":10, "longterm_tb":0.5, "graphical":2},
-    {"name":"Rockfish", "scratch_tb":10, "longterm_tb":100},
-    {"name":"Stampede-2", "scratch_tb":0, "longterm_tb":1, "parallel": 1, "graphical":2},
-    {"name":"RANCH", "scratch_tb":0, "longterm_tb":20},
-    {"name":"Open Science Grid", "scratch_tb":0, "longterm_tb":0.5},
-    {"name":"Open Storage Network", "scratch_tb":0, "longterm_tb":0},
-    ]
+rps = []
+
+for rp_names in api_table:
+    
+#[
+   # {"name":"ACES", "scratch_tb":1, "longterm_tb":100, "graphical":2},
+   # {"name":"Anvil", "scratch_tb":100, "longterm_tb":50},
+    #{"name":"Bridges-2", "scratch_tb":0, "longterm_tb":0, "parallel": 1, "graphical":2},
+    #{"name":"DARWIN", "scratch_tb":2, "longterm_tb":10, "parallel": 1, "graphical":2},
+    #{"name":"Delta", "scratch_tb":1.5, "longterm_tb":0.5, "parallel": 1, "graphical":2},
+   # {"name":"Expanse", "scratch_tb":7000, "longterm_tb":12000, "parallel": 1, "graphical":2},
+   # {"name":"FASTER", "scratch_tb":1, "longterm_tb":50, "graphical":2},
+   # {"name":"Jetstream2", "scratch_tb":0, "longterm_tb":0, "virtual_machine":2, "always_running":2},
+   # {"name":"OOKAMI", "scratch_tb":30, "longterm_tb":80},
+   # {"name":"KyRIC", "scratch_tb":10, "longterm_tb":0.5, "graphical":2},
+    #{"name":"Rockfish", "scratch_tb":10, "longterm_tb":100},
+    #{"name":"Stampede-2", "scratch_tb":0, "longterm_tb":1, "parallel": 1, "graphical":2},
+   # {"name":"RANCH", "scratch_tb":0, "longterm_tb":20},
+    #{"name":"Open Science Grid", "scratch_tb":0, "longterm_tb":0.5},
+   # {"name":"Open Storage Network", "scratch_tb":0, "longterm_tb":0},
+   # ]
+
+
+
 print("Adding RPS data")
 RPS.insert_many(rps).on_conflict_replace().execute()
 
