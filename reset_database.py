@@ -265,7 +265,7 @@ print("Adding data to RpSoftware")
 RpSoftware.insert_many(rpSoftware,fields=[RpSoftware.rp,RpSoftware.software,RpSoftware.suitability]).on_conflict_replace().execute()
 
 #per node memory
-per_node_memory = [{'rp':RPS.get(RPS.name == 'aces'),
+per_node_memory_gb = [{'rp':RPS.get(RPS.name == 'aces'),
                     'node_type':'Standard','per_node_memory':512},
                    {'rp':RPS.get(RPS.name == 'anvil'),
                     'node_type':'Standard','per_node_memory':256},
@@ -302,10 +302,10 @@ per_node_memory = [{'rp':RPS.get(RPS.name == 'aces'),
                    {'rp':RPS.get(RPS.name == 'rockfish'),
                     'node_type':'Standard','per_node_memory':192},
                    {'rp':RPS.get(RPS.name == 'rockfish'),
-                    'node_type':'Standard','per_node_memory':1500},
+                    'node_type':'Large Memory','per_node_memory':1500},
                    {'rp':RPS.get(RPS.name == 'stampede-2'),
                     'node_type':'Standard','per_node_memory':96}]
 print('Adding data to RpMemory')
-RpMemory.insert_many(per_node_memory,fields=[RpMemory.rp,RpMemory.node_type,RpMemory.per_node_memory]).on_conflict_replace().execute()
+RpMemory.insert_many(per_node_memory_gb,fields=[RpMemory.rp,RpMemory.node_type,RpMemory.per_node_memory]).on_conflict_replace().execute()
 
 db.close()
