@@ -37,7 +37,6 @@ def get_guis(rpName):
     guis = RpGUI.select().where(RpGUI.rp == rp).order_by(RpGUI.rp.name)
     return(guis)
 
-
 def get_rp_data_tables(rpNamesList):
     tablesDict = {}
     for rpName in rpNamesList:
@@ -89,22 +88,22 @@ def get_rp_data_tables(rpNamesList):
 
     return(tablesDict)
 
-def get_page_children(pageID=245202949):
+def get_page_children_ids(pageID=245202949):
     conf = get_conf()
     page = conf.get_page_by_id(page_id=pageID)
     pageChildren = conf.get_page_child_by_type(page_id=pageID, type='page')
     childPageIds=[]
     for page in pageChildren:
         childPageIds.append(page['id'])
-    print(childPageIds)
-
-    # pageJsonList=[]
-    # for page_id in childPageIds:
-    #     page = conf.get_page_by_id(page_id)
-    #     print(page)
-    #     pageJsonList.append(json.dumps(page, sort_keys=True, indent=4, separators=(",", ": ")))
-
     return(childPageIds)
+
+    # # pageJsonList=[]
+    # # for page_id in childPageIds:
+    # #     page = conf.get_page_by_id(page_id)
+    # #     print(page)
+    # #     pageJsonList.append(json.dumps(page, sort_keys=True, indent=4, separators=(",", ": ")))
+
+    # return(childPageIds)
 
 conf = get_conf()
 rps = RPS.select().order_by(RPS.name)
