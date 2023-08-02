@@ -176,7 +176,6 @@ def get_recommendations(formData):
         if formData.get('used-gui'):
             for rp in rpsWithGui:
                 if rp.rp_gui.gui in formData.get('used-gui'):
-                    print("rp name: ", rp.rp.name)
                     if rp.rp.name in scoreBoard:
                         scoreBoard[rp.rp.name]['score'] += 1
                         scoreBoard[rp.rp.name]['reasons'].append(rp.rp_gui.gui)
