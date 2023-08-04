@@ -18,7 +18,8 @@ def get_modules_and_versions(file,allModulesAndVersions={}):
     if 'Where:' in mods:
         desc = mods.index('Where:')
         mods = mods[:desc]
-    stringsToRemove = ['(D)','(L)','(L,D)','(D,L)','---','/opt']
+    stringsToRemove = ['(','---','/opt']
+    # remove all items that contain string that should be removed
     mods = [mod for mod in mods if not any(string in mod for string in stringsToRemove)]
     currentModules = []
     for mod in mods:

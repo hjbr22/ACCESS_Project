@@ -1,41 +1,10 @@
 from models.rps import RPS
-from models.gui import GUI
-from models.rpGUI import RpGUI
-from models.rpJobClass import RpJobClass
-from models.rpResearchField import RpResearchField
-from models.rpSoftware import RpSoftware
-import json
+from logic.research import get_research_fields
+from logic.jobClass import get_job_classes
+from logic.softwares import get_softwares 
+from logic.gui import get_guis
+from logic.confluence.confluenceAPI import get_conf, create_conf_page
 import pandas as pd
-from confluenceAPI import get_conf
-
-def create_page(conf,title,body,parent_id=None,space="AccessInternalContentDevelopment"):
-   try:
-        conf.create_page(space=space,title=title,
-                            body=body,parent_id=parent_id,
-                            type='page',representation='storage',
-                            editor='v2', full_width=False )
-   except Exception as e:
-        print(e)
-
-def get_research_fields(rpName):
-    rp = RPS.select().where(RPS.name==rpName)
-    researchFields = RpResearchField.select().where(RpResearchField.rp == rp).order_by(RpResearchField.rp.name)
-    return(researchFields)
-
-def get_job_classes(rpName):
-    rp = RPS.select().where(RPS.name==rpName)
-    jobClasses = RpJobClass.select().where(RpJobClass.rp == rp).order_by(RpJobClass.rp.name)
-    return jobClasses
-
-def get_softwares(rpName):
-    rp = RPS.select().where(RPS.name==rpName)
-    softwares = RpSoftware.select().where(RpSoftware.rp == rp).order_by(RpSoftware.rp.name)
-    return(softwares)
-
-def get_guis(rpName):
-    rp = RPS.select().where(RPS.name==rpName)
-    guis = RpGUI.select().where(RpGUI.rp == rp).order_by(RpGUI.rp.name)
-    return(guis)
 
 def get_rp_data_tables(rpNamesList):
     tablesDict = {}
@@ -88,32 +57,15 @@ def get_rp_data_tables(rpNamesList):
 
     return(tablesDict)
 
-def get_page_children_ids(pageID=245202949):
+def create_rp_conf_pages():
     conf = get_conf()
-    page = conf.get_page_by_id(page_id=pageID)
-    pageChildren = conf.get_page_child_by_type(page_id=pageID, type='page')
-    childPageIds=[]
-    for page in pageChildren:
-        childPageIds.append(page['id'])
-    return(childPageIds)
-
-    # # pageJsonList=[]
-    # # for page_id in childPageIds:
-    # #     page = conf.get_page_by_id(page_id)
-    # #     print(page)
-    # #     pageJsonList.append(json.dumps(page, sort_keys=True, indent=4, separators=(",", ": ")))
-
-    # return(childPageIds)
-
-conf = get_conf()
-rps = RPS.select().order_by(RPS.name)
-rpNamesList = [rp.name for rp in rps]
-print(rpNamesList)
-tablesDict = get_rp_data_tables(rpNamesList)
-parent_id = 245202949
-for rpName in rpNamesList:
-    title = f'{rpName} Data'
-    body = ''
-    for table in tablesDict[rpName]:
-        body += table.to_html(index=False,classes='confluenceTable')
-    create_page(conf,title=title,body=body,parent_id=parent_id)
+    rps = RPS.select().order_by(RPS.name)
+    rpNamesList = [rp.name for rp in rps]
+    tablesDict = get_rp_data_tables(rpNamesList)
+    parent_id = 245202949
+    for rpName in rpNamesList:
+        title = f'{rpName} Data'
+        body = ''
+        for table in tablesDict[rpName]:
+            body += table.to_html(index=False,classes='confluenceTable')
+        create_conf_page(conf,title=title,body=body,parent_id=parent_id)
