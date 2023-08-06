@@ -19,14 +19,14 @@ db.connect()
 
 #Creating the variables from the api call in confluenceAPI
 
-api_table = confluenceAPI.table
+# api_table = confluenceAPI.table
 
-with db.atomic() as transaction:
-    try:
-        #Put validate data file here when Aiden makes it
-    except Exception as e: #e will be a place holder until Aiden completes the validation function
-        print(e)
-        transaction.rollback() 
+# with db.atomic() as transaction:
+#     try:
+#         #Put validate data file here when Aiden makes it
+#     except Exception as e: #e will be a place holder until Aiden completes the validation function
+#         print(e)
+#         transaction.rollback() 
 tables = db.get_tables()
 print(f"the tables: {tables}")
 
@@ -34,34 +34,34 @@ print(f"the tables: {tables}")
 db.drop_tables([RPS,JobClass,RpJobClass,ResearchFields,RpResearchField,Software,RpSoftware,GUI,RpGUI,RpMemory])
 db.create_tables([RPS,JobClass,RpJobClass,ResearchFields,RpResearchField,Software,RpSoftware,GUI,RpGUI,RpMemory])
 
-rps = []
+# rps = []
 
-for rp_names in api_table:
-    rp_name = rp_names[]
-    scratch_tb = rp_names['scratch_tb']
-    longterm_tb = rp_names['longterm_tb']
-    graphical = rp_names['graphical']
-    parallel = rp_names['parallel']
-    virtual_machine = rp_names['virtual_machine']
-    rps.append({"name":rp_name, "scratch_tb":scratch_tb, "longterm_tb":longterm_tb, "graphical":graphical})
+# for rp_names in api_table:
+#     rp_name = rp_names[]
+#     scratch_tb = rp_names['scratch_tb']
+#     longterm_tb = rp_names['longterm_tb']
+#     graphical = rp_names['graphical']
+#     parallel = rp_names['parallel']
+#     virtual_machine = rp_names['virtual_machine']
+#     rps.append({"name":rp_name, "scratch_tb":scratch_tb, "longterm_tb":longterm_tb, "graphical":graphical})
     
-#[
-   # {"name":"ACES", "scratch_tb":1, "longterm_tb":100, "graphical":2},
-   # {"name":"Anvil", "scratch_tb":100, "longterm_tb":50},
-    #{"name":"Bridges-2", "scratch_tb":0, "longterm_tb":0, "parallel": 1, "graphical":2},
-    #{"name":"DARWIN", "scratch_tb":2, "longterm_tb":10, "parallel": 1, "graphical":2},
-    #{"name":"Delta", "scratch_tb":1.5, "longterm_tb":0.5, "parallel": 1, "graphical":2},
-   # {"name":"Expanse", "scratch_tb":7000, "longterm_tb":12000, "parallel": 1, "graphical":2},
-   # {"name":"FASTER", "scratch_tb":1, "longterm_tb":50, "graphical":2},
-   # {"name":"Jetstream2", "scratch_tb":0, "longterm_tb":0, "virtual_machine":2, "always_running":2},
-   # {"name":"OOKAMI", "scratch_tb":30, "longterm_tb":80},
-   # {"name":"KyRIC", "scratch_tb":10, "longterm_tb":0.5, "graphical":2},
-    #{"name":"Rockfish", "scratch_tb":10, "longterm_tb":100},
-    #{"name":"Stampede-2", "scratch_tb":0, "longterm_tb":1, "parallel": 1, "graphical":2},
-   # {"name":"RANCH", "scratch_tb":0, "longterm_tb":20},
-    #{"name":"Open Science Grid", "scratch_tb":0, "longterm_tb":0.5},
-   # {"name":"Open Storage Network", "scratch_tb":0, "longterm_tb":0},
-   # ]
+rps = [
+   {"name":"ACES", "scratch_tb":1, "longterm_tb":100, "graphical":2},
+   {"name":"Anvil", "scratch_tb":100, "longterm_tb":50},
+    {"name":"Bridges-2", "scratch_tb":0, "longterm_tb":0, "parallel": 1, "graphical":2},
+    {"name":"DARWIN", "scratch_tb":2, "longterm_tb":10, "parallel": 1, "graphical":2},
+    {"name":"Delta", "scratch_tb":1.5, "longterm_tb":0.5, "parallel": 1, "graphical":2},
+   {"name":"Expanse", "scratch_tb":7000, "longterm_tb":12000, "parallel": 1, "graphical":2},
+   {"name":"FASTER", "scratch_tb":1, "longterm_tb":50, "graphical":2},
+   {"name":"Jetstream2", "scratch_tb":0, "longterm_tb":0, "virtual_machine":2, "always_running":2},
+   {"name":"OOKAMI", "scratch_tb":30, "longterm_tb":80},
+   {"name":"KyRIC", "scratch_tb":10, "longterm_tb":0.5, "graphical":2},
+    {"name":"Rockfish", "scratch_tb":10, "longterm_tb":100},
+    {"name":"Stampede-2", "scratch_tb":0, "longterm_tb":1, "parallel": 1, "graphical":2},
+   {"name":"RANCH", "scratch_tb":0, "longterm_tb":20},
+    {"name":"Open Science Grid", "scratch_tb":0, "longterm_tb":0.5},
+   {"name":"Open Storage Network", "scratch_tb":0, "longterm_tb":0},
+   ]
 
 
 
