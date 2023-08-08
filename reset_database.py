@@ -14,6 +14,7 @@ import glob #for reading the text files
 import os
 import confluenceAPI
 
+
 db.connect()
 
 
