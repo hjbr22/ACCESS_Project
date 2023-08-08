@@ -65,6 +65,16 @@ $(document).ready(function(){
           $('.hide-hpc').addClass('d-none').hide();
         }
       });
+
+    //Show GUI checkboxes if user needs GUI
+    $('input[name="gui-needed"]').change(function(){
+        if ($(this).val() === '1'){
+            $('.hide-gui').removeClass('d-none').show();
+        } else {
+            $('.hide-gui').addClass('d-none').hide();
+        }
+    });
+
     //Show storage questions if user needs storage
     $('input[name="storage"]').change(function() {
         if ($(this).val() === '1') {
@@ -170,7 +180,7 @@ function calculate_score(formData){
     // get and process data from each input field
     let jsonData = {}
     formData.forEach(function(value,key){
-        if (key == "used-hpc"){
+        if (key == "used-hpc" || key == "used-gui"){
             if (!jsonData[key]) {
                 jsonData[key] = [value];
             } else {

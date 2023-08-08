@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 import json
 from models.rps import RPS
+from models.gui import GUI
 from models.researchField import ResearchFields
 from models.jobClass import JobClass
 from models.software import Software
@@ -14,9 +15,11 @@ def recommender_page():
 
     rps = RPS.select()
     research_fields = ResearchFields.select().order_by(ResearchFields.field_name)
+    guis = GUI.select()
     return render_template("questions.html", 
                            rps = rps, 
-                           research_fields = research_fields)
+                           research_fields = research_fields,
+                           guis = guis)
 
 @app.route("/get_research_fields")
 def get_research_fields():
