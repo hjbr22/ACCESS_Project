@@ -89,8 +89,8 @@
     <label>Select any GUIs you are comfortable using:</label>
     {% for gui in guis %}
         <div class="form-check">
-            <input class="form-check-input used-guis" name="used-gui" type="checkbox" id="{{gui.gui}}-option-rp" value="{{gui.gui}}">
-            <label class="form-check-label" for="{{gui.gui}}-option-rp">{{gui.gui}}</label>
+            <input class="form-check-input used-guis" name="used-gui" type="checkbox" id="{{gui.gui_name}}-option-rp" value="{{gui.gui_name}}">
+            <label class="form-check-label" for="{{gui.gui_name}}-option-rp">{{gui.gui_name}}</label>
         </div>
         {%endfor%}
     </div>

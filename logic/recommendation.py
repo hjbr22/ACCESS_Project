@@ -175,12 +175,12 @@ def get_recommendations(formData):
         #If user selects specific GUI give points to only RPs with that GUI
         if formData.get('used-gui'):
             for rp in rpsWithGui:
-                if rp.rp_gui.gui in formData.get('used-gui'):
+                if rp.gui.gui_name in formData.get('used-gui'):
                     if rp.rp.name in scoreBoard:
                         scoreBoard[rp.rp.name]['score'] += 1
-                        scoreBoard[rp.rp.name]['reasons'].append(rp.rp_gui.gui)
+                        scoreBoard[rp.rp.name]['reasons'].append(rp.gui.gui_name)
                     else:
-                        scoreBoard[rp.rp.name] = {'score': 1, 'reasons': [rp.rp_gui.gui]}
+                        scoreBoard[rp.rp.name] = {'score': 1, 'reasons': [rp.gui.gui_name]}
                         
         #If user does not select any specific GUIs give points to every RP with a GUI
         else:
