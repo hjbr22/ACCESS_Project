@@ -47,11 +47,7 @@
   }
   
   .box.expand{
-    height:  150px;
-  }
-  #box1.expand #score2{
-    margin-top: 180px;
-    position: absolute;
+    height:  300px;
   }
   
   .box.expand .caret {
@@ -73,4 +69,19 @@
     justify-content: flex-start;
     align-items: flex-start;
     margin-top: 10px;
+  }
+
+  .body-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-top: 10px;
+    color: #000000
+  }
+
+  .body-container a {
+    color: black;
+    position: right;
+    font-weight: bold;
   }
