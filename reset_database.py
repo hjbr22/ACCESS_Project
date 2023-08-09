@@ -12,7 +12,6 @@ from models.rpMemory import RpMemory
 from logic.rp_modules import get_modules_and_versions
 import glob #for reading the text files
 import os
-import confluenceAPI
 
 db.connect()
 
