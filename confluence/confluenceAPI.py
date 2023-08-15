@@ -130,10 +130,6 @@ def test_validation(conf, pageID):
    print(Fifth_table)
    print('\n Table 6\n')
    print(validate_table_6(Sixth_table))
-<<<<<<< HEAD
    print(Sixth_table)
    
 
-=======
-   print(Sixth_table)
->>>>>>> c2cbadd (fixing merge conflicts)
