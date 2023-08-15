@@ -57,15 +57,12 @@ def update_rp_table_form_conf(tables,pageName):
 
     rpName = pageName[:pageName.rfind(" ")]
     rp = RPS.get_or_none(RPS.name == rpName)
-    print(rp)
 
     storageTable = tables[0]
     storageData = get_rp_storage_data(storageTable)
-    print(storageData)
 
     functionalityTable = tables[2]
     funcData = get_rp_functionality_data(functionalityTable)
-    print(funcData)
 
     if not rp:
         print(f"RP '{rpName}' not found")
@@ -84,15 +81,13 @@ def update_rp_table_form_conf(tables,pageName):
                 messages.append(msg)
                 transaction.rollback()
     else:
-        print("hi i am else")
         with db.atomic() as transaction:
             try:
                 rpTableData = {}
                 rpTableData.update(storageData)
                 rpTableData.update(funcData)
-                
-                rp = RPS.update(**rpTableData).where(RPS.name==rpName)
-                print(rp.scratch_tb)
+                RPS.update(**rpTableData).where(RPS.name==rpName).execute()
+                rp = RPS.get_by_id(rp)
                 print('RP updated')
             except Exception as e:
                 msg = f"Error while trying to update RP {rpName}"
@@ -115,26 +110,22 @@ def update_rp_table_form_conf(tables,pageName):
                 print(f"{msg} : \n", e)
                 messages.append(msg)
                 transaction.rollback()
-    print(memoryData)
     
     guiTable = tables[3]
     # TODO: Validate guiTable
     guiTableIsValid = True
     if guiTableIsValid:
         guiTable.fillna(1, inplace=True)
-        print(guiTable)
         guiTuple = guiTable.itertuples(index=False)
         # print(guiTuple)
         with db.atomic() as transaction:
             try:
                 RpGUI.delete().where(RpGUI.rp == rp).execute()
                 for item in guiTuple:
-                    print(item)
                     gui, guiCreated = GUI.get_or_create(gui_name = item[0])
                     #TODO: suitability not added
                     rpGuiData =  {'rp':rp,'gui':gui}
                     rpGui = RpGUI.create(**rpGuiData)
-                    print(rpGui)
             except Exception as e:
                 msg = f"Error while trying to update {rpName} GUI"
                 print(f"{msg} : \n", e)
@@ -177,17 +168,14 @@ def update_rp_table_form_conf(tables,pageName):
                 messages.append(msg)
                 transaction.rollback()
 
-
-
 def update_db_from_conf():
     pageIds = get_page_children_ids('245202949')
     conf = get_conf()
     for id in pageIds:
         tables, pageName = get_tabulated_page_data(conf,pageID=id)
-        if 'Softwares' not in pageName or 'Outline' not in pageName:
+        if ('Softwares' in pageName) or ('Outline' in pageName):
+            pass
+        else:
             update_rp_table_form_conf(tables,pageName)
 
-# update_db_from_conf()
-conf = get_conf()
-table, pageName = get_tabulated_page_data(conf,pageID='295108681')
-update_rp_table_form_conf(tables=table, pageName=pageName)
+update_db_from_conf()
