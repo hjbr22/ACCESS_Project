@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 from atlassian import Confluence
 import pandas as pd
+from APIValidation import validate_table_1, validate_table_2, validate_table_3, validate_table_4, validate_table_5
 
 def get_conf(url='https://access-ci.atlassian.net'):
 
@@ -54,10 +55,30 @@ def get_page_data(pageID="255754279"):
 
    #get the second table with index 1
    Second_table = table[1]
+   
+   #get the third table with index 2
+   Third_table = table[2]
+   
+   #get the fourth table with index 3
+   Fourth_table = table[3]
+   
+   #get the fifth table with index 4
+   Fifth_table = table[4]
 
    print('\n Table 1\n')
+   print(validate_table_1(First_table))
    print(First_table)
-   print(Second_table.to_html)
    print('\n Table 2\n')
+   print(validate_table_2(Second_table))
    print(Second_table)
+   print('\n Table 3\n')
+   print(validate_table_3(Third_table))
+   print(Third_table)
+   print('\n Table 4\n')
+   print(validate_table_4(Fourth_table))
+   print(Fourth_table)
+   print('\n Table 5\n')
+   print(validate_table_5(Fifth_table))
+   print(Fifth_table)
 
+get_page_data()
