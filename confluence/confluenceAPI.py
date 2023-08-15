@@ -41,10 +41,11 @@ def get_page_children_ids(pageID):
 
     # return(childPageIds)
 
-def get_page_data(pageID="295501831"):
-   conf = get_conf()
+def get_tabulated_page_data(conf, pageID):
    page = conf.get_page_by_id(pageID, expand='body.view')
-   page_content = page['body']['view']['value'] 
+   pageContent = page['body']['view']['value'] 
+   pageTitle = page['title']
+   table = pd.read_html(pageContent)
 
    table = pd.read_html(page_content)
 
@@ -87,5 +88,6 @@ def get_page_data(pageID="295501831"):
    print(validate_table_6(Sixth_table))
    print(Sixth_table)
    
+   return table, pageTitle
 
 get_page_data()
