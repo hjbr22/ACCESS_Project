@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 import json
 from models.rps import RPS
+from models.gui import GUI
 from models.researchField import ResearchFields
 from models.jobClass import JobClass
 from models.software import Software
@@ -16,9 +17,11 @@ def recommender_page():
 
     rps = RPS.select()
     research_fields = ResearchFields.select().order_by(ResearchFields.field_name)
+    guis = GUI.select()
     return render_template("questions.html", 
                            rps = rps, 
-                           research_fields = research_fields)
+                           research_fields = research_fields,
+                           guis = guis)
 
 @app.route("/get_research_fields")
 def get_research_fields():
@@ -40,6 +43,8 @@ def get_software():
 @app.route("/get_score", methods=['POST'])
 def get_score():
     data = request.get_json()
+    with open('formInfo.log', 'w'):
+        pass
     log_form_data(data)
     recommendations = get_recommendations(data)
     return json.dumps(recommendations)
