@@ -210,12 +210,12 @@ print("Adding RPJobClass data")
 RpJobClass.insert_many(rpJobClass).on_conflict_replace().execute()
 
 Gui = [
-    {"gui":"OpenOnDemand"},
-    {"gui":"RStudio"},
-    {"gui":"JupyterLab"},
-    {"gui":"Exosphere"},
-    {"gui":"Horizon"},
-    {"gui":"CACAO"},
+    {"gui_name":"OpenOnDemand"},
+    {"gui_name":"RStudio"},
+    {"gui_name":"JupyterLab"},
+    {"gui_name":"Exosphere"},
+    {"gui_name":"Horizon"},
+    {"gui_name":"CACAO"},
     ]
 
 print("Adding GUI data")
@@ -235,7 +235,7 @@ rpGui = []
 for gui in list(rpGUI_together.keys()):
     for rp in rpGUI_together[gui]:
         rpGui.append({"rp": RPS.get(RPS.name == rp),
-        "rp_gui": GUI.get(GUI.gui == gui)})
+        "gui": GUI.get(GUI.gui_name == gui)})
 
 print("Adding the GUI to the RP list")
 RpGUI.insert_many(rpGui).on_conflict_replace().execute()
@@ -267,47 +267,47 @@ RpSoftware.insert_many(rpSoftware,fields=[RpSoftware.rp,RpSoftware.software,RpSo
 
 #per node memory
 per_node_memory_gb = [{'rp':RPS.get(RPS.name == 'aces'),
-                    'node_type':'Standard','per_node_memory':512},
+                    'node_type':'Standard','per_node_memory_gb':512},
                    {'rp':RPS.get(RPS.name == 'anvil'),
-                    'node_type':'Standard','per_node_memory':256},
+                    'node_type':'Standard','per_node_memory_gb':256},
                    {'rp':RPS.get(RPS.name == 'anvil'), 
-                    'node_type':'Large Memory', 'per_node_memory':1000},
+                    'node_type':'Large Memory', 'per_node_memory_gb':1000},
                    {'rp':RPS.get(RPS.name == 'bridges-2'),
-                    'node_type':'Standard','per_node_memory':256},
+                    'node_type':'Standard','per_node_memory_gb':256},
                    {'rp':RPS.get(RPS.name == 'bridges-2'),
-                    'node_type':'Large Memory','per_node_memory':512},
+                    'node_type':'Large Memory','per_node_memory_gb':512},
                    {'rp':RPS.get(RPS.name == 'darwin'),
-                    'node_type':'Standard','per_node_memory':512},
+                    'node_type':'Standard','per_node_memory_gb':512},
                    {'rp':RPS.get(RPS.name == 'darwin'),
-                    'node_type':'Large Memory','per_node_memory':1024},
+                    'node_type':'Large Memory','per_node_memory_gb':1024},
                    {'rp':RPS.get(RPS.name == 'darwin'),
-                    'node_type':'Extra-Large Memory','per_node_memory':2048},
+                    'node_type':'Extra-Large Memory','per_node_memory_gb':2048},
                    {'rp':RPS.get(RPS.name == 'delta'),
-                    'node_type':'Standard','per_node_memory':256},
+                    'node_type':'Standard','per_node_memory_gb':256},
                    {'rp':RPS.get(RPS.name == 'delta'),
-                    'node_type':'Large Memory','per_node_memory':2000},
+                    'node_type':'Large Memory','per_node_memory_gb':2000},
                    {'rp':RPS.get(RPS.name == 'expanse'),
-                    'node_type':'Standard','per_node_memory':256},
+                    'node_type':'Standard','per_node_memory_gb':256},
                    {'rp':RPS.get(RPS.name == 'expanse'),
-                    'node_type':'Large Memory','per_node_memory':2000},
+                    'node_type':'Large Memory','per_node_memory_gb':2000},
                    {'rp':RPS.get(RPS.name == 'faster'),
-                    'node_type':'Standard','per_node_memory':256},
+                    'node_type':'Standard','per_node_memory_gb':256},
                    {'rp':RPS.get(RPS.name == 'jetstream2'),
-                    'node_type':'Standard','per_node_memory':512},
+                    'node_type':'Standard','per_node_memory_gb':512},
                    {'rp':RPS.get(RPS.name == 'jetstream2'),
-                    'node_type':'Large Memory','per_node_memory':1024},
+                    'node_type':'Large Memory','per_node_memory_gb':1024},
                    {'rp':RPS.get(RPS.name == 'ookami'),
-                    'node_type':'Standard','per_node_memory':32},
+                    'node_type':'Standard','per_node_memory_gb':32},
                    {'rp':RPS.get(RPS.name == 'kyric'),
-                    'node_type':'Large Memory','per_node_memory':3000},
+                    'node_type':'Large Memory','per_node_memory_gb':3000},
                    {'rp':RPS.get(RPS.name == 'rockfish'),
-                    'node_type':'Standard','per_node_memory':192},
+                    'node_type':'Standard','per_node_memory_gb':192},
                    {'rp':RPS.get(RPS.name == 'rockfish'),
-                    'node_type':'Large Memory','per_node_memory':1500},
+                    'node_type':'Large Memory','per_node_memory_gb':1500},
                    {'rp':RPS.get(RPS.name == 'stampede-2'),
-                    'node_type':'Standard','per_node_memory':96}]
+                    'node_type':'Standard','per_node_memory_gb':96}]
 print('Adding data to RpMemory')
-RpMemory.insert_many(per_node_memory_gb,fields=[RpMemory.rp,RpMemory.node_type,RpMemory.per_node_memory_gb]).on_conflict_replace().execute()
+RpMemory.insert_many(per_node_memory_gb).on_conflict_replace().execute()
 
 #info about the RP's as well as links to their websites
 rpInfo = [{'rp':RPS.get(RPS.name == 'aces'), 'blurb': r"ACES (Accelerating Computing for Emerging Sciences) is funded by NSF ACSS program (Award #2112356) and provides an innovative advanced computational prototype system. The ACES system has Intel Sapphire Rapids processors, Graphcore IPUs, NEC Vector Engines, Intel Max GPUs (formerly Ponte Vecchio), Intel FPGAs, Next Silicon co-processors, NVIDIA H100 GPUs, Intel Optane memory, and LIQID's composable PCIe fabric.", 'link': r"https://allocations.access-ci.org/resources"},

@@ -1,4 +1,5 @@
 from models.rpGUI import RpGUI
+from models.gui import GUI
 from models.researchField import ResearchFields
 from models.rpResearchField import RpResearchField
 from models.jobClass import JobClass
@@ -156,20 +157,9 @@ def classify_rp_storage(storageType):
 def get_recommendations(formData):
     scoreBoard = {}
     yes = '1'
-    # If user has not used an hpc before
-    if formData.get("hpc-use") == '0':
-        rpsWithGui = RpGUI.select()
-        rpNames = list({rp.rp.name for rp in rpsWithGui})
-        # increase score for all rps with a GUI
-        for rp in rpNames:
-            if rp in scoreBoard:
-                scoreBoard[rp]['score'] = calculate_points(scoreBoard[rp]['score'])
-                scoreBoard[rp]['reasons'].append("GUI")
-            else:
-                scoreBoard[rp] = {'score': 1, 'reasons': ["GUI"]}
 
     # If user has used ACCESS hpc
-    elif formData.get("used-hpc"):
+    if formData.get("used-hpc"):
         # increase score for all ACCESS RPs user has experience with
         for rp in formData.get("used-hpc"):
             if rp in scoreBoard:
@@ -177,6 +167,33 @@ def get_recommendations(formData):
                 scoreBoard[rp]['reasons'].append("User Experience")
             else:
                 scoreBoard[rp] = {'score': 1, 'reasons': ["User Experience"]}
+
+    #If user needs a system with a GUI
+    if (formData.get("gui-needed") == '1'):
+        rpsWithGui = RpGUI.select()
+
+        #If user selects specific GUI give points to only RPs with that GUI
+        if formData.get('used-gui'):
+            for rp in rpsWithGui:
+                if rp.gui.gui_name in formData.get('used-gui'):
+                    if rp.rp.name in scoreBoard:
+                        scoreBoard[rp.rp.name]['score'] += 1
+                        scoreBoard[rp.rp.name]['reasons'].append(rp.gui.gui_name)
+                    else:
+                        scoreBoard[rp.rp.name] = {'score': 1, 'reasons': [rp.gui.gui_name]}
+                        
+        #If user does not select any specific GUIs give points to every RP with a GUI
+        else:
+            rpsWithGui = RpGUI.select()
+            rpNames = list({rp.rp.name for rp in rpsWithGui})
+            # increase score for all rps with a GUI
+            for rp in rpNames:
+                if rp in scoreBoard:
+                    scoreBoard[rp]['score'] = calculate_points(scoreBoard[rp]['score'])
+                    scoreBoard[rp]['reasons'].append("GUI")
+                else:
+                    scoreBoard[rp] = {'score': 1, 'reasons': ["GUI"]}
+            
     
     # Research Field
     researchFields = formData.get("research-field")

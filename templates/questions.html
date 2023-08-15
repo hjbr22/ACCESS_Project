@@ -72,6 +72,28 @@
             <label class="form-check-label" for="four-years">I am an expert when it comes to using HPCs (4 or more years)</label>
         </div>
     </div>
+    <!-- GUI Use -->
+    <div class="form-group">
+        <label>Do you need to use a resource that has a user-friendly interface? (Recommended for users with little experience)</label>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="gui-needed" id="need-gui" value="1">
+            <label class="form-check-label" for="need-gui">Yes</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="gui-needed" id="no-need-gui" value="0">
+            <label class="form-check-label" for="no-need-gui">No</label>
+        </div>
+    </div>
+    <!-- GUI Familiarity -->
+    <div class="form-group hide-gui d-none">
+    <label>Select any GUIs you are comfortable using:</label>
+    {% for gui in guis %}
+        <div class="form-check">
+            <input class="form-check-input used-guis" name="used-gui" type="checkbox" id="{{gui.gui_name}}-option-rp" value="{{gui.gui_name}}">
+            <label class="form-check-label" for="{{gui.gui_name}}-option-rp">{{gui.gui_name}}</label>
+        </div>
+        {%endfor%}
+    </div>
         <!-- Field of Research -->
     <div class="form-group">
         <label for="">What is your field of research?</label>

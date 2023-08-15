@@ -26,6 +26,15 @@
 - If you want to reset the database at any point, run ```python3 reset_database.py```.
     Doing this will drop and recreate all tables and populate them with some sample data.
 
+## Confluence API
+- First create your API token here: https://id.atlassian.com/manage-profile/security/api-tokens
+- Once you have your API token, create a `.env` file in the project folder
+- Inside the `.env` file, add the following:
+    `atlassian_username = ""`
+    `confluence_token = ""`
+    Replace the empty strings with the appropriate information
+- That's it you're done! (The relevant code is in the `confluenceAPI.py` file. Run that file to see the results)
+
 ## Getting Modules
 - To get a list of the available modules on an HPC run `module avail`
 - To capture that output into a file, (first make sure you are in your scratch or work space)
