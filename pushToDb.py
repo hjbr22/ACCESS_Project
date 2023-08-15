@@ -8,7 +8,6 @@ from models.rpResearchField import RpResearchField
 from models.jobClass import JobClass
 from models.rpJobClass import RpJobClass
 from confluence.confluenceAPI import get_conf, get_page_children_ids, get_tabulated_page_data
-import math
 
 def get_rp_storage_data(storageTable):
     # TODO: validate storageTable

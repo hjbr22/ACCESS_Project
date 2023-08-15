@@ -1,6 +1,3 @@
-# from ..models import *
-# # from .models.rps import RPS
-# # from ...models.rps import RPS
 from models.rps import RPS
 from models.rpMemory import RpMemory
 from logic.research import get_research_fields
