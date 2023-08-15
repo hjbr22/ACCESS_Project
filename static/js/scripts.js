@@ -8,7 +8,6 @@ const RPmemory = {'less-than-64':['ACES', 'Anvil', 'Bridges-2', 'DARWIN', 'Delta
 //Import tagify objects for event listeners     
 import { jobTagify, softwareTagify, fieldTagify,
         addFieldTagify, addJobTagify, addSoftwareTagify,
-        fieldNoMatches, jobNoMatches, softwareNoMatches,
         hideAddField, showAddField,
         hideAddJob, showAddJob,
         hideAddSoftware, showAddSoftware } from "./tags.js";
@@ -17,17 +16,14 @@ import { jobTagify, softwareTagify, fieldTagify,
 $(document).ready(function(){ 
     $('html,body').animate({scrollTop:0},'fast')
 
-    fieldTagify.on("dropdown:noMatch", fieldNoMatches)
-    .on("add", hideAddField)
-    .on("remove", showAddField);
+    fieldTagify.on("invalid", showAddField);
+    addFieldTagify.on("remove", hideAddField);
 
-    jobTagify.on("dropdown:noMatch", jobNoMatches)
-    .on("add", hideAddJob)
-    .on("remove", showAddJob);
+    jobTagify.on("invalid", showAddJob);
+    addJobTagify.on("remove", hideAddJob);
 
-    softwareTagify.on("dropdown:noMatch", softwareNoMatches)
-    .on("add", hideAddSoftware)
-    .on("remove", showAddSoftware);
+    softwareTagify.on("invalid", showAddSoftware);
+    addSoftwareTagify.on("remove", hideAddSoftware);
 
     // calculate scores when the form is submitted
     $("#submit-form").on("click", function(){

@@ -10,11 +10,6 @@ var fieldWhitelist = await getFieldWhitelist();
 var jobWhitelist = await getJobWhitelist();
 var softwareWhitelist = await getSoftwareWhitelist();
 
-//Add "Other" option to whitelists
-fieldWhitelist.push("Other");
-jobWhitelist.push("Other");
-softwareWhitelist.push("Other");
-
 //Find user input in research field question
 var fieldInput = document.querySelector("input[id=field-text-input]");
 fieldTagify = new Tagify (fieldInput, {
@@ -96,50 +91,36 @@ async function getSoftwareWhitelist(){
     });
 }
 
-export function fieldNoMatches(){
-    fieldTagify.suggestedListItems = ["Other"];
-}
-
-export function jobNoMatches(){
-    jobTagify.suggestedListItems = ["Other"];
-}
-
-export function softwareNoMatches(){
-    softwareTagify.suggestedListItems = ["Other"];
-}
-
-export function hideAddField(e){
-    if (e.detail.data.value.toLowerCase() === "other"){
-        $(".hide-add-field").removeClass('d-none').show();
+export function hideAddField(){
+    if (addFieldTagify.getTagElms().length == 0){
+        $(".hide-add-field").addClass('d-none').hide();
     }
 }
 
 export function showAddField(e){
-    if (e.detail.data.value.toLowerCase() === "other"){
-        $(".hide-add-field").addClass('d-none').hide()
-    }
+    addFieldTagify.addTags(e.detail.data.value);
+    $(".hide-add-field").removeClass('d-none').show();
+    console.log(fieldTagify.getTagElms())
 }
 
-export function hideAddJob(e){
-    if (e.detail.data.value.toLowerCase() === "other"){
-        $(".hide-add-job").removeClass('d-none').show();
+export function hideAddJob(){
+    if (addJobTagify.getTagElms().length == 0){
+        $(".hide-add-job").addClass('d-none').hide();
     }
 }
 
 export function showAddJob(e){
-    if (e.detail.data.value.toLowerCase() === "other"){
-        $(".hide-add-job").addClass('d-none').hide()
-    }
+    addJobTagify.addTags(e.detail.data.value);
+    $(".hide-add-job").removeClass('d-none').show()
 }
 
-export function hideAddSoftware(e){
-    if (e.detail.data.value.toLowerCase() === "other"){
-        $(".hide-add-software").removeClass('d-none').show();
+export function hideAddSoftware(){
+    if (addSoftwareTagify.getTagElms().length == 0){
+        $(".hide-add-software").addClass('d-none').hide();
     }
 }
 
 export function showAddSoftware(e){
-    if (e.detail.data.value.toLowerCase() === "other"){
-        $(".hide-add-software").addClass('d-none').hide()
-    }
+    addSoftwareTagify.addTags(e.detail.data.value);
+    $(".hide-add-software").removeClass('d-none').show()
 }
