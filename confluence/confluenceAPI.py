@@ -91,11 +91,8 @@ def get_tabulated_page_data(conf, pageID):
    return table, pageTitle
 
 def test_validation(conf, pageID):
-   page = conf.get_page_by_id(pageID, expand='body.view')
-   pageContent = page['body']['view']['value'] 
-   pageTitle = page['title']
-   table = pd.read_html(pageContent)
-
+   conf = get_conf()
+   table = get_tabulated_page_data(conf, pageID)
    print(type(table))
    print('\n Number of tables:', len(table))
    #get the first table with index 0
@@ -133,6 +130,10 @@ def test_validation(conf, pageID):
    print(Fifth_table)
    print('\n Table 6\n')
    print(validate_table_6(Sixth_table))
+<<<<<<< HEAD
    print(Sixth_table)
    
 
+=======
+   print(Sixth_table)
+>>>>>>> c2cbadd (fixing merge conflicts)
