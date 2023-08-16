@@ -264,7 +264,7 @@ def get_recommendations(formData):
                         scoreBoard[rpName]['reasons'].append(f"{rpMem.per_node_memory_gb} GB Memory")
                 else:
                     scoreBoard[rpName] = {'score': 1, 'reasons': [f"{rpMem.per_node_memory_gb} GB Memory"]}
-        else:
+        elif memoryNeeded == 'more-than-512':
             rpMems = RpMemory.select().where(RpMemory.per_node_memory_gb > 512)
             for rpMem in rpMems:
                 rpName = rpMem.rp.name
