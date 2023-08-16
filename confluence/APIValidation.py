@@ -11,7 +11,6 @@ def validate_table_1(table):
       return False, "Temp Storage (TB) column contains non-numeric values"
    elif not validate_numeric_values(table['Long-Term Storage (TB)']):
       return False, "Long-Term Storage (TB) column contains non-numeric values"
-    
    return True
 
 def validate_table_2(table):
