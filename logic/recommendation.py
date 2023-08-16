@@ -317,7 +317,7 @@ def get_recommendations(formData):
     if alwaysRunningNeeded == yes:
         arRps = RPS.select().where(RPS.always_running > 0)
         for rp in arRps:
-            suitability = rp.always_running * 2
+            suitability = rp.always_running * 1.5
             if rp.name in scoreBoard:
                 scoreBoard[rp.name]['score'] = calculate_points(scoreBoard[rp.name]['score'],suitability)
                 scoreBoard[rp.name]['reasons'].append("Always Running")
