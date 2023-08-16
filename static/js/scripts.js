@@ -10,20 +10,24 @@ import { jobTagify, softwareTagify, fieldTagify,
         addFieldTagify, addJobTagify, addSoftwareTagify,
         hideAddField, showAddField,
         hideAddJob, showAddJob,
-        hideAddSoftware, showAddSoftware } from "./tags.js";
+        hideAddSoftware, showAddSoftware,
+        fieldInWhitelist, jobInWhitelist, softwareInWhitelist } from "./tags.js";
 
 
 $(document).ready(function(){ 
     $('html,body').animate({scrollTop:0},'fast')
 
     fieldTagify.on("invalid", showAddField);
-    addFieldTagify.on("remove", hideAddField);
+    addFieldTagify.on("remove", hideAddField)
+    .on("invalid", fieldInWhitelist);
 
     jobTagify.on("invalid", showAddJob);
-    addJobTagify.on("remove", hideAddJob);
+    addJobTagify.on("remove", hideAddJob)
+    .on("invalid", jobInWhitelist);
 
     softwareTagify.on("invalid", showAddSoftware);
-    addSoftwareTagify.on("remove", hideAddSoftware);
+    addSoftwareTagify.on("remove", hideAddSoftware)
+    .on("invalid", softwareInWhitelist);
 
     // calculate scores when the form is submitted
     $("#submit-form").on("click", function(){
