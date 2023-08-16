@@ -75,21 +75,17 @@ def get_rp_software_tables(rpNamesList):
     return tablesDict
 
 
-def create_rp_conf_pages():
-    conf = get_conf()
-    # rps = RPS.select().order_by(RPS.name)
-    # rpNamesList = [rp.name for rp in rps]
-    # dataTablesDict = get_rp_data_tables(rpNamesList)
-    # parent_id = 245202949
-    # for rpName in rpNamesList:
-    #     title = f'{rpName} Data'
-    #     body = ''
-    #     for table in dataTablesDict[rpName]:
-    #         body += table.to_html(index=False,classes='confluenceTable')
-    #     create_conf_page(conf,title=title,body=body,parent_id=parent_id)
+def create_rp_data_conf_pages(conf, rpNamesList):
+    dataTablesDict = get_rp_data_tables(rpNamesList)
+    parent_id = 245202949
+    for rpName in rpNamesList:
+        title = f'{rpName} Data'
+        body = ''
+        for table in dataTablesDict[rpName]:
+            body += table.to_html(index=False,classes='confluenceTable')
+        create_conf_page(conf,title=title,body=body,parent_id=parent_id)
 
-    rpNamesList = ['Expanse', 'Kyric']
-
+def create_rp_softwares_conf_pages(conf, rpNamesList):
     softwareTablesDict = get_rp_software_tables(rpNamesList)
     parent_id = 245202949
     for rpName in rpNamesList:
@@ -98,4 +94,11 @@ def create_rp_conf_pages():
         for table in softwareTablesDict[rpName]:
             body += table.to_html(index=False,classes='confluenceTable')
         create_conf_page(conf,title=title,body=body,parent_id=parent_id)
+
+def create_all_rp_conf_pages():
+    conf = get_conf()
+    rps = RPS.select().order_by(RPS.name)
+    rpNamesList = [rp.name for rp in rps]
+    create_rp_data_conf_pages(conf,rpNamesList)
+    create_rp_softwares_conf_pages(conf,rpNamesList)
 
