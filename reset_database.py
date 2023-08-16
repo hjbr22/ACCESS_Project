@@ -15,16 +15,6 @@ import os
 
 db.connect()
 
-#Creating the variables from the api call in confluenceAPI
-
-# api_table = confluenceAPI.table
-
-# with db.atomic() as transaction:
-#     try:
-#         #Put validate data file here when Aiden makes it
-#     except Exception as e: #e will be a place holder until Aiden completes the validation function
-#         print(e)
-#         transaction.rollback() 
 tables = db.get_tables()
 print(f"the tables: {tables}")
 
@@ -32,16 +22,6 @@ print(f"the tables: {tables}")
 db.drop_tables([RPS,JobClass,RpJobClass,ResearchFields,RpResearchField,Software,RpSoftware,GUI,RpGUI,RpMemory])
 db.create_tables([RPS,JobClass,RpJobClass,ResearchFields,RpResearchField,Software,RpSoftware,GUI,RpGUI,RpMemory])
 
-# rps = []
-
-# for rp_names in api_table:
-#     rp_name = rp_names[]
-#     scratch_tb = rp_names['scratch_tb']
-#     longterm_tb = rp_names['longterm_tb']
-#     graphical = rp_names['graphical']
-#     parallel = rp_names['parallel']
-#     virtual_machine = rp_names['virtual_machine']
-#     rps.append({"name":rp_name, "scratch_tb":scratch_tb, "longterm_tb":longterm_tb, "graphical":graphical})
     
 rps = [
    {"name":"ACES", "scratch_tb":1, "longterm_tb":100, "graphical":2},
@@ -60,7 +40,6 @@ rps = [
     {"name":"Open Science Grid", "scratch_tb":0, "longterm_tb":0.5},
    {"name":"Open Storage Network", "scratch_tb":0, "longterm_tb":0},
    ]
-
 
 
 print("Adding RPS data")
