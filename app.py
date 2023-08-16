@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request
-import os
 from dotenv import load_dotenv
 import json
 from models.rps import RPS
@@ -47,7 +46,7 @@ def get_score():
         pass
     log_form_data(data)
     recommendations = get_recommendations(data)
-    return json.dumps(recommendations)
+    return json.dumps(recommendations, sort_keys=True)
     # return redirect(url_for('recommender_page',recommendations=recommendations))
 
 if __name__ == '__main__':

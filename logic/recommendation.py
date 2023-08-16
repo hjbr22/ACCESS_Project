@@ -7,6 +7,7 @@ from models.rpJobClass import RpJobClass
 from models.rps import RPS
 from models.software import Software
 from models.rpSoftware import RpSoftware
+from models.rpMemory import RpMemory
 import operator
 from functools import reduce
 import logging
@@ -211,8 +212,6 @@ def get_recommendations(formData):
     # Storage
     storageNeeded = formData.get("storage")
     if storageNeeded:
-        ## TODO: Need to get data for i-nodes and calculates scores accordingly here:
-        numFiles = formData.get("num-files")
         
         longTermStorageNeeded = formData.get("long-term-storage")
         scratchStorageNeeded = formData.get("temp-storage")
@@ -240,7 +239,44 @@ def get_recommendations(formData):
     memoryNeeded = formData.get("memory")
     # TODO: add scoring system after the memory data has been added to the db
     if memoryNeeded:
-        pass
+        if memoryNeeded == 'less-than-64':
+            rpMems = RpMemory.select().where(RpMemory.per_node_memory_gb < 64)
+            for rpMem in rpMems:
+                rpName = rpMem.rp.name
+                if rpName in scoreBoard:
+                    if 'Memory' in scoreBoard[rpName]['reasons']:
+                        scoreBoard[rpName]['reasons'].append(f"{rpMem.per_node_memory_gb} GB Memory")
+                    else:
+                        scoreBoard[rpName]['score'] = calculate_points(scoreBoard[rpName]['score'])
+                        scoreBoard[rpName]['reasons'].append(f"{rpMem.per_node_memory_gb} GB Memory")
+                else:
+                    scoreBoard[rpName] = {'score': 1, 'reasons': [f"{rpMem.per_node_memory_gb} GB Memory"]}
+
+        elif memoryNeeded == '64-512':
+            rpMems = RpMemory.select().where((RpMemory.per_node_memory_gb > 64) & (RpMemory.per_node_memory_gb <512))
+            for rpMem in rpMems:
+                rpName = rpMem.rp.name
+                if rpName in scoreBoard:
+                    if 'Memory' in scoreBoard[rpName]['reasons']:
+                        scoreBoard[rpName]['reasons'].append(f"{rpMem.per_node_memory_gb} GB Memory")
+                    else:
+                        scoreBoard[rpName]['score'] = calculate_points(scoreBoard[rpName]['score'])
+                        scoreBoard[rpName]['reasons'].append(f"{rpMem.per_node_memory_gb} GB Memory")
+                else:
+                    scoreBoard[rpName] = {'score': 1, 'reasons': [f"{rpMem.per_node_memory_gb} GB Memory"]}
+        else:
+            rpMems = RpMemory.select().where(RpMemory.per_node_memory_gb > 512)
+            for rpMem in rpMems:
+                rpName = rpMem.rp.name
+                if rpName in scoreBoard:
+                    if 'Memory' in scoreBoard[rpName]['reasons']:
+                        scoreBoard[rpName]['reasons'].append(f"{rpMem.per_node_memory_gb} GB Memory")
+                    else:
+                        scoreBoard[rpName]['score'] = calculate_points(scoreBoard[rpName]['score'])
+                        scoreBoard[rpName]['reasons'].append(f"{rpMem.per_node_memory_gb} GB Memory")
+                else:
+                    scoreBoard[rpName] = {'score': 1, 'reasons': [f"{rpMem.per_node_memory_gb} GB Memory"]}
+
 
     # Software
     softwares = formData.get("software")
@@ -281,7 +317,7 @@ def get_recommendations(formData):
     if alwaysRunningNeeded == yes:
         arRps = RPS.select().where(RPS.always_running > 0)
         for rp in arRps:
-            suitability = rp.always_running * 4
+            suitability = rp.always_running * 2
             if rp.name in scoreBoard:
                 scoreBoard[rp.name]['score'] = calculate_points(scoreBoard[rp.name]['score'],suitability)
                 scoreBoard[rp.name]['reasons'].append("Always Running")
@@ -300,5 +336,6 @@ def get_recommendations(formData):
             else:
                 scoreBoard[rp.name] = {'score': 1*suitability, 'reasons': ["Virtual Machine"]}
     query_logger.info('Recommendation Scoreboard:\n%s', scoreBoard)
+
     return scoreBoard
 
