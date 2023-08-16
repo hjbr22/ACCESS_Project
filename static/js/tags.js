@@ -10,11 +10,6 @@ var fieldWhitelist = await getFieldWhitelist();
 var jobWhitelist = await getJobWhitelist();
 var softwareWhitelist = await getSoftwareWhitelist();
 
-//Add "Other" option to whitelists
-fieldWhitelist.push("Other");
-jobWhitelist.push("Other");
-softwareWhitelist.push("Other");
-
 //Find user input in research field question
 var fieldInput = document.querySelector("input[id=field-text-input]");
 fieldTagify = new Tagify (fieldInput, {
@@ -31,7 +26,8 @@ fieldTagify = new Tagify (fieldInput, {
 //Create tagify input for "add research fields" question
 var addFieldInput = document.querySelector("input[id=field-add-tag");
 addFieldTagify = new Tagify(addFieldInput, {
-    blacklist: fieldWhitelist
+    blacklist: fieldWhitelist,
+    editTags: false
 });
 
 //Find user input in job class question
@@ -50,7 +46,8 @@ jobTagify = new Tagify (jobInput, {
 //Create tagify input for "add job classes" question
 var addJobInput = document.querySelector("input[id=job-type-add-tag]");
 addJobTagify = new Tagify(addJobInput, {
-    blacklist: jobWhitelist
+    blacklist: jobWhitelist,
+    editTags: false
 });
 
 //Find user input in software question
@@ -69,7 +66,8 @@ softwareTagify = new Tagify (softwareInput, {
 //Create tagify input for "add software/packages" question
 var addSoftwareInput = document.querySelector("input[id=software-libraries-add-tag]");
 addSoftwareTagify = new Tagify(addSoftwareInput, {
-    blacklist: softwareWhitelist
+    blacklist: softwareWhitelist,
+    editTags: false
 });
 
 //grab whitelist for research fields tags via AJAX
@@ -96,50 +94,80 @@ async function getSoftwareWhitelist(){
     });
 }
 
-export function fieldNoMatches(){
-    fieldTagify.suggestedListItems = ["Other"];
-}
-
-export function jobNoMatches(){
-    jobTagify.suggestedListItems = ["Other"];
-}
-
-export function softwareNoMatches(){
-    softwareTagify.suggestedListItems = ["Other"];
-}
-
-export function hideAddField(e){
-    if (e.detail.data.value.toLowerCase() === "other"){
-        $(".hide-add-field").removeClass('d-none').show();
+export function hideAddField(){
+    if (addFieldTagify.getTagElms().length == 0){
+        $(".hide-add-field").addClass('d-none').hide();
     }
 }
 
 export function showAddField(e){
-    if (e.detail.data.value.toLowerCase() === "other"){
-        $(".hide-add-field").addClass('d-none').hide()
-    }
+    addFieldTagify.addTags(e.detail.data.value);
+    $(".hide-add-field").removeClass('d-none').show();
 }
 
-export function hideAddJob(e){
-    if (e.detail.data.value.toLowerCase() === "other"){
-        $(".hide-add-job").removeClass('d-none').show();
+export function hideAddJob(){
+    if (addJobTagify.getTagElms().length == 0){
+        $(".hide-add-job").addClass('d-none').hide();
     }
 }
 
 export function showAddJob(e){
-    if (e.detail.data.value.toLowerCase() === "other"){
-        $(".hide-add-job").addClass('d-none').hide()
-    }
+    addJobTagify.addTags(e.detail.data.value);
+    $(".hide-add-job").removeClass('d-none').show()
 }
 
-export function hideAddSoftware(e){
-    if (e.detail.data.value.toLowerCase() === "other"){
-        $(".hide-add-software").removeClass('d-none').show();
+export function hideAddSoftware(){
+    if (addSoftwareTagify.getTagElms().length == 0){
+        $(".hide-add-software").addClass('d-none').hide();
     }
 }
 
 export function showAddSoftware(e){
-    if (e.detail.data.value.toLowerCase() === "other"){
-        $(".hide-add-software").addClass('d-none').hide()
+    addSoftwareTagify.addTags(e.detail.data.value);
+    $(".hide-add-software").removeClass('d-none').show()
+}
+
+export function fieldInWhitelist(e){
+    let tagValues = fieldTagify.value;
+    let duplicate = false;
+
+    for(let i=0; i < tagValues.length; i++){
+        if (e.detail.data.value.toLowerCase() === tagValues[i].value.toLowerCase()){
+            duplicate = true;
+        }
+    }
+
+    if (!duplicate){
+        fieldTagify.addTags(e.detail.data.value);
+    }
+}
+
+export function jobInWhitelist(e){
+    let tagValues = jobTagify.value;
+    let duplicate = false;
+
+    for(let i=0; i < tagValues.length; i++){
+        if (e.detail.data.value.toLowerCase() === tagValues[i].value.toLowerCase()){
+            duplicate = true;
+        }
+    }
+
+    if (!duplicate){
+        jobTagify.addTags(e.detail.data.value);
+    }
+}
+
+export function softwareInWhitelist(e){
+    let tagValues = softwareTagify.value;
+    let duplicate = false;
+
+    for(let i=0; i < tagValues.length; i++){
+        if (e.detail.data.value.toLowerCase() === tagValues[i].value.toLowerCase()){
+            duplicate = true;
+        }
+    }
+
+    if (!duplicate){
+        softwareTagify.addTags(e.detail.data.value);
     }
 }
