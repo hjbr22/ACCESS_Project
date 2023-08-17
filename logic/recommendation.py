@@ -264,7 +264,7 @@ def get_recommendations(formData):
                         scoreBoard[rpName]['reasons'].append(f"{rpMem.per_node_memory_gb} GB Memory")
                 else:
                     scoreBoard[rpName] = {'score': 1, 'reasons': [f"{rpMem.per_node_memory_gb} GB Memory"]}
-        else:
+        elif memoryNeeded == 'more-than-512':
             rpMems = RpMemory.select().where(RpMemory.per_node_memory_gb > 512)
             for rpMem in rpMems:
                 rpName = rpMem.rp.name
@@ -317,7 +317,7 @@ def get_recommendations(formData):
     if alwaysRunningNeeded == yes:
         arRps = RPS.select().where(RPS.always_running > 0)
         for rp in arRps:
-            suitability = rp.always_running * 2
+            suitability = rp.always_running * 1.5
             if rp.name in scoreBoard:
                 scoreBoard[rp.name]['score'] = calculate_points(scoreBoard[rp.name]['score'],suitability)
                 scoreBoard[rp.name]['reasons'].append("Always Running")
