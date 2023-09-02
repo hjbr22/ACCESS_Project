@@ -17,6 +17,7 @@ import { jobTagify, softwareTagify, fieldTagify,
 $(document).ready(function(){ 
     $('html,body').animate({scrollTop:0},'fast')
 
+    //event listeners for tagify fields
     fieldTagify.on("invalid", showAddField);
     addFieldTagify.on("remove", hideAddField)
     .on("invalid", fieldInWhitelist);
@@ -28,6 +29,9 @@ $(document).ready(function(){
     softwareTagify.on("invalid", showAddSoftware);
     addSoftwareTagify.on("remove", hideAddSoftware)
     .on("invalid", softwareInWhitelist);
+
+    //initialize tooltips
+    $('[data-toggle="tooltip"]').tooltip()
 
     // calculate scores when the form is submitted
     $("#submit-form").on("click", function(){
