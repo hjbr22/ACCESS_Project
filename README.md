@@ -2,8 +2,11 @@
 ## Running the application
 1. Pull down the repo in your home directory: ```git clone <URL>```
 2. Run ```source setup.sh``` (you must have virtualenv installed)
+    - Use the `test` argument to reset the database using local data (this data may be incomplete) `source setup.sh test`
+    - Use the `conf` argument to reset the database using data from confluence `source setup.sh conf` (refer to the Confluence API section below if you are having trouble with this)
     - If you are having trouble with `source setup.sh` (on VS Code or elsewhere) 
     change your terminal to use bash (git bash works well) or manually install the requirements in `requirements.txt`
+    and reset the database using `reset_database.py`
 3. Run the app with  ```flask run``` or ```python3 -m flask run```
 
 ## Developing
