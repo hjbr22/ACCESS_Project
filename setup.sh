@@ -42,11 +42,15 @@ pip install --upgrade pip
 pip install -r requirements.txt
 # To generate a new requirements.txt file, run "pip freeze > requirements.txt"
 
-
-echo "Parsing Modules"
-$PYTHON parse_modules.py
-
 echo "Resetting Database"
-$PYTHON reset_database.py
+DATASOURCE=$1
+echo $DATASOURCE
+
+if [ "${DATASOURCE}" = 'test' ] || [ "${DATASOURCE}" = 'conf' ];
+then
+  $PYTHON reset_database.py $DATASOURCE
+else
+  echo -e "\e[31mUnable to reset database (Invalid argument).\nPass in 'test' to use the test data or 'conf' to use the data from confluence\e[0m"
+fi
 
 
