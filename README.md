@@ -28,7 +28,7 @@
     make sure to add some data for that column in the ```reset_database.py``` file as well)
 - If you want to reset the database at any point, run ```python3 reset_database.py test```.
     Doing this will drop and recreate all tables and populate them with some sample data.
-    Use the `conf` parameter instead if you want to use the data in Confluence. (Refer to the Confluence API
+    - Use the `conf` parameter instead if you want to use the data in Confluence. (Refer to the Confluence API
     section below if you are having trouble with this.)
 
 ## Confluence API
