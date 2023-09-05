@@ -329,11 +329,16 @@ if __name__ == "__main__":
         whichData = sys.argv[1]
         if whichData == 'test':
             recreate_tables()
+            print("Resetting database from test data")
             reset_with_test_data()
-        elif whichData == 'conf':
-            recreate_tables()
-            update_db_from_conf()
+            print("Database reset")
 
+        elif whichData == 'conf':
+            if not db.get_tables():
+                recreate_tables()
+            print("Resetting database from conf")
+            update_db_from_conf()
+            print("Database reset")
         else:
             print("Invalid argument for reset_database.\nPass in 'test' to use the test data or 'conf' to use the data from confluence")
     except Exception as e:
