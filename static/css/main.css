@@ -23,3 +23,8 @@ margin-left: 5px;
   max-width: 700px;
   background: white!important;
 }
+
+.btn-link{
+  line-height: 0;
+  padding: inherit;
+}
