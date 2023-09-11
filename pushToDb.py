@@ -164,8 +164,8 @@ def update_rp_table_form_conf(tables,pageName):
                 transaction.rollback()
 
 def update_db_from_conf():
-    pageIds = get_page_children_ids('245202949')
     conf = get_conf()
+    pageIds = get_page_children_ids(conf,'245202949')
     for id in pageIds:
         tables, pageName = get_tabulated_page_data(conf,pageID=id)
         if ('Softwares' in pageName) or ('Outline' in pageName):

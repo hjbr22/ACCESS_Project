@@ -16,7 +16,7 @@ import sys
 import os
 
 def recreate_tables():
-    db.connect()
+    db.connect(reuse_if_open=True)
     
     with db.atomic() as transaction:
         try:
@@ -34,7 +34,7 @@ def recreate_tables():
     db.close()
 
 def reset_with_test_data():
-    db.connect()
+    db.connect(reuse_if_open=True)
     rps = [
     {"name":"ACES", "scratch_tb":1, "longterm_tb":100, "graphical":2},
     {"name":"Anvil", "scratch_tb":100, "longterm_tb":50},
@@ -254,30 +254,6 @@ def reset_with_test_data():
     print("Adding the GUI to the RP list")
     RpGUI.insert_many(rpGui).on_conflict_replace().execute()
 
-    #Accessing all of the module text files and putting them into their respective arrays
-
-    os.chdir('softwares')
-
-    modules = glob.glob('*.txt')
-    rpSftw = {}
-    modulesAndVersions = {}
-    for name in modules:
-        rpName = name.split("_")[0]
-        modulesAndVersions,mods = get_modules_and_versions(name,modulesAndVersions)
-        rpSftw[rpName] = mods
-
-    print("Adding data to Software")
-    Software.insert_many(modulesAndVersions.items(), fields=[Software.software_name,Software.version]).on_conflict_replace().execute()
-
-    #associate modules with specific RP
-    rpSoftware = []
-    for item in rpSftw.items():
-        rp = RPS.get(RPS.name == item[0])
-        rpSoftware.extend([(rp,Software.get(Software.software_name==software),1) for software in item[1]])
-
-    print("Adding data to RpSoftware")
-    RpSoftware.insert_many(rpSoftware,fields=[RpSoftware.rp,RpSoftware.software,RpSoftware.suitability]).on_conflict_replace().execute()
-
     #per node memory
     per_node_memory_gb = [{'rp':RPS.get(RPS.name == 'aces'),
                         'node_type':'Standard','per_node_memory_gb':512},
@@ -323,6 +299,33 @@ def reset_with_test_data():
     RpMemory.insert_many(per_node_memory_gb).on_conflict_replace().execute()
     db.close()
 
+def add_softwares():
+    db.connect(reuse_if_open=True)
+    #Accessing all of the module text files and putting them into their respective arrays
+
+    os.chdir('softwares')
+
+    modules = glob.glob('*.txt')
+    rpSftw = {}
+    modulesAndVersions = {}
+    for name in modules:
+        rpName = name.split("_")[0]
+        modulesAndVersions,mods = get_modules_and_versions(name,modulesAndVersions)
+        rpSftw[rpName] = mods
+
+    print("Adding data to Software")
+    Software.insert_many(modulesAndVersions.items(), fields=[Software.software_name,Software.version]).on_conflict_replace().execute()
+
+    #associate modules with specific RP
+    rpSoftware = []
+    for item in rpSftw.items():
+        rp = RPS.get(RPS.name == item[0])
+        rpSoftware.extend([(rp,Software.get(Software.software_name==software),1) for software in item[1]])
+
+    print("Adding data to RpSoftware")
+    RpSoftware.insert_many(rpSoftware,fields=[RpSoftware.rp,RpSoftware.software,RpSoftware.suitability]).on_conflict_replace().execute()
+    
+    db.close()
 
 if __name__ == "__main__":
     try:
@@ -331,13 +334,16 @@ if __name__ == "__main__":
             recreate_tables()
             print("Resetting database from test data")
             reset_with_test_data()
+            add_softwares()
             print("Database reset")
 
         elif whichData == 'conf':
+            tables = db.get_tables()
             if not db.get_tables():
                 recreate_tables()
             print("Resetting database from conf")
             update_db_from_conf()
+            add_softwares()
             print("Database reset")
         else:
             print("Invalid argument for reset_database.\nPass in 'test' to use the test data or 'conf' to use the data from confluence")
