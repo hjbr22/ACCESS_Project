@@ -1,18 +1,10 @@
-// memory
-const RPmemory = {'less-than-64':['ACES', 'Anvil', 'Bridges-2', 'DARWIN', 'Delta', 'Expanse', 'FASTER', 'Jetstream2',
-               'OOKAMI', 'KyRIC', 'Rockfish', 'Stampede-2', 'Open Science Grid'],
-     '64-512':['Anvil', 'Stampede-2', 'Delta', 'Expanse', 'FASTER', 'Rockfish', 'Bridges-2', 'DARWIN'],
-     'more-than-512':['KyRIC', 'Jetstream2', 'Bridges-2', 'Delta', 'DARWIN', 'Expanse', 'Rockfish'],
-     'unsure':[]};
-
 //Import tagify objects for event listeners     
-import { jobTagify, softwareTagify, fieldTagify,
+import { fieldTagify, jobTagify, softwareTagify,
         addFieldTagify, addJobTagify, addSoftwareTagify,
         hideAddField, showAddField,
         hideAddJob, showAddJob,
         hideAddSoftware, showAddSoftware,
         fieldInWhitelist, jobInWhitelist, softwareInWhitelist } from "./tags.js";
-
 
 $(document).ready(function(){ 
     $('html,body').animate({scrollTop:0},'fast')
