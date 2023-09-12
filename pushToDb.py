@@ -74,8 +74,12 @@ def update_rp_table_form_conf(tables,pageName):
         messages.append(msg+(". Functionality data was not updated."))
         print(msg+(". Functionality data was not updated."))
 
-    if not rp: # if rp does not exist create one
-        print(f"RP {rpName} not found")
+    if not rp:
+        print(f"RP '{rpName}' not found")
+        if not (funcTableIsValid and storageTableIsValid):
+            print(f'Unable to create new RP {rpName}.')
+            messages.append(f'Unable to create new RP {rpName}.')
+            return
         with db.atomic() as transaction:
             try:
                 rpTableData = {}
@@ -98,7 +102,7 @@ def update_rp_table_form_conf(tables,pageName):
                 if funcTableIsValid:
                     rpTableData.update(funcData)
                 RPS.update(**rpTableData).where(RPS.name==rpName).execute()
-                rp = RPS.get_by_id(rp)
+                print(f'RP {rpName} updated')
             except Exception as e:
                 msg = f"Error while trying to update RP {rpName}"
                 print(f"{msg} : \n", e)
@@ -106,19 +110,26 @@ def update_rp_table_form_conf(tables,pageName):
                 transaction.rollback()
     
     memoryTable = tables[1]
-    memoryData = get_rp_memory_data(memoryTable,rp)
-    if memoryData:
-        with db.atomic() as transaction:
-            try:
-                delRpMem = RpMemory.delete().where(RpMemory.rp == rp)
-                delRpMem.execute()
-                createRpMem = RpMemory.insert_many(memoryData).on_conflict_replace()
-                createRpMem.execute()
-            except Exception as e:
-                msg = f"Error while trying to update {rpName} memory"
-                print(f"{msg} : \n", e)
-                messages.append(msg)
-                transaction.rollback()
+    memoryDataIsValid, msg = validate_memory_table(memoryTable)
+
+    if memoryDataIsValid:
+        memoryData = get_rp_memory_data(memoryTable,rp)
+        if memoryData:
+            with db.atomic() as transaction:
+                try:
+                    delRpMem = RpMemory.delete().where(RpMemory.rp == rp)
+                    delRpMem.execute()
+                    createRpMem = RpMemory.insert_many(memoryData).on_conflict_replace()
+                    createRpMem.execute()
+                    print(f"Memory info successfully updated for {rpName}")
+                except Exception as e:
+                    msg = f"Error while trying to update {rpName} memory"
+                    print(f"{msg} : \n", e)
+                    messages.append(msg)
+                    transaction.rollback()
+    else:
+        messages.append(msg+("Memory data was not updated."))
+        print(msg+("Memory data was not updated."))
     
     guiTable = tables[3]
     # TODO: Validate guiTable
