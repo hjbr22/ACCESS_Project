@@ -24,8 +24,7 @@ def create_conf_page(conf,title,body,parent_id=None,space="AccessInternalContent
    except Exception as e:
         print(e)
 
-def get_page_children_ids(pageID):
-    conf = get_conf()
+def get_page_children_ids(conf,pageID):
     page = conf.get_page_by_id(page_id=pageID)
     pageChildren = conf.get_page_child_by_type(page_id=pageID, type='page')
     childPageIds=[]

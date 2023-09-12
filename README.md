@@ -2,8 +2,11 @@
 ## Running the application
 1. Pull down the repo in your home directory: ```git clone <URL>```
 2. Run ```source setup.sh``` (you must have virtualenv installed)
+    - Use the `test` argument to reset the database using local data (this data may be incomplete) `source setup.sh test`
+    - Use the `conf` argument to reset the database using data from confluence `source setup.sh conf` (refer to the Confluence API section below if you are having trouble with this)
     - If you are having trouble with `source setup.sh` (on VS Code or elsewhere) 
     change your terminal to use bash (git bash works well) or manually install the requirements in `requirements.txt`
+    and reset the database using `reset_database.py`
 3. Run the app with  ```flask run``` or ```python3 -m flask run```
 
 ## Developing
@@ -23,8 +26,10 @@
 - If you make any changes to the database or the models file, make sure you make the appropriate changes in the
     ```reset_database.py``` file as well. (If you add a new column to the RPS table, 
     make sure to add some data for that column in the ```reset_database.py``` file as well)
-- If you want to reset the database at any point, run ```python3 reset_database.py```.
+- If you want to reset the database at any point, run ```python3 reset_database.py test```.
     Doing this will drop and recreate all tables and populate them with some sample data.
+    - Use the `conf` parameter instead if you want to use the data in Confluence. (Refer to the Confluence API
+    section below if you are having trouble with this.)
 
 ## Confluence API
 - First create your API token here: https://id.atlassian.com/manage-profile/security/api-tokens

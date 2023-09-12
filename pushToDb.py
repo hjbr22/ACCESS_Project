@@ -63,19 +63,18 @@ def update_rp_table_form_conf(tables,pageName):
     functionalityTable = tables[2]
     funcData = get_rp_functionality_data(functionalityTable)
 
-    if not rp:
-        print(f"RP '{rpName}' not found")
+    if not rp: # if rp does not exist create one
+        print(f"RP {rpName} not found")
         with db.atomic() as transaction:
             try:
                 rpTableData = {}
                 rpTableData['name'] = rpName
                 rpTableData.update(storageData)
                 rpTableData.update(funcData)
-                print('Creating RP')
                 rp = RPS.create(**rpTableData)
-                print('RP created')
+                print(f"Rp {rpName} created")
             except Exception as e:
-                msg = "Error while trying to create RP"
+                msg = f"Error while trying to create RP {rpName}"
                 print(f"{msg} : \n", e)
                 messages.append(msg)
                 transaction.rollback()
@@ -87,7 +86,6 @@ def update_rp_table_form_conf(tables,pageName):
                 rpTableData.update(funcData)
                 RPS.update(**rpTableData).where(RPS.name==rpName).execute()
                 rp = RPS.get_by_id(rp)
-                print('RP updated')
             except Exception as e:
                 msg = f"Error while trying to update RP {rpName}"
                 print(f"{msg} : \n", e)
@@ -103,7 +101,6 @@ def update_rp_table_form_conf(tables,pageName):
                 delRpMem.execute()
                 createRpMem = RpMemory.insert_many(memoryData).on_conflict_replace()
                 createRpMem.execute()
-                print(f"Memory info successfully updated for {rpName}")
             except Exception as e:
                 msg = f"Error while trying to update {rpName} memory"
                 print(f"{msg} : \n", e)
@@ -114,9 +111,8 @@ def update_rp_table_form_conf(tables,pageName):
     # TODO: Validate guiTable
     guiTableIsValid = True
     if guiTableIsValid:
-        guiTable.fillna(1, inplace=True)
+        guiTable.fillna(1, inplace=True) #replace na with 1
         guiTuple = guiTable.itertuples(index=False)
-        # print(guiTuple)
         with db.atomic() as transaction:
             try:
                 RpGUI.delete().where(RpGUI.rp == rp).execute()
@@ -168,8 +164,8 @@ def update_rp_table_form_conf(tables,pageName):
                 transaction.rollback()
 
 def update_db_from_conf():
-    pageIds = get_page_children_ids('245202949')
     conf = get_conf()
+    pageIds = get_page_children_ids(conf,'245202949')
     for id in pageIds:
         tables, pageName = get_tabulated_page_data(conf,pageID=id)
         if ('Softwares' in pageName) or ('Outline' in pageName):
@@ -177,4 +173,6 @@ def update_db_from_conf():
         else:
             update_rp_table_form_conf(tables,pageName)
 
-update_db_from_conf()
+if __name__ == '__main__':
+    update_db_from_conf()
+    

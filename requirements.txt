@@ -2,5 +2,6 @@ Flask==2.3.2
 peewee==3.16.2
 atlassian-python-api
 python-dotenv
-lmxl
+lxml==4.9.3
+beautifulsoup4
 pandas
