@@ -8,6 +8,7 @@ from models.rpResearchField import RpResearchField
 from models.jobClass import JobClass
 from models.rpJobClass import RpJobClass
 from confluence.confluenceAPI import get_conf, get_page_children_ids, get_tabulated_page_data
+from confluence.APIValidation import validate_storage_table, validate_suitability, validate_memory_table
 
 def get_rp_storage_data(storageTable):
     # TODO: validate storageTable
@@ -53,29 +54,42 @@ def get_rp_gui_data(guiTable):
 def update_rp_table_form_conf(tables,pageName):
 
     messages = []
-
     rpName = pageName[:pageName.rfind(" ")]
     rp = RPS.get_or_none(RPS.name == rpName)
+    print(f"\nGetting data for {rp.name}")
 
     storageTable = tables[0]
-    storageData = get_rp_storage_data(storageTable)
+    storageTableIsValid, msg = validate_storage_table(storageTable)
+    if storageTableIsValid:
+        storageData = get_rp_storage_data(storageTable)
+    else:
+        messages.append(msg+(". Storage data was not updated."))
+        print(msg+(". Storage data was not updated."))
 
     functionalityTable = tables[2]
-    funcData = get_rp_functionality_data(functionalityTable)
+    funcTableIsValid, msg = validate_suitability(functionalityTable)
+    if funcTableIsValid:
+        funcData = get_rp_functionality_data(functionalityTable)
+    else:
+        messages.append(msg+(". Functionality data was not updated."))
+        print(msg+(". Functionality data was not updated."))
 
     if not rp:
         print(f"RP '{rpName}' not found")
+        if not (funcTableIsValid and storageTableIsValid):
+            print(f'Unable to create new RP {rpName}.')
+            messages.append(f'Unable to create new RP {rpName}.')
+            return
         with db.atomic() as transaction:
             try:
                 rpTableData = {}
                 rpTableData['name'] = rpName
                 rpTableData.update(storageData)
                 rpTableData.update(funcData)
-                print('Creating RP')
                 rp = RPS.create(**rpTableData)
-                print('RP created')
+                print(f"Rp {rpName} created")
             except Exception as e:
-                msg = "Error while trying to create RP"
+                msg = f"Error while trying to create RP {rpName}"
                 print(f"{msg} : \n", e)
                 messages.append(msg)
                 transaction.rollback()
@@ -83,11 +97,12 @@ def update_rp_table_form_conf(tables,pageName):
         with db.atomic() as transaction:
             try:
                 rpTableData = {}
-                rpTableData.update(storageData)
-                rpTableData.update(funcData)
+                if storageTableIsValid:
+                    rpTableData.update(storageData)
+                if funcTableIsValid:
+                    rpTableData.update(funcData)
                 RPS.update(**rpTableData).where(RPS.name==rpName).execute()
-                rp = RPS.get_by_id(rp)
-                print('RP updated')
+                print(f'RP {rpName} updated')
             except Exception as e:
                 msg = f"Error while trying to update RP {rpName}"
                 print(f"{msg} : \n", e)
@@ -95,28 +110,33 @@ def update_rp_table_form_conf(tables,pageName):
                 transaction.rollback()
     
     memoryTable = tables[1]
-    memoryData = get_rp_memory_data(memoryTable,rp)
-    if memoryData:
-        with db.atomic() as transaction:
-            try:
-                delRpMem = RpMemory.delete().where(RpMemory.rp == rp)
-                delRpMem.execute()
-                createRpMem = RpMemory.insert_many(memoryData).on_conflict_replace()
-                createRpMem.execute()
-                print(f"Memory info successfully updated for {rpName}")
-            except Exception as e:
-                msg = f"Error while trying to update {rpName} memory"
-                print(f"{msg} : \n", e)
-                messages.append(msg)
-                transaction.rollback()
+    memoryDataIsValid, msg = validate_memory_table(memoryTable)
+
+    if memoryDataIsValid:
+        memoryData = get_rp_memory_data(memoryTable,rp)
+        if memoryData:
+            with db.atomic() as transaction:
+                try:
+                    delRpMem = RpMemory.delete().where(RpMemory.rp == rp)
+                    delRpMem.execute()
+                    createRpMem = RpMemory.insert_many(memoryData).on_conflict_replace()
+                    createRpMem.execute()
+                    print(f"Memory info successfully updated for {rpName}")
+                except Exception as e:
+                    msg = f"Error while trying to update {rpName} memory"
+                    print(f"{msg} : \n", e)
+                    messages.append(msg)
+                    transaction.rollback()
+    else:
+        messages.append(msg+("Memory data was not updated."))
+        print(msg+("Memory data was not updated."))
     
     guiTable = tables[3]
     # TODO: Validate guiTable
-    guiTableIsValid = True
+    guiTableIsValid = validate_suitability(guiTable)
     if guiTableIsValid:
-        guiTable.fillna(1, inplace=True)
+        guiTable.fillna(1, inplace=True) #replace na with 1
         guiTuple = guiTable.itertuples(index=False)
-        # print(guiTuple)
         with db.atomic() as transaction:
             try:
                 RpGUI.delete().where(RpGUI.rp == rp).execute()
@@ -133,7 +153,7 @@ def update_rp_table_form_conf(tables,pageName):
 
     fieldsTable = tables[4]
     #TODO: validate fieldsTable
-    fieldsTableIsValid = True
+    fieldsTableIsValid,msg = validate_suitability(fieldsTable)
     if fieldsTableIsValid:
         fieldsTuple = fieldsTable.itertuples(index=False)
         with db.atomic() as transaction:
@@ -148,10 +168,13 @@ def update_rp_table_form_conf(tables,pageName):
                 print(f"{msg} : \n", e)
                 messages.append(msg)
                 transaction.rollback()
+    else:
+        messages.append(msg+(". Fields data was not updated."))
+        print(msg+(". Fields data was not updated."))
 
     jobClassTable = tables[5]
     #TODO: validate fieldsTable
-    jobClassIsValid = True
+    jobClassIsValid,msg = validate_suitability(jobClassTable)
     if jobClassIsValid:
         jobClassTuple = jobClassTable.itertuples(index=False)
         with db.atomic() as transaction:
@@ -166,10 +189,15 @@ def update_rp_table_form_conf(tables,pageName):
                 print(f"{msg} : \n", e)
                 messages.append(msg)
                 transaction.rollback()
+    else:
+        messages.append(msg+(". Job class data was not updated."))
+        print(msg+(". Job class data was not updated."))
+
+    print("Errors: ", messages)
 
 def update_db_from_conf():
-    pageIds = get_page_children_ids('245202949')
     conf = get_conf()
+    pageIds = get_page_children_ids(conf,'245202949')
     for id in pageIds:
         tables, pageName = get_tabulated_page_data(conf,pageID=id)
         if ('Softwares' in pageName) or ('Outline' in pageName):
@@ -177,4 +205,6 @@ def update_db_from_conf():
         else:
             update_rp_table_form_conf(tables,pageName)
 
-update_db_from_conf()
+if __name__ == '__main__':
+    update_db_from_conf()
+    
