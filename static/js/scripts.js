@@ -235,48 +235,15 @@ async function find_top_three(scores){
         box.innerHTML = `
             <div class="box-content" id='box${i}-content'>
             <h3 class="box-title" id="box${i}-name">${topThree[i].name}</h3>
-            <div class="body-container" id="box${i}-body"></div>
             <div class="tags-container" id="box${i}-suitability">
             <h4 class="tags-title"></h4>
             </div>
+            <div class="body-container" id="box${i}-body"></div>
             </div>
             <span class="caret"><i class="fas fa-caret-down"></i></span>
             `;
         var body = document.querySelector('.modal-body')
         body.appendChild(box);
-        /*
-        //Generates blurbs and links for each RP
-        try {
-            // Make the AJAX request using fetch API and await the response
-            const jsonData = { rp: topThree[i].name }; // Modify this based on your data structure
-            console.log(topThree[i].name)
-            const response = await $.ajax({    
-                type: "POST",
-                url: '/get_info',
-                data: JSON.stringify(jsonData),
-                contentType: "application/json"
-            });
-      
-            if (!response.ok) {
-              // Handle error if the response is not ok
-              console.error("Error fetching RP information:", response.status, response.statusText);
-              continue; // Move to the next iteration if there's an error
-            }
-      
-            const info = await response.json();
-            const bodyContainer = document.getElementById(`box${i}-body`);
-            if (bodyContainer) {
-              // Update the content with the returned info from the server
-              bodyContainer.innerHTML = `
-                <p class="box-text">${info.blurb}</p>
-                <a class="box-link" href="${info.link}" target="_blank">More info</a>
-              `;
-            }
-          } catch (error) {
-            // Handle any other errors that might occur during the AJAX request
-            console.error("Error fetching RP information:", error);
-          }
-        */
 
         //Generate tags for inside the boxes. These tags are the reasons for the recommendation
         var tagsContainer = document.getElementById(`box${i}-suitability`);
@@ -293,6 +260,39 @@ async function find_top_three(scores){
                 });
             }
         }
+        
+        //Generates blurbs and links for each RP
+        try {
+            // Make the AJAX request using fetch API and await the response
+            const jsonData = { rp: topThree[i].name }; // Modify this based on your data structure
+            console.log(topThree[i].name)
+            const response = await $.ajax({    
+                type: "POST",
+                url: '/get_info',
+                data: JSON.stringify(jsonData),
+                contentType: "application/json",
+                error:function(error){
+                    reject(error)
+                }
+            });
+            const info = await response;
+            const bodyContainer = document.getElementById(`box${i}-body`);
+            console.log(info)
+            if (bodyContainer) {
+                const blurbArray = info.blurb;
+                const hyperlinkArray = info.hyperlink;
+                const documentationArray = info.documentation;
+                const index = info.rp.indexOf(topThree[i].name);
+                bodyContainer.innerHTML = `
+                    <p class="box-text">${blurbArray[index]}</p>
+                    <a class="box-link" href="${hyperlinkArray[index]}" target="_blank">More info</a>
+                    <a class="box-link" href="${documentationArray[index]}" target="_blank">Documentation</a>
+                `;
+            }
+          } catch (error) {
+            // Handle any other errors that might occur during the AJAX request
+            console.error("Error fetching RP information:", error);
+          }
     }
 }
 //function to show modal upon clicking submit button

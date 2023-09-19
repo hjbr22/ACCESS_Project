@@ -55,8 +55,10 @@ def get_score():
 def get_info():
     info = RpInfo.select()
     blurbs_links = {
+        "rp": [f"{info.rp.name}" for info in info],
         "blurb": [f"{info.blurb}" for info in info],
-        "link": [f"{info.link}" for info in info]
+        "hyperlink": [f"{info.link}" for info in info],
+        "documentation": [f"{info.documentation}" for info in info]
     }
     return blurbs_links
     
