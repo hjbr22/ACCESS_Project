@@ -19,7 +19,8 @@ query_logger = logging.getLogger(__name__)
 query_logger.setLevel('INFO')
 
 #Handler/Formatter for query logs. Send to query.logs
-query_handler = logging.FileHandler("formInfo.log", mode='a')
+query_handler = logging.FileHandler("queryInfo.log", mode='w')
+rec_handler = logging.FileHandler("formInfo.log", mode='a')
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 query_handler.setFormatter(formatter)
 query_logger.addHandler(query_handler)
@@ -335,7 +336,9 @@ def get_recommendations(formData):
                 scoreBoard[rp.name]['reasons'].append("Virtual Machine")
             else:
                 scoreBoard[rp.name] = {'score': 1*suitability, 'reasons': ["Virtual Machine"]}
+    query_logger.addHandler(rec_handler)
     query_logger.info('Recommendation Scoreboard:\n%s', scoreBoard)
+    query_logger.removeHandler(rec_handler)
 
     return scoreBoard
 

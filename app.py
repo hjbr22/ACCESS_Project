@@ -44,6 +44,8 @@ def get_score():
     data = request.get_json()
     with open('formInfo.log', 'w'):
         pass
+    with open('queryInfo.log', 'w'):
+        pass
     log_form_data(data)
     recommendations = get_recommendations(data)
     return json.dumps(recommendations, sort_keys=True)

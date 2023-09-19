@@ -6,3 +6,4 @@ sqlite_db.db
 venv/
 formInfo.log
 .DS_Store
+queryInfo.log
