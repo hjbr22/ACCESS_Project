@@ -8,6 +8,7 @@ from models.jobClass import JobClass
 from models.software import Software
 from logic.form_logging import log_form_data
 from logic.recommendation import get_recommendations
+from confluence.checkPage import check_page
 
 app = Flask(__name__)
 
@@ -48,6 +49,13 @@ def get_score():
     recommendations = get_recommendations(data)
     return json.dumps(recommendations, sort_keys=True)
     # return redirect(url_for('recommender_page',recommendations=recommendations))
+
+@app.route("/check_conf_page/<pageId>",methods=['GET'])
+def check_conf_page(pageId):
+    messages, pageName = check_page(pageId=pageId)
+    return render_template("check_page.html",
+                           messages=messages,
+                           pageName=pageName)
 
 if __name__ == '__main__':
     load_dotenv()
