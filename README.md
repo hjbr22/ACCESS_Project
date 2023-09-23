@@ -7,6 +7,7 @@
     - If you are having trouble with `source setup.sh` (on VS Code or elsewhere) 
     change your terminal to use bash (git bash works well) or manually install the requirements in `requirements.txt`
     and reset the database using `reset_database.py`
+    - **If you are on MAC or Linux change the `source ./venv/Scripts/activate` to `source ./venv/bin/activate` in the `setup.sh` file
 3. Run the app with  ```flask run``` or ```python3 -m flask run```
 
 ## Developing
