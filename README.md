@@ -35,9 +35,9 @@
 ## Confluence API
 - First, create your API token here: https://id.atlassian.com/manage-profile/security/api-tokens
 - Once you have your API token, create a `.env` file in the project folder
-- Inside the `.env` file, add the following:
-    `atlassian_username = ""`
-    `confluence_token = ""`
+- Inside the `.env` file, add the following:  
+    `atlassian_username = ""`  
+    `confluence_token = ""`  
     Replace the empty strings with the appropriate information (**they must be on two separate lines**).
 - That's it you're done! (The relevant code is in the `confluenceAPI.py` file. Run that file to see the results)
 
