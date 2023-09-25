@@ -28,7 +28,7 @@ else
 fi
 
 # Create a virtual environment for dependencies
-if [ ! -d venv ]
+if [ ! -d env ]
 then
   $PYTHON -m venv env
 fi
