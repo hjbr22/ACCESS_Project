@@ -2,7 +2,7 @@
 {% extends "base.html" %}
 {% block scripts %}
     {{super()}}
-    <script type="module" src="../static/js/tags.js"></script>
+    <script async type="module" src="../static/js/tags.js"></script>
     <script type="module" src="../static/js/scripts.js"></script>
 {% endblock %}
 
@@ -21,7 +21,7 @@
         <!-- HPC USE -->
     
     <div class="form-group">
-        <label>Have you used a Supercomputer before? <span style="color:#FF0000;">*</span></label>
+        <label>Have you used a supercomputer before? <span style="color:#FF0000;">*</span></label>
         <br>
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="hpc-use" id="has-used-hpc" value="1" required>
@@ -74,7 +74,14 @@
     </div>
     <!-- GUI Use -->
     <div class="form-group">
-        <label>Do you need to use a resource that has a user-friendly interface? (Recommended for users with little experience)</label>
+        <label>Do you need to use a resource that has a user-friendly interface?
+            <button type="button" class="btn btn-link" data-toggle="tooltip" id ="UI-tip" title="A user interface (UI) allows users to control complex operations via user-friendly tools rather than the command line. Recommended for new users.">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                    <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                </svg>
+                </button>
+        </label>
         <div class="form-check">
             <input class="form-check-input" type="radio" name="gui-needed" id="need-gui" value="1">
             <label class="form-check-label" for="need-gui">Yes</label>
@@ -86,7 +93,7 @@
     </div>
     <!-- GUI Familiarity -->
     <div class="form-group hide-gui d-none">
-    <label>Select any GUIs you are comfortable using:</label>
+    <label>Select any UIs you are comfortable using:</label>
     {% for gui in guis %}
         <div class="form-check">
             <input class="form-check-input used-guis" name="used-gui" type="checkbox" id="{{gui.gui_name}}-option-rp" value="{{gui.gui_name}}">
@@ -136,7 +143,14 @@
     </div>
         <!-- Long-Term Storage -->
     <div class="form-group hide-data d-none">
-        <label >Approximately how much long-term storage do you think you will need?</label>
+        <label >Approximately how much long-term storage do you think you will need?
+            <button type="button" class="btn btn-link" data-toggle="tooltip" id ="long-term-storage-tip" title="Most resources allow a certain amount of files to be stored throughout the entire duration of an allocation in the home/project storage.">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                    <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                </svg>
+            </button>
+        </label>
         <br>
         <div class="form-check form-check">
             <input class="form-check-input" type="radio" name="long-term-storage" id="one-tb" value="less-than-1">
@@ -157,7 +171,14 @@
     </div>
         <!-- Temp Storage -->
     <div class="form-group hide-data d-none">
-        <label >Approximately how much temporary storage do you think you will need (inputs and outputs)?</label>
+        <label >Approximately how much temporary storage do you think you will need (inputs and outputs)?
+            <button type="button" class="btn btn-link" data-toggle="tooltip" id ="temp-storage-tip" title="Most resources regularly purge temporary files. Read about scratch storage to learn more.">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                    <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                </svg>
+            </button>
+        </label>
         <br>
         <div class="form-check form-check">
             <input class="form-check-input" type="radio" name="temp-storage" id="one-tb-temp" value="less-than-1">
@@ -208,7 +229,14 @@
     </div>
         <!-- Graphical -->
     <div class="form-group">
-        <label >Is there a graphical component to your jobs (i.e. image generation, simulation, etc)?</label>
+        <label >Is there a graphical component to your jobs?
+            <button type="button" display="inline-block" class="btn btn-link" data-toggle="tooltip" id ="graphical-tip" title="i.e. image generation, simulation, etc.">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                    <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                </svg>
+            </button>
+        </label>
         <br>
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="graphics" id="graphical" value="1">

@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 from atlassian import Confluence
 import pandas as pd
+# from APIValidation import validate_table_1, validate_table_2, validate_table_3, validate_table_4, validate_table_5, validate_table_6
 
 def get_conf(url='https://access-ci.atlassian.net'):
 
@@ -23,8 +24,7 @@ def create_conf_page(conf,title,body,parent_id=None,space="AccessInternalContent
    except Exception as e:
         print(e)
 
-def get_page_children_ids(pageID):
-    conf = get_conf()
+def get_page_children_ids(conf,pageID):
     page = conf.get_page_by_id(page_id=pageID)
     pageChildren = conf.get_page_child_by_type(page_id=pageID, type='page')
     childPageIds=[]
@@ -32,7 +32,7 @@ def get_page_children_ids(pageID):
         childPageIds.append(page['id'])
     return(childPageIds)
 
-       # # pageJsonList=[]
+      # # pageJsonList=[]
     # # for page_id in childPageIds:
     # #     page = conf.get_page_by_id(page_id)
     # #     print(page)
@@ -40,24 +40,12 @@ def get_page_children_ids(pageID):
 
     # return(childPageIds)
 
-def get_page_data(pageID="255754279"):
-   conf = get_conf()
+def get_tabulated_page_data(conf, pageID):
    page = conf.get_page_by_id(pageID, expand='body.view')
-   page_content = page['body']['view']['value'] 
-
-   table = pd.read_html(page_content)
-
-   print(type(table))
-   print('\n Number of tables:', len(table))
-   #get the first table with index 0
-   First_table = table[0]
-
-   #get the second table with index 1
-   Second_table = table[1]
-
-   print('\n Table 1\n')
-   print(First_table)
-   print(Second_table.to_html)
-   print('\n Table 2\n')
-   print(Second_table)
+   pageContent = page['body']['view']['value'] 
+   pageTitle = page['title']
+   table = pd.read_html(pageContent)
+   
+   return table, pageTitle
+   
 

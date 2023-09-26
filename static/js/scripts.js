@@ -1,33 +1,29 @@
-// memory
-const RPmemory = {'less-than-64':['ACES', 'Anvil', 'Bridges-2', 'DARWIN', 'Delta', 'Expanse', 'FASTER', 'Jetstream2',
-               'OOKAMI', 'KyRIC', 'Rockfish', 'Stampede-2', 'Open Science Grid'],
-     '64-512':['Anvil', 'Stampede-2', 'Delta', 'Expanse', 'FASTER', 'Rockfish', 'Bridges-2', 'DARWIN'],
-     'more-than-512':['KyRIC', 'Jetstream2', 'Bridges-2', 'Delta', 'DARWIN', 'Expanse', 'Rockfish'],
-     'unsure':[]};
-
 //Import tagify objects for event listeners     
-import { jobTagify, softwareTagify, fieldTagify,
+import { fieldTagify, jobTagify, softwareTagify,
         addFieldTagify, addJobTagify, addSoftwareTagify,
-        fieldNoMatches, jobNoMatches, softwareNoMatches,
         hideAddField, showAddField,
         hideAddJob, showAddJob,
-        hideAddSoftware, showAddSoftware } from "./tags.js";
-
+        hideAddSoftware, showAddSoftware,
+        fieldInWhitelist, jobInWhitelist, softwareInWhitelist } from "./tags.js";
 
 $(document).ready(function(){ 
     $('html,body').animate({scrollTop:0},'fast')
 
-    fieldTagify.on("dropdown:noMatch", fieldNoMatches)
-    .on("add", hideAddField)
-    .on("remove", showAddField);
+    //event listeners for tagify fields
+    fieldTagify.on("invalid", showAddField);
+    addFieldTagify.on("remove", hideAddField)
+    .on("invalid", fieldInWhitelist);
 
-    jobTagify.on("dropdown:noMatch", jobNoMatches)
-    .on("add", hideAddJob)
-    .on("remove", showAddJob);
+    jobTagify.on("invalid", showAddJob);
+    addJobTagify.on("remove", hideAddJob)
+    .on("invalid", jobInWhitelist);
 
-    softwareTagify.on("dropdown:noMatch", softwareNoMatches)
-    .on("add", hideAddSoftware)
-    .on("remove", showAddSoftware);
+    softwareTagify.on("invalid", showAddSoftware);
+    addSoftwareTagify.on("remove", hideAddSoftware)
+    .on("invalid", softwareInWhitelist);
+
+    //initialize tooltips
+    $('[data-toggle="tooltip"]').tooltip()
 
     // calculate scores when the form is submitted
     $("#submit-form").on("click", function(){

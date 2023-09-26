@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request
-import os
 from dotenv import load_dotenv
 import json
 from models.rps import RPS
@@ -10,6 +9,7 @@ from models.software import Software
 from models.rpInfo import RpInfo
 from logic.form_logging import log_form_data
 from logic.recommendation import get_recommendations
+from confluence.checkPage import check_page
 
 app = Flask(__name__)
 
@@ -46,9 +46,11 @@ def get_score():
     data = request.get_json()
     with open('formInfo.log', 'w'):
         pass
+    with open('queryInfo.log', 'w'):
+        pass
     log_form_data(data)
     recommendations = get_recommendations(data)
-    return json.dumps(recommendations)
+    return json.dumps(recommendations, sort_keys=True)
     # return redirect(url_for('recommender_page',recommendations=recommendations))
     
 @app.route("/get_info", methods=['POST'])
@@ -62,6 +64,13 @@ def get_info():
     }
     return blurbs_links
     
+
+@app.route("/check_conf_page/<pageId>",methods=['GET'])
+def check_conf_page(pageId):
+    messages, pageName = check_page(pageId=pageId)
+    return render_template("check_page.html",
+                           messages=messages,
+                           pageName=pageName)
 
 if __name__ == '__main__':
     load_dotenv()
