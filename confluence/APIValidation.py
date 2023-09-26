@@ -25,6 +25,7 @@ def validate_memory_table(table):
 def validate_suitability(table):
    # Validate values in Suitability column
    suitibalityColumn = table.columns[1]
-   if not table[suitibalityColumn].isin([0, 1, 2]).all():
-      return False, "Suitability column does not contain 0, 1, 2"
+   if not table[suitibalityColumn].empty:
+      if not table[suitibalityColumn].isin([0, 1, 2]).all():
+         return False, "Suitability column does not contain 0, 1, 2"
    return True, "suitability is valid"

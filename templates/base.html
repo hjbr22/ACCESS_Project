@@ -21,39 +21,42 @@
         {% endblock %}
     </title>
 </head>
-<body class="bg-light">
-    {%block content%}
-        <div>
-            <nav class="navbar navbar-light" style="background-color: #1a5b6e;">
-                {%include 'nav.html'%}
-            </nav>
-        </div>
-        <br>
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col">
-                    <div id="alert-div"></div>
-                </div>
-                <div class="w-100"></div>
-                <div class="col">
-                    {%block page_title %}
-                        {#page title is added here#}
-                    {% endblock%}
-                </div>
-                <div class="w-100"></div>
-                <div class="col-md-6">
-                    {%block app_content%}
-                        {#application content is added here#}
-                    {%endblock%}
+<body class="bg-light" style="display: flex; flex-direction: column; min-height: 100vh;">
+    <div style="flex: 1;">
+        {%block content%}
+            <div>
+                <nav class="navbar navbar-light" style="background-color: #1a5b6e;">
+                    {%include 'nav.html'%}
+                </nav>
+            </div>
+            <br>
+            <div class="container justify-content-center">
+                <div class="row justify-content-center" style="height: auto;">
+                    <div class="col">
+                        <div id="alert-div"></div>
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="col">
+                        {%block page_title %}
+                            {#page title is added here#}
+                        {% endblock%}
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="col-md-6">
+                        {%block app_content%}
+                            {#application content is added here#}
+                        {%endblock%}
+                    </div>
                 </div>
             </div>
-        </div>
-        <br>
-        <div>
-            {% include 'footer.html'%}
-        </div>
-    {%endblock%}
+            <br>
+        {%endblock%}
+    </div>
+    <div>
+        {% include 'footer.html'%}
+    </div>
 </body>
+
 
 {% block scripts %}
     <!-- jQuery -->
