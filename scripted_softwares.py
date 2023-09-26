@@ -43,7 +43,7 @@ def software_collections():
 
 
  # Schedule the event of collecting the software data every day at 17:00 (5 pm)
-schedule.every().days.at("17:00").do(software_collections)
+schedule.every().days.at("18:00").do(software_collections)
 
 #Making sure the program runs continuously
 while True:
