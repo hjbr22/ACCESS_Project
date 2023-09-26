@@ -4,4 +4,4 @@ atlassian-python-api
 python-dotenv
 lxml==4.9.3
 beautifulsoup4
-pandas
+pandas==2.1.1
