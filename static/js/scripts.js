@@ -206,7 +206,7 @@ function calculate_score(formData){
 }
 
 //function to parse JSON data a create a list of top three recommendations
-function find_top_three(scores){
+async function find_top_three(scores){
     var parsedScores = JSON.parse(scores);
     var topThree=[];
     for (var rp in parsedScores) {
@@ -224,11 +224,27 @@ function find_top_three(scores){
 
     topThree = topThree.slice(0, 3);
     for (let i=0; i<topThree.length; i++){
-        $(`#box${i}-name`).text(topThree[i].name);
-        $(`#box${i}`).removeClass('d-none').show();
+        //Make a box to hold all of the info for each RP
+        var box = document.createElement('div');
+        box.classList.add('box');
+        box.id = `box${i}`;
+        box.innerHTML = `
+            <div class="box-content" id='box${i}-content'>
+            <h3 class="box-title" id="box${i}-name">${topThree[i].name}</h3>
+            <div class="tags-container" id="box${i}-suitability">
+            <h4 class="tags-title"></h4>
+            </div>
+            <div class="body-container" id="box${i}-body"></div>
+            </div>
+            <span class="caret"><i class="fas fa-caret-down"></i></span>
+            `;
+        var body = document.querySelector('.modal-body')
+        body.appendChild(box);
+
+        //Generate tags for inside the boxes. These tags are the reasons for the recommendation
         var tagsContainer = document.getElementById(`box${i}-suitability`);
         if (tagsContainer) {
-            tagsContainer.innerHTML = ''; // Clear existing tags
+            //tagsContainer.innerHTML = ''; // Clear existing tags
             var tags = topThree[i].reasons;
             console.log(tags);
             if (tags) {
@@ -240,6 +256,39 @@ function find_top_three(scores){
                 });
             }
         }
+        
+        //Generates blurbs and links for each RP
+        try {
+            // Make the AJAX request using fetch API and await the response
+            const jsonData = { rp: topThree[i].name }; // Modify this based on your data structure
+            console.log(topThree[i].name)
+            const response = await $.ajax({    
+                type: "POST",
+                url: '/get_info',
+                data: JSON.stringify(jsonData),
+                contentType: "application/json",
+                error:function(error){
+                    reject(error)
+                }
+            });
+            const info = await response;
+            const bodyContainer = document.getElementById(`box${i}-body`);
+            console.log(info)
+            if (bodyContainer) {
+                const blurbArray = info.blurb;
+                const hyperlinkArray = info.hyperlink;
+                const documentationArray = info.documentation;
+                const index = info.rp.indexOf(topThree[i].name);
+                bodyContainer.innerHTML = `
+                    <p class="box-text">${blurbArray[index]}</p>
+                    <a class="box-link" href="${hyperlinkArray[index]}" target="_blank">More info</a>
+                    <a class="box-link" href="${documentationArray[index]}" target="_blank">Documentation</a>
+                `;
+            }
+          } catch (error) {
+            // Handle any other errors that might occur during the AJAX request
+            console.error("Error fetching RP information:", error);
+          }
     }
 }
 //function to show modal upon clicking submit button
@@ -247,10 +296,21 @@ function openModal() {
     $("#submitModal").modal("show");
 }
 
-//Listen to modal boxes for clicks. Expands upon clicks.
-var boxes = document.querySelectorAll('.box');
-boxes.forEach(function(box) {
-    box.addEventListener('click', function() {
-      this.classList.toggle('expand');
-      });
-    });
+document.querySelector('.modal-body').addEventListener('click', function(event) {
+    var target = event.target;
+    var box = target.closest('.box');
+    if (box) {
+        var content = box.querySelector('.body-container');
+        var tags = box.querySelector('.tags-container');
+        if (box.style.maxHeight){
+            box.style.maxHeight = null;
+        }
+        else{
+            var textHeight = content.clientHeight;
+            var tagHeight = tags.clientHeight;
+            box.style.maxHeight = (parseInt(textHeight) + parseInt(tagHeight) + 90 + "px");
+            box.classList.toggle('expand');
+            console.log('clicked');
+        }
+    }
+});
