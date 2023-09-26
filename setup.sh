@@ -28,11 +28,11 @@ else
 fi
 
 # Create a virtual environment for dependencies
-if [ ! -d venv ]
+if [ ! -d env ]
 then
   $PYTHON -m venv env
 fi
-source ./venv/Scripts/activate
+source ./env/Scripts/activate
 
 echo "Installing Requirements"
 # upgrade pip
