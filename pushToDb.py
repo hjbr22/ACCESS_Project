@@ -55,8 +55,11 @@ def update_rp_table_form_conf(tables,pageName):
 
     messages = []
     rpName = pageName[:pageName.rfind(" ")]
-    rp = RPS.get_or_none(RPS.name == rpName)
-    print(f"\nGetting data for {rp.name}")
+    if RPS.select().count() == 0:
+        rp = None
+    else:
+        rp = RPS.get_or_none(RPS.name == rpName)
+        print(f"\nGetting data for {rpName}")
 
     storageTable = tables[0]
     storageTableIsValid, msg = validate_storage_table(storageTable)

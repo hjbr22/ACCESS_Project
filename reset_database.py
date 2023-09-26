@@ -224,7 +224,7 @@ def reset_with_test_data():
     RpJobClass.insert_many(rpJobClass).on_conflict_replace().execute()
 
     Gui = [
-        {"gui_name":"OpenOnDemand"},
+        {"gui_name":"Open OnDemand"},
         {"gui_name":"RStudio"},
         {"gui_name":"JupyterLab"},
         {"gui_name":"Exosphere"},
@@ -238,7 +238,7 @@ def reset_with_test_data():
     #Types of GUI's
 
     rpGUI_together = {
-        "OpenOnDemand":['bridges-2', 'expanse', 'anvil', 'aces', 'faster'],
+        "Open OnDemand":['bridges-2', 'expanse', 'anvil', 'aces', 'faster'],
         "RStudio":['aces'],
         "JupyterLab":['aces'],
         "Exosphere":['jetstream2'],
