@@ -255,31 +255,6 @@ def reset_with_test_data():
     print("Adding the GUI to the RP list")
     RpGUI.insert_many(rpGui).on_conflict_replace().execute()
 
-#Accessing all of the module text files and putting them into their respective arrays
-
-os.chdir('softwares')
-
-modules = glob.glob('*.txt')
-rpSftw = {}
-modulesAndVersions = {}
-for name in modules:
-    rpName = name.split("_")[0]
-    modulesAndVersions,mods = get_modules_and_versions(name,modulesAndVersions)
-    rpSftw[rpName] = mods
-
-print("Adding data to Software")
-Software.insert_many(modulesAndVersions.items(), fields=[Software.software_name,Software.version]).on_conflict_replace().execute()
-
-#associate modules with specific RP
-rpSoftware = []
-for item in rpSftw.items():
-    rp = RPS.get(RPS.name == item[0])
-    rpSoftware.extend([(rp,Software.get(Software.software_name==software),1) for software in item[1]])
-
-
-print("Adding data to RpSoftware")
-RpSoftware.insert_many(rpSoftware,fields=[RpSoftware.rp,RpSoftware.software,RpSoftware.suitability]).on_conflict_replace().execute()
-
     #per node memory
     per_node_memory_gb = [{'rp':RPS.get(RPS.name == 'aces'),
                         'node_type':'Standard','per_node_memory_gb':512},
