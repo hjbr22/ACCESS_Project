@@ -304,7 +304,17 @@ document.querySelector('.modal-body').addEventListener('click', function(event) 
     var target = event.target;
     var box = target.closest('.box');
     if (box) {
-        box.classList.toggle('expand');
-        console.log('clicked');
+        var content = box.querySelector('.body-container');
+        var tags = box.querySelector('.tags-container');
+        if (box.style.maxHeight){
+            box.style.maxHeight = null;
+        }
+        else{
+            var textHeight = content.clientHeight;
+            var tagHeight = tags.clientHeight;
+            box.style.maxHeight = (parseInt(textHeight) + parseInt(tagHeight) + 90 + "px");
+            box.classList.toggle('expand');
+            console.log('clicked');
+        }
     }
 });
