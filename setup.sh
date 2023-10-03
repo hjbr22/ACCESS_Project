@@ -28,11 +28,18 @@ else
 fi
 
 # Create a virtual environment for dependencies
-if [ ! -d venv ]
+if [ ! -d env ]
 then
+  echo virtual environment 'env' not found. Creating a new one
   $PYTHON -m venv env
 fi
-source ./venv/Scripts/activate
+
+if [ "$OSTYPE" = "msys" ]
+then
+  source ./env/Scripts/activate
+else
+  source ./env/bin/activate
+fi
 
 echo "Installing Requirements"
 # upgrade pip

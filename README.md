@@ -7,6 +7,7 @@
     - If you are having trouble with `source setup.sh` (on VS Code or elsewhere) 
     change your terminal to use bash (git bash works well) or manually install the requirements in `requirements.txt`
     and reset the database using `reset_database.py`
+    - **If you are on MAC or Linux change the `source ./env/Scripts/activate` to `source ./env/bin/activate` in the `setup.sh` file**
 3. Run the app with  ```flask run``` or ```python3 -m flask run```
 
 ## Developing
@@ -32,12 +33,12 @@
     section below if you are having trouble with this.)
 
 ## Confluence API
-- First create your API token here: https://id.atlassian.com/manage-profile/security/api-tokens
+- First, create your API token here: https://id.atlassian.com/manage-profile/security/api-tokens
 - Once you have your API token, create a `.env` file in the project folder
-- Inside the `.env` file, add the following:
-    `atlassian_username = ""`
-    `confluence_token = ""`
-    Replace the empty strings with the appropriate information
+- Inside the `.env` file, add the following:  
+    `atlassian_username = ""`  
+    `confluence_token = ""`  
+    Replace the empty strings with the appropriate information (**they must be on two separate lines**).
 - That's it you're done! (The relevant code is in the `confluenceAPI.py` file. Run that file to see the results)
 
 ## Getting Modules

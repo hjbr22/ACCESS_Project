@@ -6,8 +6,10 @@ from models.gui import GUI
 from models.researchField import ResearchFields
 from models.jobClass import JobClass
 from models.software import Software
+from models.rpInfo import RpInfo
 from logic.form_logging import log_form_data
 from logic.recommendation import get_recommendations
+from confluence.checkPage import check_page
 
 app = Flask(__name__)
 
@@ -50,6 +52,25 @@ def get_score():
     recommendations = get_recommendations(data)
     return json.dumps(recommendations, sort_keys=True)
     # return redirect(url_for('recommender_page',recommendations=recommendations))
+    
+@app.route("/get_info", methods=['POST'])
+def get_info():
+    info = RpInfo.select()
+    blurbs_links = {
+        "rp": [f"{info.rp.name}" for info in info],
+        "blurb": [f"{info.blurb}" for info in info],
+        "hyperlink": [f"{info.link}" for info in info],
+        "documentation": [f"{info.documentation}" for info in info]
+    }
+    return blurbs_links
+    
+
+@app.route("/check_conf_page/<pageId>",methods=['GET'])
+def check_conf_page(pageId):
+    messages, pageName = check_page(pageId=pageId)
+    return render_template("check_page.html",
+                           messages=messages,
+                           pageName=pageName)
 
 if __name__ == '__main__':
     load_dotenv()
