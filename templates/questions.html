@@ -47,7 +47,7 @@
     </div>
         <!-- Previously used ACCESS HPCs -->
     <div class="form-group hide-hpc d-none" id="access-rps">
-        <label >Select the Supercomupters you have experience with:</label>
+        <label >Select the Supercomputers you have experience with:</label>
         {% for rp in rps %}
         <div class="form-check">
             <input class="form-check-input used-rps" name="used-hpc" type="checkbox" id="{{rp.name}}-option-rp" value="{{rp.name}}">
@@ -230,7 +230,7 @@
         <!-- Graphical -->
     <div class="form-group">
         <label >Is there a graphical component to your jobs?
-            <button type="button" display="inline-block" class="btn btn-link" data-toggle="tooltip" id ="graphical-tip" title="i.e. image generation, simulation, etc.">
+            <button type="button" display="inline-block" class="btn btn-link" data-toggle="tooltip" id ="graphical-tip" title="i.e. visualization, image generation, simulation, etc.">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
                     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
                     <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
@@ -287,7 +287,7 @@
     </div>
         <!-- Virtual Machine -->
     <div class="form-group">
-        <label >Does your program need to run on a Virtual machine?</label>
+        <label >Does your program need to run on a virtual machine (VM)?</label>
         <br>
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="vm" id="vm-needed" value="1">
