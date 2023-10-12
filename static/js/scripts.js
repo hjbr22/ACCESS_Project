@@ -26,7 +26,7 @@ $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip()
 
     // calculate scores when the form is submitted
-    var formDataObeject = {};
+    var formDataObject = {};
     $("#submit-form").on("click", function(){
         var form = document.getElementById("recommendation-form")
         let formIsValid = validateForm() 
@@ -38,7 +38,7 @@ $(document).ready(function(){
                     find_top_three(recommendation, 3);
                     openModal(recommendation);
                     $("#see_less").hide()
-                    formDataObeject = formData
+                    formDataObject = formData
                     $("#see_less").hide()
                 }else{
                     let alertMsg = "Not enough information to make recommendation. Please provide a more detailed response"
@@ -58,7 +58,7 @@ $(document).ready(function(){
 
     //add more calculated scores when see more button is clicked
     $('#see_more').on('click', function(){
-        let formData = formDataObeject
+        let formData = formDataObject
         var numberOfBoxes = $("#modal-body .box").length;
         calculate_score(formData).then(function(recommendation){
                 
@@ -81,7 +81,7 @@ $(document).ready(function(){
         
 
     $('#see_less').on('click', function(){
-        let formData = formDataObeject
+        let formData = formDataObject
         document.querySelector('.modal-body').innerHTML = '';
         calculate_score(formData).then(function(recommendation){
             if (!(recommendation === "{}")){
