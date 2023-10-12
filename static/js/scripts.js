@@ -26,8 +26,8 @@ $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip()
 
     // calculate scores when the form is submitted
-    $("#submit-form").on("click", function(event){
-        event.preventDefault();
+    var formDataObject = {};
+    $("#submit-form").on("click", function(){
         var form = document.getElementById("recommendation-form")
         let formIsValid = validateForm() 
         if (formIsValid){
@@ -35,8 +35,11 @@ $(document).ready(function(){
             calculate_score(formData).then(function(recommendation){
                 if (!(recommendation === "{}")){
                     display_score(recommendation);
-                    find_top_three(recommendation);
+                    find_top_three(recommendation, 3);
                     openModal(recommendation);
+                    $("#see_less").hide()
+                    formDataObject = formData
+                    $("#see_less").hide()
                 }else{
                     let alertMsg = "Not enough information to make recommendation. Please provide a more detailed response"
                     showAlert(alertMsg)
@@ -52,6 +55,42 @@ $(document).ready(function(){
         }
         return false
     })
+
+    //add more calculated scores when see more button is clicked
+    $('#see_more').on('click', function(){
+        let formData = formDataObject
+        var numberOfBoxes = $("#modal-body .box").length;
+        calculate_score(formData).then(function(recommendation){
+                
+            if (!(recommendation === "{}")){
+                   
+                find_top_three(recommendation, numberOfBoxes+3)
+                .then(() => {
+                })
+                .catch((error) => {
+                    console.error("Error occurred: " + error);
+                    // Hide the button or perform other error handling tasks
+                    $("#see_more").hide()
+                    $("#see_less").show()   
+                });       
+            }   
+            }).catch(function(error){
+                console.log("error when calculating score: ", error)
+            })
+        })    
+        
+
+    $('#see_less').on('click', function(){
+        let formData = formDataObject
+        document.querySelector('.modal-body').innerHTML = '';
+        calculate_score(formData).then(function(recommendation){
+            if (!(recommendation === "{}")){
+                find_top_three(recommendation, 3);
+                $("#see_more").show()
+                $("#see_less").hide()
+                }
+    })
+})
 
     //Show RPs if user has experience
     $('input[name="hpc-use"]').change(function() {
@@ -218,7 +257,7 @@ function calculate_score(formData){
 }
 
 //function to parse JSON data a create a list of top three recommendations
-async function find_top_three(scores){
+async function find_top_three(scores, recNum){
     var parsedScores = JSON.parse(scores);
     var topThree=[];
     for (var rp in parsedScores) {
@@ -233,13 +272,14 @@ async function find_top_three(scores){
         return b.score - a.score;
     });
 
-    topThree = topThree.slice(0, 3);
-    for (let i=0; i<topThree.length; i++){
+    var low = recNum-3
+    var high = recNum
+    for (let i=low; i<(high); i++){
         //Make a box to hold all of the info for each RP
         var box = document.createElement('div');
         box.classList.add('box');
         box.id = `box${i}`;
-        box.innerHTML = `
+        box.innerHTML = box.innerHTML +`
             <div class="box-content" id='box${i}-content'>
             <h3 class="box-title" id="box${i}-name">${topThree[i].name}</h3>
             <div class="tags-container" id="box${i}-suitability">
@@ -287,7 +327,7 @@ async function find_top_three(scores){
                 const hyperlinkArray = info.hyperlink;
                 const documentationArray = info.documentation;
                 const index = info.rp.indexOf(topThree[i].name);
-                bodyContainer.innerHTML = `
+                bodyContainer.innerHTML = bodyContainer.innerHTML + `
                     <p class="box-text">${blurbArray[index]}</p>
                     <a class="box-link" href="${hyperlinkArray[index]}" target="_blank">More info</a>
                     <a class="box-link" href="${documentationArray[index]}" target="_blank">Documentation</a>
@@ -320,4 +360,4 @@ document.querySelector('.modal-body').addEventListener('click', function(event) 
             box.classList.toggle('expand');
         }
     }
-});
+})
