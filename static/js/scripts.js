@@ -38,7 +38,6 @@ $(document).ready(function(){
                     find_top_three(recommendation, 3);
                     openModal(recommendation);
                     formDataObeject = formData
-                    form.reset()
                 }else{
                     let alertMsg = "Not enough information to make recommendation. Please provide a more detailed response"
                     showAlert(alertMsg)
@@ -102,8 +101,20 @@ $(document).ready(function(){
       });
 
     $("#submitModal").on('hidden.bs.modal',function(e){
-        location.reload();
+        $(".modal-body").empty();
+
     })
+
+    // Clear the form
+    $("#clear-form").on('click',function(){
+        let form = document.getElementById("recommendation-form");
+        form.reset();
+    })
+    $("#clear-form-modal").on('click',function(){
+        let form = document.getElementById("recommendation-form");
+        form.reset();
+    })
+    
 
 });
 
@@ -235,7 +246,6 @@ async function find_top_three(scores, recNum){
             topThree.push({ name: rp, score: score, reasons: reasons });
         }
     }
-    console.log(topThree);
 
     topThree.sort(function(a, b) {
         return b.score - a.score;
@@ -266,7 +276,6 @@ async function find_top_three(scores, recNum){
         if (tagsContainer) {
             //tagsContainer.innerHTML = ''; // Clear existing tags
             var tags = topThree[i].reasons;
-            console.log(tags);
             if (tags) {
                 tags.forEach(function(tag) {
                 var tagElement = document.createElement('div');
@@ -281,7 +290,6 @@ async function find_top_three(scores, recNum){
         try {
             // Make the AJAX request using fetch API and await the response
             const jsonData = { rp: topThree[i].name }; // Modify this based on your data structure
-            console.log(topThree[i].name)
             const response = await $.ajax({    
                 type: "POST",
                 url: '/get_info',
@@ -293,7 +301,6 @@ async function find_top_three(scores, recNum){
             });
             const info = await response;
             const bodyContainer = document.getElementById(`box${i}-body`);
-            console.log(info)
             if (bodyContainer) {
                 const blurbArray = info.blurb;
                 const hyperlinkArray = info.hyperlink;
@@ -330,7 +337,6 @@ document.querySelector('.modal-body').addEventListener('click', function(event) 
             var tagHeight = tags.clientHeight;
             box.style.maxHeight = (parseInt(textHeight) + parseInt(tagHeight) + 90 + "px");
             box.classList.toggle('expand');
-            console.log('clicked');
         }
     }
 });
