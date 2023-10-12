@@ -39,7 +39,7 @@ $(document).ready(function(){
                     openModal(recommendation);
                     $("#see_less").hide()
                     formDataObeject = formData
-                    form.reset()
+                    $("#see_less").hide()
                 }else{
                     let alertMsg = "Not enough information to make recommendation. Please provide a more detailed response"
                     showAlert(alertMsg)
@@ -61,36 +61,36 @@ $(document).ready(function(){
         let formData = formDataObeject
         var numberOfBoxes = $("#modal-body .box").length;
         calculate_score(formData).then(function(recommendation){
+                
             if (!(recommendation === "{}")){
+                   
                 find_top_three(recommendation, numberOfBoxes+3)
-                    .then((result) => {
+                .then(() => {
+                })
+                .catch((error) => {
+                    console.error("Error occurred: " + error);
+                    // Hide the button or perform other error handling tasks
+                    $("#see_more").hide()
+                    $("#see_less").show()   
+                });       
+            }   
+            }).catch(function(error){
+                console.log("error when calculating score: ", error)
+            })
+        })    
+        
 
-                    })
-                    .catch((error) => {
-                        console.error("Error occurred: " + error);
-                        // Hide the button or perform other error handling tasks
-                        $("#see_more").hide()
-                        $("#see_less").show()
-                    });
-                }           
-            }
-        ).catch(function(error){
-            console.log("error when calculating score: ", error)
-        })
-    })
-
-    //See Less Button Functionality
     $('#see_less').on('click', function(){
         let formData = formDataObeject
+        document.querySelector('.modal-body').innerHTML = '';
         calculate_score(formData).then(function(recommendation){
             if (!(recommendation === "{}")){
-                document.querySelector('.modal-body').innerHTML = '';
                 find_top_three(recommendation, 3);
-                $('#see_less').hide()
                 $("#see_more").show()
-            }
-        })
+                $("#see_less").hide()
+                }
     })
+})
 
     //Show RPs if user has experience
     $('input[name="hpc-use"]').change(function() {
@@ -353,4 +353,4 @@ document.querySelector('.modal-body').addEventListener('click', function(event) 
             console.log('clicked');
         }
     }
-});
+})
