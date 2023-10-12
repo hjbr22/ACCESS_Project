@@ -26,7 +26,7 @@ $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip()
 
     // calculate scores when the form is submitted
-    var formDataObeject = {};
+    var formDataObject = {};
     $("#submit-form").on("click", function(){
         var form = document.getElementById("recommendation-form")
         let formIsValid = validateForm() 
@@ -37,7 +37,8 @@ $(document).ready(function(){
                     display_score(recommendation);
                     find_top_three(recommendation, 3);
                     openModal(recommendation);
-                    formDataObeject = formData
+                    $("#see_less").hide()
+                    formDataObject = formData
                 }else{
                     let alertMsg = "Not enough information to make recommendation. Please provide a more detailed response"
                     showAlert(alertMsg)
@@ -56,20 +57,39 @@ $(document).ready(function(){
 
     //add more calculated scores when see more button is clicked
     $('#see_more').on('click', function(){
-        let formData = formDataObeject
+        let formData = formDataObject
         var numberOfBoxes = $("#modal-body .box").length;
-        console.log(numberOfBoxes)
-        if (numberOfBoxes == 12){
-            $("#see_more").hide()
-        }
+        calculate_score(formData).then(function(recommendation){
+                
+            if (!(recommendation === "{}")){
+                   
+                find_top_three(recommendation, numberOfBoxes+3)
+                .then(() => {
+                })
+                .catch((error) => {
+                    console.error("Error occurred: " + error);
+                    // Hide the button or perform other error handling tasks
+                    $("#see_more").hide()
+                    $("#see_less").show()   
+                });       
+            }   
+            }).catch(function(error){
+                console.log("error when calculating score: ", error)
+            })
+        })    
+        
+
+    $('#see_less').on('click', function(){
+        let formData = formDataObject
+        document.querySelector('.modal-body').innerHTML = '';
         calculate_score(formData).then(function(recommendation){
             if (!(recommendation === "{}")){
-                find_top_three(recommendation, numberOfBoxes+3);
-            }
-        }).catch(function(error){
-            console.log("error when calculating score: ", error)
-        })
+                find_top_three(recommendation, 3);
+                $("#see_more").show()
+                $("#see_less").hide()
+                }
     })
+})
 
     //Show RPs if user has experience
     $('input[name="hpc-use"]').change(function() {
@@ -339,4 +359,4 @@ document.querySelector('.modal-body').addEventListener('click', function(event) 
             box.classList.toggle('expand');
         }
     }
-});
+})
