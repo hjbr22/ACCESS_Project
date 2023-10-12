@@ -37,6 +37,7 @@ $(document).ready(function(){
                     display_score(recommendation);
                     find_top_three(recommendation, 3);
                     openModal(recommendation);
+                    $("#see_less").hide()
                     formDataObeject = formData
                     form.reset()
                 }else{
@@ -59,16 +60,35 @@ $(document).ready(function(){
     $('#see_more').on('click', function(){
         let formData = formDataObeject
         var numberOfBoxes = $("#modal-body .box").length;
-        console.log(numberOfBoxes)
-        if (numberOfBoxes == 12){
-            $("#see_more").hide()
-        }
         calculate_score(formData).then(function(recommendation){
             if (!(recommendation === "{}")){
-                find_top_three(recommendation, numberOfBoxes+3);
+                find_top_three(recommendation, numberOfBoxes+3)
+                    .then((result) => {
+
+                    })
+                    .catch((error) => {
+                        console.error("Error occurred: " + error);
+                        // Hide the button or perform other error handling tasks
+                        $("#see_more").hide()
+                        $("#see_less").show()
+                    });
+                }           
             }
-        }).catch(function(error){
+        ).catch(function(error){
             console.log("error when calculating score: ", error)
+        })
+    })
+
+    //See Less Button Functionality
+    $('#see_less').on('click', function(){
+        let formData = formDataObeject
+        calculate_score(formData).then(function(recommendation){
+            if (!(recommendation === "{}")){
+                document.querySelector('.modal-body').innerHTML = '';
+                find_top_three(recommendation, 3);
+                $('#see_less').hide()
+                $("#see_more").show()
+            }
         })
     })
 
