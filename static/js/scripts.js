@@ -39,7 +39,6 @@ $(document).ready(function(){
                     openModal(recommendation);
                     $("#see_less").hide()
                     formDataObject = formData
-                    $("#see_less").hide()
                 }else{
                     let alertMsg = "Not enough information to make recommendation. Please provide a more detailed response"
                     showAlert(alertMsg)
