@@ -44,6 +44,7 @@ def get_tabulated_page_data(conf, pageID):
    page = conf.get_page_by_id(pageID, expand='body.view')
    pageContent = page['body']['view']['value'] 
    pageTitle = page['title']
+   print(pageContent)
    table = pd.read_html(pageContent)
    
    return table, pageTitle
