@@ -304,7 +304,7 @@ def add_softwares():
     db.connect(reuse_if_open=True)
     #Accessing all of the module text files and putting them into their respective arrays
 
-    os.chdir('softwares')
+    os.chdir('./softwares')
 
     modules = glob.glob('*.txt')
     rpSftw = {}
@@ -372,5 +372,5 @@ if __name__ == "__main__":
         else:
             print("Invalid argument for reset_database.\nPass in 'test' to use the test data or 'conf' to use the data from confluence")
     except Exception as e:
+        print(sys.exc_info()[2])
         print(e)
-        print("Invalid argument for reset_database.\n Pass in 'test' to use the test data or 'conf' to use the data from confluence")
