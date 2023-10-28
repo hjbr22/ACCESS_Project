@@ -304,9 +304,9 @@ def add_softwares():
     db.connect(reuse_if_open=True)
     #Accessing all of the module text files and putting them into their respective arrays
 
-    os.chdir('./softwares')
+    # os.chdir('./softwares')
 
-    modules = glob.glob('*.txt')
+    modules = glob.glob('./softwares/*.txt')
     rpSftw = {}
     modulesAndVersions = {}
     for name in modules:
