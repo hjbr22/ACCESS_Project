@@ -1,4 +1,4 @@
-from models import *
+from . import *
 
 class Software(BaseModel):
     id = PrimaryKeyField()

@@ -1,6 +1,6 @@
-from models import *
-from models.rps import RPS
-from models.researchField import ResearchFields
+from . import *
+from .rps import RPS
+from .researchField import ResearchFields
 
 class RpResearchField(BaseModel):
     id = PrimaryKeyField()

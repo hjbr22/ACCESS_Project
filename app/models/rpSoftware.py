@@ -1,6 +1,6 @@
-from models import *
-from models.software import Software
-from models.rps import RPS
+from . import *
+from .software import Software
+from .rps import RPS
 
 class RpSoftware(BaseModel):
     id = PrimaryKeyField()

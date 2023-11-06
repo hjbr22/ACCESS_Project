@@ -1,4 +1,4 @@
-from models import *
+from . import *
 
 class JobClass(BaseModel):
     id = PrimaryKeyField()
