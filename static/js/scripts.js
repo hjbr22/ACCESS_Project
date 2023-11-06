@@ -351,6 +351,7 @@ document.querySelector('.modal-body').addEventListener('click', function(event) 
         var tags = box.querySelector('.tags-container');
         if (box.style.maxHeight){
             box.style.maxHeight = null;
+            box.classList.toggle('expand');
         }
         else{
             var textHeight = content.clientHeight;
