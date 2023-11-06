@@ -233,7 +233,7 @@ def get_recommendations(formData):
             for rp in classifiedRpsScratch[scratchStorageNeeded]:
                 if rp in scoreBoard:
                     scoreBoard[rp]['score'] = calculate_points(scoreBoard[rp]['score'])
-                    scoreBoard[rp]['reasons'].append("Scratch Storage")
+                    scoreBoard[rp]['reasons'].append("Temporary Storage")
                 else:
                     scoreBoard[rp] = {'score': 1, 'reasons': ["Scratch Storage"]}
     # Memory (RAM)

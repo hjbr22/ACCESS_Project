@@ -51,11 +51,7 @@ def get_score():
     
 @app.route("/get_info", methods=['POST'])
 def get_info():
-    print('\n hello \n')
     info = RpInfo.select()
-    print(info)
-    for i in RpInfo:
-        print(i)
     blurbs_links = {
         "rp": [f"{info.rp.name}" for info in info],
         "blurb": [f"{info.blurb}" for info in info],
