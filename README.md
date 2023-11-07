@@ -5,10 +5,9 @@
     - Use the `test` argument to reset the database using local data (this data may be incomplete) `source setup.sh test`
     - Use the `conf` argument to reset the database using data from confluence `source setup.sh conf` (refer to the Confluence API section below if you are having trouble with this)
     - If you are having trouble with `source setup.sh` (on VS Code or elsewhere) 
-    change your terminal to use bash (git bash works well) or manually install the requirements in `requirements.txt`
+    change your terminal to use bash (git bash works well) or manually install the requirements in `app/requirements.txt`
     and reset the database using `reset_database.py`
-    - **If you are on MAC or Linux change the `source ./env/Scripts/activate` to `source ./env/bin/activate` in the `setup.sh` file**
-3. Run the app with  ```flask run``` or ```python3 -m flask run```
+3. Run the app with  `cd app`, ```flask run``` or ```python3 -m flask run```
 
 ## Developing
 1. Follow the above steps to set up your application
