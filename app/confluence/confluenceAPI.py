@@ -32,19 +32,10 @@ def get_page_children_ids(conf,pageID):
         childPageIds.append(page['id'])
     return(childPageIds)
 
-      # # pageJsonList=[]
-    # # for page_id in childPageIds:
-    # #     page = conf.get_page_by_id(page_id)
-    # #     print(page)
-    # #     pageJsonList.append(json.dumps(page, sort_keys=True, indent=4, separators=(",", ": ")))
-
-    # return(childPageIds)
-
 def get_tabulated_page_data(conf, pageID):
    page = conf.get_page_by_id(pageID, expand='body.view')
    pageContent = page['body']['view']['value'] 
    pageTitle = page['title']
-   print(pageContent)
    table = pd.read_html(pageContent)
    
    return table, pageTitle
