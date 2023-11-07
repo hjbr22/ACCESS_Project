@@ -1,13 +1,13 @@
-from models.rpGUI import RpGUI
-from models.gui import GUI
-from models.researchField import ResearchFields
-from models.rpResearchField import RpResearchField
-from models.jobClass import JobClass
-from models.rpJobClass import RpJobClass
-from models.rps import RPS
-from models.software import Software
-from models.rpSoftware import RpSoftware
-from models.rpMemory import RpMemory
+from ..models.rpGUI import RpGUI
+from ..models.gui import GUI
+from ..models.researchField import ResearchFields
+from ..models.rpResearchField import RpResearchField
+from ..models.jobClass import JobClass
+from ..models.rpJobClass import RpJobClass
+from ..models.rps import RPS
+from ..models.software import Software
+from ..models.rpSoftware import RpSoftware
+from ..models.rpMemory import RpMemory
 import operator
 from functools import reduce
 import logging
@@ -233,7 +233,7 @@ def get_recommendations(formData):
             for rp in classifiedRpsScratch[scratchStorageNeeded]:
                 if rp in scoreBoard:
                     scoreBoard[rp]['score'] = calculate_points(scoreBoard[rp]['score'])
-                    scoreBoard[rp]['reasons'].append("Scratch Storage")
+                    scoreBoard[rp]['reasons'].append("Temporary Storage")
                 else:
                     scoreBoard[rp] = {'score': 1, 'reasons': ["Scratch Storage"]}
     # Memory (RAM)

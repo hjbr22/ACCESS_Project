@@ -320,6 +320,7 @@ async function find_top_three(scores, recNum){
                 }
             });
             const info = await response;
+            console.log(info);
             const bodyContainer = document.getElementById(`box${i}-body`);
             if (bodyContainer) {
                 const blurbArray = info.blurb;

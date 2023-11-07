@@ -14,7 +14,7 @@ from logic.rp_modules import get_modules_and_versions
 from pushToDb import update_db_from_conf
 import glob #for reading the text files
 import sys
-import os
+import re
 
 def recreate_tables():
     db.connect(reuse_if_open=True)
@@ -304,13 +304,12 @@ def add_softwares():
     db.connect(reuse_if_open=True)
     #Accessing all of the module text files and putting them into their respective arrays
 
-    os.chdir('softwares')
+    modules = glob.glob('./app/softwares/*.txt')
 
-    modules = glob.glob('*.txt')
     rpSftw = {}
     modulesAndVersions = {}
     for name in modules:
-        rpName = name.split("_")[0]
+        rpName = re.search(r'([^/]+)_(.+)', name).group(1) #get just the rp name from file path
         modulesAndVersions,mods = get_modules_and_versions(name,modulesAndVersions)
         rpSftw[rpName] = mods
 
@@ -322,9 +321,10 @@ def add_softwares():
     for item in rpSftw.items():
         rp = RPS.get(RPS.name == item[0])
         rpSoftware.extend([(rp,Software.get(Software.software_name==software),1) for software in item[1]])
-
     print("Adding data to RpSoftware")
     RpSoftware.insert_many(rpSoftware,fields=[RpSoftware.rp,RpSoftware.software,RpSoftware.suitability]).on_conflict_replace().execute()
+    db.close()
+
 def add_info():
     db.connect(reuse_if_open=True)
     #info about the RP's as well as links to their websites
@@ -356,9 +356,6 @@ if __name__ == "__main__":
             recreate_tables()
             print("Resetting database from test data")
             reset_with_test_data()
-            add_softwares()
-            add_info()
-            print("Database reset")
 
         elif whichData == 'conf':
             tables = db.get_tables()
@@ -366,11 +363,14 @@ if __name__ == "__main__":
                 recreate_tables()
             print("Resetting database from conf")
             update_db_from_conf()
-            add_softwares()
-            add_info()
-            print("Database reset")
+
         else:
             print("Invalid argument for reset_database.\nPass in 'test' to use the test data or 'conf' to use the data from confluence")
+        
+        add_softwares()
+        add_info()
+        print("Database reset")
+
     except Exception as e:
+        print(sys.exc_info()[2])
         print(e)
-        print("Invalid argument for reset_database.\n Pass in 'test' to use the test data or 'conf' to use the data from confluence")

@@ -1,5 +1,5 @@
-from models import *
-from models.rps import RPS
+from . import *
+from .rps import RPS
 
 class RpMemory(BaseModel):
     id = PrimaryKeyField()

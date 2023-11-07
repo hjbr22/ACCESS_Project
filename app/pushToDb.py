@@ -203,9 +203,7 @@ def update_db_from_conf():
     pageIds = get_page_children_ids(conf,'245202949')
     for id in pageIds:
         tables, pageName = get_tabulated_page_data(conf,pageID=id)
-        if ('Softwares' in pageName) or ('Outline' in pageName):
-            pass
-        else:
+        if ('Data' in pageName):
             update_rp_table_form_conf(tables,pageName)
 
 if __name__ == '__main__':

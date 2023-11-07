@@ -1,15 +1,15 @@
 from flask import Flask, render_template, request
 from dotenv import load_dotenv
 import json
-from models.rps import RPS
-from models.gui import GUI
-from models.researchField import ResearchFields
-from models.jobClass import JobClass
-from models.software import Software
-from models.rpInfo import RpInfo
-from logic.form_logging import log_form_data
-from logic.recommendation import get_recommendations
-from confluence.checkPage import check_page
+from .models.rps import RPS
+from .models.gui import GUI
+from .models.researchField import ResearchFields
+from .models.jobClass import JobClass
+from .models.software import Software
+from .models.rpInfo import RpInfo
+from .logic.form_logging import log_form_data
+from .logic.recommendation import get_recommendations
+from .confluence.checkPage import check_page
 
 app = Flask(__name__)
 

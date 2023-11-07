@@ -1,6 +1,6 @@
-from models import *
-from models.gui import GUI
-from models.rps import RPS
+from . import *
+from .gui import GUI
+from .rps import RPS
 
 class RpGUI(BaseModel):
     id = PrimaryKeyField()
